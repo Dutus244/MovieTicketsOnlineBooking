@@ -8,6 +8,7 @@ import com.example.movieticketsonlinebooking.R
 
 class LoginActivity : AppCompatActivity() {
     var signupButton: Button? = null
+    var loginButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +17,12 @@ class LoginActivity : AppCompatActivity() {
         signupButton = findViewById(R.id.activity_login_button_signup)
         signupButton?.setOnClickListener {
             val intent = Intent(applicationContext, SignupActivity1::class.java)
+            startActivity(intent)
+        }
+
+        loginButton = findViewById(R.id.activity_login_button_login)
+        loginButton?.setOnClickListener {
+            val intent = Intent(applicationContext, HomeActivity::class.java)
             startActivity(intent)
         }
     }

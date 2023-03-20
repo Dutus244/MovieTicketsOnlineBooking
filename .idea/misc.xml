@@ -3,12 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/default_indicator.xml" value="0.124" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/indicator_selector.xml" value="0.124" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/login_btn.xml" value="0.2265" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/nav_item_color_state.xml" value="0.2265" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/selected_indicator.xml" value="0.124" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/signup_btn_1.xml" value="0.2265" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/the_slider_background.xml" value="0.124" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/transparent_black_ten_percent.xml" value="0.2265" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_foreplay.xml" value="0.2" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_home_page_the_items_layout.xml" value="0.264" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_signup1.xml" value="0.25416666666666665" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/custom_layout_gridview_list_films.xml" value="0.253125" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/fragment_account.xml" value="0.25416666666666665" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/fragment_cinema.xml" value="0.24010416666666667" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/menu/activity_home_page_bottom_navigation_main.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

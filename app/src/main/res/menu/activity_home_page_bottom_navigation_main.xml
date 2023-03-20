@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/activity_home_page_bottom_nevigation_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Trang chủ"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/activity_home_page_bottom_nevigation_cinema"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_laptop_chromebook_24"
+        android:title="Rạp phim"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/activity_home_page_bottom_nevigation_account"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:title="Tài khoản"
+        app:showAsAction="ifRoom" />
+</menu>
