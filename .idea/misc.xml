@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_foreplay.xml" value="0.11302083333333333" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/login_btn.xml" value="0.2265" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/signup_btn_1.xml" value="0.2265" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/drawable/transparent_black_ten_percent.xml" value="0.2265" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_foreplay.xml" value="0.2" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/app/src/main/res/layout/activity_signup1.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
