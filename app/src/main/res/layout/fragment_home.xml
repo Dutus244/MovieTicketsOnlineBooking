@@ -57,6 +57,20 @@
                 android:numColumns="2"
                 android:verticalSpacing="6dp" />
 
+            <Button
+                android:id="@+id/activity_home_page_list_fim_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/home_list_film_more_btn"
+                android:text="Xem Tiếp >"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"/>
+
         </LinearLayout>
 
     </ScrollView>
