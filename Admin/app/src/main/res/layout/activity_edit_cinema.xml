@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".cinemas.EditCinema">
+
+    <Button
+        android:id="@+id/editCinemaDeleteBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#df4759"
+        android:textSize="20sp"
+        android:text="Xóa"
+        app:layout_constraintBottom_toTopOf="@+id/editCinemaSaveBtn"
+        app:layout_constraintEnd_toEndOf="@+id/editCinemaSaveBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaSaveBtn" />
+
+    <Button
+        android:id="@+id/editCinemaSaveBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#4CAF50"
+        android:textSize="20sp"
+        android:text="Lưu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editCinemaAddrET"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaAddrTV"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaAddrTV" />
+
+    <TextView
+        android:id="@+id/editCinemaAddrTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Địa chỉ"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaImgET"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaImgET" />
+
+    <EditText
+        android:id="@+id/editCinemaImgET"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaImgTV" />
+
+    <TextView
+        android:id="@+id/editCinemaImgTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="URL hình ảnh rạp"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaNameET"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaNameET" />
+
+    <TextView
+        android:id="@+id/editCinemaTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Thông tin rạp chiếu"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/editCinemaNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Tên rạp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaTitle" />
+
+    <EditText
+        android:id="@+id/editCinemaNameET"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaNameTV" />
+
+    <TextView
+        android:id="@+id/editCinemaAudiNumTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Số phòng chiếu"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaAddrET"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaAddrET" />
+
+    <EditText
+        android:id="@+id/editCinemaAudiNumET"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/editCinemaAudiNumTV"
+        app:layout_constraintStart_toEndOf="@+id/editCinemaAudiNumTV"
+        app:layout_constraintTop_toTopOf="@+id/editCinemaAudiNumTV" />
+
+    <TextView
+        android:id="@+id/editCinemaStatusTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Trạng thái"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaAudiNumTV"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaAudiNumET" />
+
+    <RadioGroup
+        android:id="@+id/editCinemaStatusRG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/editCinemaStatusTV"
+        app:layout_constraintStart_toStartOf="@+id/editCinemaAudiNumET"
+        app:layout_constraintTop_toTopOf="@+id/editCinemaStatusTV">
+
+        <RadioButton
+            android:id="@+id/editCinemaStatusRB1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RadioButton" />
+
+        <RadioButton
+            android:id="@+id/editCinemaStatusRB2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RadioButton" />
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
