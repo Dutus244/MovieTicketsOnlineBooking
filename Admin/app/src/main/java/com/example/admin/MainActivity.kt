@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.admin.cinemas.AddCinema
+import com.example.admin.cinemas.CinemaList
+import com.example.admin.cinemas.EditCinema
 
 class MainActivity : AppCompatActivity() {
     var goToCinemaBtn: Button? = null
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         goToMovieBtn = findViewById(R.id.goToMovieBtn)
 
         goToCinemaBtn!!.setOnClickListener {
-            val intent = Intent(this, AddCinema::class.java)
+            val intent = Intent(this, CinemaList::class.java)
             startActivity(intent)
         }
         goToMovieBtn!!.setOnClickListener {
