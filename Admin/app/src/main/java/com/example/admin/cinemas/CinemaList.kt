@@ -3,6 +3,9 @@ package com.example.admin.cinemas
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +34,23 @@ class CinemaList : AppCompatActivity() {
         val adapter = CinemaListAdapter(this, cinemas)
         cinemaRecyclerView!!.adapter = adapter
         cinemaRecyclerView!!.layoutManager = LinearLayoutManager(this)
+
+        val autoCompleteAdapter =
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_list_item_single_choice,
+                cinemas.map { it.name })
+        autoCompleteTextView!!.setAdapter(autoCompleteAdapter)
+        autoCompleteTextView!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                cinemaRecyclerView!!.adapter =
+                    CinemaListAdapter(this@CinemaList, cinemas.filter {
+                        it.name.contains(autoCompleteTextView!!.text, true)
+                    })
+            }
+        })
 
         addBtn!!.setOnClickListener {
             val intent = Intent(this, AddCinema::class.java)
