@@ -1,5 +1,6 @@
 package com.example.admin.cinemas
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AutoCompleteTextView
@@ -30,5 +31,10 @@ class CinemaList : AppCompatActivity() {
         val adapter = CinemaListAdapter(this, cinemas)
         cinemaRecyclerView!!.adapter = adapter
         cinemaRecyclerView!!.layoutManager = LinearLayoutManager(this)
+
+        addBtn!!.setOnClickListener {
+            val intent = Intent(this, AddCinema::class.java)
+            startActivity(intent)
+        }
     }
 }
