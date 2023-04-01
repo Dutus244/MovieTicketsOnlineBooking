@@ -169,4 +169,15 @@
         android:layout_height="wrap_content"
         app:barrierDirection="top" />
 
+    <Button
+        android:id="@+id/editCinemaAudiBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textSize="16sp"
+        android:text="Chỉnh sửa"
+        app:layout_constraintBottom_toBottomOf="@+id/editCinemaAudiNumET"
+        app:layout_constraintStart_toEndOf="@+id/editCinemaAudiNumET"
+        app:layout_constraintTop_toTopOf="@+id/editCinemaAudiNumET" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
