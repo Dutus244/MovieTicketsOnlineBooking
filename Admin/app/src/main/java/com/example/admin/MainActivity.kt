@@ -3,8 +3,12 @@ package com.example.admin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import com.example.admin.cinemas.AddCinema
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     var goToCinemaBtn: Button? = null
@@ -24,5 +28,18 @@ class MainActivity : AppCompatActivity() {
         goToMovieBtn!!.setOnClickListener {
 
         }
+
+        FirebaseApp.initializeApp(this)
+        val db = Firebase.firestore
+        db.collection("user")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("bucu", "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w("bucu", "Error getting documents.", exception)
+            }
     }
 }
