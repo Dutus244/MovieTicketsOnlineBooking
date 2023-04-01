@@ -22,8 +22,7 @@ class MainActivity : AppCompatActivity() {
         goToMovieBtn = findViewById(R.id.goToMovieBtn)
 
         goToCinemaBtn!!.setOnClickListener {
-            val intent = Intent(this, AddCinema::class.java)
-            startActivity(intent)
+
         }
         goToMovieBtn!!.setOnClickListener {
 
