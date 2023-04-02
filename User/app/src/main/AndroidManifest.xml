@@ -13,10 +13,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieTicketsOnlineBooking"
         tools:targetApi="31">
+
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA_LIHQvS2E6C5X_KGTotiFk2kjHx7P6y8" />
+
+        <activity
+            android:name=".activities.MapCinemaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_map_cinema"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.CinemaFilmDetailActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".activities.FilmShowtimesActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.FilmInfoActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SignupActivity2"
             android:exported="false"

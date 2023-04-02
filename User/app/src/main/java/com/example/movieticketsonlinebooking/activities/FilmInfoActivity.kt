@@ -1,6 +1,7 @@
 package com.example.movieticketsonlinebooking.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -24,6 +25,8 @@ class FilmInfoActivity : AppCompatActivity() {
     var actorList: ArrayList<People> = ArrayList()
     var directorList: ArrayList<People> = ArrayList()
     class People(var name: String, var avatar: Int )
+
+    var showtimesButton: Button? = null
 
     class MyAdapter(private val context: Context, private val arrayList: java.util.ArrayList<People>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
@@ -101,5 +104,11 @@ class FilmInfoActivity : AppCompatActivity() {
         recyclerView2.layoutManager = layoutManager2
         adapter2 = MyAdapter(this, directorList)
         recyclerView2.adapter = adapter2
+
+        showtimesButton = findViewById(R.id.activity_film_info_showtimes)
+        showtimesButton?.setOnClickListener {
+            val intent = Intent(applicationContext, FilmShowtimesActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
