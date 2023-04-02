@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.LoginActivity"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/image"
@@ -96,7 +97,7 @@
         android:background="@drawable/transparent_black_ten_percent"
         android:text="Đăng ký"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +111,7 @@
         android:background="@drawable/transparent_black_ten_percent"
         android:text="Quên mật khẩu?"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_login_button_signup" />

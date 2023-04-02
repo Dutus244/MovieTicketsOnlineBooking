@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignupActivity1">
+    tools:context=".activities.SignupActivity1"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/image"
@@ -116,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:buttonTint="@color/blue"
+        android:buttonTint="@color/red"
         android:text="Đồng ý với các Điều khoản, Điều kiện sử dụng của chúng tôi"
         android:textSize="10sp"
         android:layout_marginTop="15dp"
@@ -133,7 +134,7 @@
         android:background="@drawable/signup_btn_1"
         android:text="Hoàn tất"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         android:textStyle="bold"
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +161,7 @@
         android:padding="2dp"
         android:text="Đã có tài khoản"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
