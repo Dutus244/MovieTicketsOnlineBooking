@@ -94,31 +94,12 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
+        android:maxLines="1"
+        android:lines="1"
+        android:singleLine="true"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/addCinemaNameTV"
         app:layout_constraintTop_toBottomOf="@+id/addCinemaNameTV" />
-
-    <TextView
-        android:id="@+id/addCinemaAudiNumTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Số phòng chiếu"
-        app:layout_constraintStart_toStartOf="@+id/addCinemaAddrET"
-        app:layout_constraintTop_toBottomOf="@+id/addCinemaAddrET" />
-
-    <EditText
-        android:id="@+id/addCinemaAudiNumET"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toBottomOf="@+id/addCinemaAudiNumTV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addCinemaAudiNumTV"
-        app:layout_constraintTop_toTopOf="@+id/addCinemaAudiNumTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

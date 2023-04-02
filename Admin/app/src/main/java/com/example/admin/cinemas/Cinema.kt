@@ -1,26 +1,19 @@
 package com.example.admin.cinemas
 
-class Cinema() {
-    var img_url: String = ""
-    var name: String = ""
-    var address: String = ""
-    var auditoriums_no: Int = 0
-    var status: String = ""
-    var is_deleted: Boolean = false
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.IgnoreExtraProperties
 
-    constructor(
-        img_url: String,
-        name: String,
-        address: String,
-        auditoriums_no: Int,
-        status: String,
-        is_deleted: Boolean
-    ) : this() {
-        this.img_url = img_url
-        this.name = name
-        this.address = address
-        this.auditoriums_no = auditoriums_no
-        this.status = status
-        this.is_deleted = is_deleted
-    }
+@IgnoreExtraProperties
+data class Cinema(
+    val img_url: String = "",
+    val name: String = "",
+    val address: String = "",
+    val auditoriums_no: Int = 0,
+    val status: String = "Open",
+    @field:JvmField
+    val is_deleted: Boolean = false,
+    @DocumentId
+    val id: String = "",
+) : java.io.Serializable {
+
 }
