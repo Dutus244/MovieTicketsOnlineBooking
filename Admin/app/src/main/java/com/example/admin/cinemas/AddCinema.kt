@@ -49,8 +49,7 @@ class AddCinema : AppCompatActivity() {
         val db = Firebase.firestore
         db.collection("cinema")
             .add(Cinema(img_url, name, addr))
-            .addOnSuccessListener { documentReference ->
-//                Log.d("DB", "DocumentSnapshot written with ID: ${documentReference.id}")
+            .addOnSuccessListener {
                 val replyIntent = Intent()
                 setResult(Activity.RESULT_OK, replyIntent)
                 finish()
