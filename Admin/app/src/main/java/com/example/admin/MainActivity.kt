@@ -31,17 +31,5 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        FirebaseApp.initializeApp(this)
-        val db = Firebase.firestore
-        db.collection("user")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d("bucu", "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("bucu", "Error getting documents.", exception)
-            }
     }
 }

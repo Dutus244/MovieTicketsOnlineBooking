@@ -43,32 +43,31 @@ class CinemaList : AppCompatActivity() {
         cinemaRecyclerView!!.adapter = adapter
         cinemaRecyclerView!!.layoutManager = LinearLayoutManager(this)
 
-        val autoCompleteAdapter =
-            ArrayAdapter(
-                this,
-                android.R.layout.simple_list_item_single_choice,
-                cinemas.map { it.name })
-        autoCompleteTextView!!.setAdapter(autoCompleteAdapter)
-        autoCompleteTextView!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                cinemaRecyclerView!!.adapter =
-                    CinemaListAdapter(this@CinemaList, cinemas.filter {
-                        it.name.contains(autoCompleteTextView!!.text, true)
-                    })
-            }
-        })
-
         addBtn!!.setOnClickListener {
             val intent = Intent(this, AddCinema::class.java)
             startActivityForResult(intent, RequestCode.CINEMA_SCREEN_ADD)
         }
 
         coroutineScope.launch {
-            Log.w("Test", "launch")
             cinemas = getCinemaData()
             cinemaRecyclerView!!.adapter = CinemaListAdapter(this@CinemaList, cinemas)
+
+            val autoCompleteAdapter =
+                ArrayAdapter(
+                    this@CinemaList,
+                    android.R.layout.simple_list_item_single_choice,
+                    cinemas.map { it.name })
+            autoCompleteTextView!!.setAdapter(autoCompleteAdapter)
+            autoCompleteTextView!!.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {}
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    cinemaRecyclerView!!.adapter =
+                        CinemaListAdapter(this@CinemaList, cinemas.filter {
+                            it.name.contains(autoCompleteTextView!!.text, true)
+                        })
+                }
+            })
         }
     }
 
@@ -82,7 +81,10 @@ class CinemaList : AppCompatActivity() {
     suspend fun getCinemaData(): List<Cinema> = runCatching {
         FirebaseApp.initializeApp(this@CinemaList)
         val db = Firebase.firestore
-        val result = db.collection("cinema").get().await()
+        val result = db.collection("cinema")
+            .whereEqualTo("is_deleted", false)
+            .get()
+            .await()
         result.toObjects(Cinema::class.java)
     }.getOrElse {
         Log.w("DB", "Error getting documents.", it)
@@ -92,7 +94,7 @@ class CinemaList : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RequestCode.CINEMA_SCREEN_ADD) {
+        if (requestCode == RequestCode.CINEMA_SCREEN_ADD || requestCode == RequestCode.CINEMA_SCREEN_EDIT) {
             if (resultCode == Activity.RESULT_OK) {
                 recreate()
             }

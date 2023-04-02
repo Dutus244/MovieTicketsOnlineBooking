@@ -1,7 +1,7 @@
 package com.example.admin.cinemas
 
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.IgnoreExtraProperties
-import com.google.firebase.firestore.PropertyName
 
 @IgnoreExtraProperties
 data class Cinema(
@@ -11,7 +11,9 @@ data class Cinema(
     val auditoriums_no: Int = 0,
     val status: String = "Open",
     @field:JvmField
-    val is_deleted: Boolean = false
-) {
+    val is_deleted: Boolean = false,
+    @DocumentId
+    val id: String = "",
+) : java.io.Serializable {
 
 }

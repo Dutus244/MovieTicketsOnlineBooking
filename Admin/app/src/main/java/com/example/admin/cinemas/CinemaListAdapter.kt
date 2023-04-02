@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.view.LayoutInflaterFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
+import com.example.admin.RequestCode
 
 class CinemaListAdapter(private val activity: Activity, private val list: List<Cinema>) :
     RecyclerView.Adapter<CinemaListAdapter.ViewHolder>() {
@@ -41,7 +42,8 @@ class CinemaListAdapter(private val activity: Activity, private val list: List<C
         holder.audiNumText.append(list[position].auditoriums_no.toString())
         holder.itemView.setOnClickListener {
             val intent = Intent(activity, EditCinema::class.java)
-            activity.startActivity(intent)
+            intent.putExtra("cinema", list[position])
+            activity.startActivityForResult(intent, RequestCode.CINEMA_SCREEN_EDIT)
         }
     }
 

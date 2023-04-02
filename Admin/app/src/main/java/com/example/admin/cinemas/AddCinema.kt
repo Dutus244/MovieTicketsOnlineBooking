@@ -31,8 +31,9 @@ class AddCinema : AppCompatActivity() {
 
         saveBtn!!.setOnClickListener {
             if (cinemaNameET!!.text.toString().isEmpty() ||
-                cinemaAddrET!!.text.toString().isEmpty()) {
-                Toast.makeText(this,"Vui lòng nhập tên và địa chỉ", Toast.LENGTH_SHORT).show()
+                cinemaAddrET!!.text.toString().isEmpty()
+            ) {
+                Toast.makeText(this, "Vui lòng nhập tên và địa chỉ", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             addCinema(
@@ -40,9 +41,6 @@ class AddCinema : AppCompatActivity() {
                 cinemaNameET!!.text.toString(),
                 cinemaAddrET!!.text.toString()
             )
-            val replyIntent = Intent()
-            setResult(Activity.RESULT_OK, replyIntent)
-            finish()
         }
     }
 
@@ -53,6 +51,9 @@ class AddCinema : AppCompatActivity() {
             .add(Cinema(img_url, name, addr))
             .addOnSuccessListener { documentReference ->
 //                Log.d("DB", "DocumentSnapshot written with ID: ${documentReference.id}")
+                val replyIntent = Intent()
+                setResult(Activity.RESULT_OK, replyIntent)
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.w("DB", "Error adding document", e)
