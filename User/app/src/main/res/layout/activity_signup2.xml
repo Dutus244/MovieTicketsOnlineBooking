@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignupActivity2">
+    tools:context=".activities.SignupActivity2"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/imagelabel"
@@ -102,7 +103,7 @@
         android:padding="2dp"
         android:text="Gửi lại mã OTP"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_signup_2_root_otp_layout" />
@@ -116,7 +117,7 @@
         android:padding="2dp"
         android:text="Đổi email"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_signup_2_button_resend_otp" />
@@ -130,7 +131,7 @@
         android:background="@drawable/signup_btn_1"
         android:text="Xác nhận"
         android:textAllCaps="false"
-        android:textColor="@color/blue"
+        android:textColor="@color/red"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

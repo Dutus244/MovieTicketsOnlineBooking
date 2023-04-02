@@ -19,6 +19,13 @@
             android:exported="false" />
         <activity
             android:name=".AddMovie"
+            android:name="com.example.admin.auditoriums.AuditoriumList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.cinemas.CinemaList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.cinemas.EditCinema"
             android:exported="false" />
         <activity
             android:name="com.example.admin.cinemas.AddCinema"
