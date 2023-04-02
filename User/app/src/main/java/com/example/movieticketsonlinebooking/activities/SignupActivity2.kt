@@ -1,5 +1,6 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -55,6 +56,12 @@ class SignupActivity2 : AppCompatActivity() {
 
         signupButton = findViewById(R.id.activity_signup_2_button_signup)
         signupButton?.setOnClickListener {
+            // Luu thong tin dang nhap cua nguoi dung tren ung dung
+            val sharedPreferences = getSharedPreferences("TumLumCinemas", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString("email", "duynguyen24th@gmail.com")
+            editor.apply()
+
             val intent = Intent(applicationContext, HomeActivity::class.java)
             startActivity(intent)
         }

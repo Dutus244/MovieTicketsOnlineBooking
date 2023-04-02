@@ -1,7 +1,7 @@
 package com.example.movieticketsonlinebooking.activities
 
-import android.R
 import android.content.Intent
+import com.example.movieticketsonlinebooking.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,18 +48,18 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(
-            com.example.movieticketsonlinebooking.R.layout.fragment_home,
+            R.layout.fragment_home,
             container, false
         )
-        page = view.findViewById(com.example.movieticketsonlinebooking.R.id.activity_home_page_my_pager)
-        tabLayout = view.findViewById(com.example.movieticketsonlinebooking.R.id.activity_home_page_my_tablayout)
+        page = view.findViewById(R.id.activity_home_page_my_pager)
+        tabLayout = view.findViewById(R.id.activity_home_page_my_tablayout)
 
         // Test slide
         listItems = java.util.ArrayList()
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(com.example.movieticketsonlinebooking.R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(com.example.movieticketsonlinebooking.R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(com.example.movieticketsonlinebooking.R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(com.example.movieticketsonlinebooking.R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
 
         val itemsPager_adapter = The_Slide_items_Pager_Adapter_HomePage(requireActivity(), listItems)
         page!!.adapter = itemsPager_adapter
@@ -75,18 +75,19 @@ class HomeFragment : Fragment() {
         var arrayList: ArrayList<Item> = ArrayList()
 
         // Test
-        arrayList.add(Item("hello",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Item("hello",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Item("hello",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Item("hello",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Item("hello",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Item("hello",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
+        arrayList.add(Item("hello",R.drawable.foreplay_background))
+        arrayList.add(Item("hello",R.drawable.foreplay_background))
+        arrayList.add(Item("hello",R.drawable.foreplay_background))
+        arrayList.add(Item("hello",R.drawable.foreplay_background))
+        arrayList.add(Item("hello",R.drawable.foreplay_background))
+        arrayList.add(Item("hello",R.drawable.foreplay_background))
 
-        gridView = view.findViewById(com.example.movieticketsonlinebooking.R.id.activity_home_page_gridview_list_film)
+        gridView = view.findViewById(R.id.activity_home_page_gridview_list_film)
         adapter = MyGridAdapter(requireActivity(), arrayList)
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
-
+            val intent = Intent(activity, FilmInfoActivity::class.java)
+            startActivity(intent)
         }
         return view
     }

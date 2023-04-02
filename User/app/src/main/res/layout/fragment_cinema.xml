@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CinemaFragment">
+    tools:context=".activities.CinemaFragment"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:id="@+id/activity_cinema_search_layout"
             android:layout_width="match_parent"
             android:layout_height="90sp"
-            android:background="@color/blue"
+            android:background="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/activity_cinema_search_search"
@@ -52,7 +53,7 @@
             android:layout_height="0dp"
             android:paddingBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_cinema_search_layout" />
