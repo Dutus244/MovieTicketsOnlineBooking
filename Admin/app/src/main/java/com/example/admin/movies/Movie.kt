@@ -16,7 +16,7 @@ data class Movie(
     val classification: String = "",
     val rating: Double = 0.0,
     @field:JvmField
-    val is_active: Boolean = false,
+    val is_active: Boolean = true,
     @field:JvmField
     val is_deleted: Boolean = false,
     @DocumentId

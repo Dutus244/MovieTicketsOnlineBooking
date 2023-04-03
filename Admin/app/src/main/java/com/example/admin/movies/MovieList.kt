@@ -83,7 +83,6 @@ class MovieList : AppCompatActivity() {
             .whereEqualTo("is_deleted", false)
             .get()
             .await()
-        Log.e("bucu", result.toString())
         result.toObjects(Movie::class.java)
     }.getOrElse {
         Log.w("DB", "Error getting documents.", it)

@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MovieListAdapter(private val activity: Activity, private val list: List<Movie>) :
     RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
@@ -35,7 +37,8 @@ class MovieListAdapter(private val activity: Activity, private val list: List<Mo
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.position = position
         holder.nameText.text = list[position].title
-        holder.dateText.text = list[position].release_date.toString()
+        holder.dateText.text = "Release date: ${SimpleDateFormat("dd/MM/yyyy", 
+            Locale.getDefault()).format(list[position].release_date)}"
         holder.activeText.text = ""
         if(list[position].is_active) holder.activeText.append("Currently active, ")
         else holder.activeText.append("Inactive, ")
