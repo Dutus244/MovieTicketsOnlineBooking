@@ -27,6 +27,7 @@ class AddMovie : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_movie)
+        FirebaseApp.initializeApp(this@AddMovie)
 
         movieNameET = findViewById(R.id.addMovieNameET)
         movieCastET = findViewById(R.id.addMovieCastET)

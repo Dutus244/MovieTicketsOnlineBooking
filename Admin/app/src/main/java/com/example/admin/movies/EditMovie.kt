@@ -123,7 +123,6 @@ class EditMovie : AppCompatActivity() {
                 )
             )
             .addOnSuccessListener {
-                Log.d("DB", "Document updated successfully")
                 val replyIntent = Intent()
                 setResult(Activity.RESULT_OK, replyIntent)
                 finish()
