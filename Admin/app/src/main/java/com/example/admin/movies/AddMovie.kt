@@ -36,10 +36,12 @@ class AddMovie : AppCompatActivity() {
         movieClassificationRG = findViewById(R.id.addMovieClassificationRG)
         movieRealeasedDateET = findViewById(R.id.addMovieReleasedDateET)
         movieDescriptionET = findViewById(R.id.addMovieDescriptionET)
-        saveBtn = findViewById(R.id.addCinemaSaveBtn)
+        saveBtn = findViewById(R.id.addMovieSaveBtn)
 
         val dateTextView = findViewById<ImageView>(R.id.calendar_icon)
         var cal = Calendar.getInstance()
+        movieRealeasedDateET!!.setText(
+            "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR}")
         dateTextView.setOnClickListener {
             val datePickerDialog = DatePickerDialog(this@AddMovie,
                 { view, year, monthOfYear, dayOfMonth ->
@@ -49,7 +51,7 @@ class AddMovie : AppCompatActivity() {
 
                     val myFormat = "dd/MM/yyyy"
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    findViewById<TextView>(R.id.addMovieReleasedDateET).text = sdf.format(cal.time)
+                    movieRealeasedDateET!!.setText(sdf.format(cal.time))
             }, cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH))
@@ -78,7 +80,6 @@ class AddMovie : AppCompatActivity() {
     fun addMovie(title: String, cast: String, director: String,
                  poster_url: String, vid_url: String, classification: String,
                  release_date: Date, description: String) {
-        FirebaseApp.initializeApp(this)
         val db = Firebase.firestore
         db.collection("movie")
             .add(Movie(title, cast, director, poster_url, vid_url,

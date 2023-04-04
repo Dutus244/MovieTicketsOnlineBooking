@@ -37,15 +37,15 @@ class MovieListAdapter(private val activity: Activity, private val list: List<Mo
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.position = position
         holder.nameText.text = list[position].title
-        holder.dateText.text = "Release date: ${SimpleDateFormat("dd/MM/yyyy", 
+        holder.dateText.text = "Ngày phát hành: ${SimpleDateFormat("dd/MM/yyyy", 
             Locale.getDefault()).format(list[position].release_date)}"
         holder.activeText.text = ""
-        if(list[position].is_active) holder.activeText.append("Currently active, ")
-        else holder.activeText.append("Inactive, ")
+        if(list[position].is_active) holder.activeText.append("Hiện đang hoạt động")
+        else holder.activeText.append("Hiện không hoạt động")
 
         holder.itemView.setOnClickListener {
             val intent = Intent(activity, EditMovie::class.java)
-            intent.putExtra("cinema", list[position])
+            intent.putExtra("movie", list[position])
             activity.startActivityForResult(intent, RequestCode.MOVIE_SCREEN_EDIT)
         }
     }
