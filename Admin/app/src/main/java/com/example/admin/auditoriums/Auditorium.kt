@@ -5,12 +5,13 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class Auditorium(
-    val name: String = "",
-    val seats_no: Int = 0,
+    var name: String = "",
+    var seats_no: Int = 0,
     @field:JvmField
-    val is_deleted: Boolean = false,
-    val cinema_id: String = "",
+    var is_deleted: Boolean = false,
+    var cinema_id: String = "",
+    var map: ArrayList<String> = arrayListOf(),
     @DocumentId
     val id: String = "",
-) {
+) : java.io.Serializable {
 }

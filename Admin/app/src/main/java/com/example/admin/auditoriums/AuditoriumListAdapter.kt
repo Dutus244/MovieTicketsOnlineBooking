@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
 import com.example.admin.cinemas.EditCinema
+import com.example.admin.seats.SeatScreen
 
 class AuditoriumListAdapter(private val activity: Activity, private val list: List<Auditorium>) :
     RecyclerView.Adapter<AuditoriumListAdapter.ViewHolder>() {
@@ -39,8 +40,10 @@ class AuditoriumListAdapter(private val activity: Activity, private val list: Li
         holder.nameText.text = list[position].name
         holder.audiNumText.append(list[position].seats_no.toString())
         holder.itemView.setOnClickListener {
-//            val intent = Intent(activity, EditCinema::class.java)
-//            activity.startActivityForResult(intent, RequestCode.AUDITORIUM_SCREEN_EDIT)
+            val intent = Intent(activity, SeatScreen::class.java)
+            intent.putExtra("auditorium", list[position])
+//            activity.startActivity(intent)
+            activity.startActivityForResult(intent, RequestCode.AUDITORIUM_SCREEN_EDIT)
         }
     }
 

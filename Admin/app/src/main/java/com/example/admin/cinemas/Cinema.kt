@@ -5,13 +5,13 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class Cinema(
-    val img_url: String = "",
-    val name: String = "",
-    val address: String = "",
-    val auditoriums_no: Int = 0,
-    val status: String = "Open",
+    var img_url: String = "",
+    var name: String = "",
+    var address: String = "",
+    var auditoriums_no: Int = 0,
+    var status: String = "Open",
     @field:JvmField
-    val is_deleted: Boolean = false,
+    var is_deleted: Boolean = false,
     @DocumentId
     val id: String = "",
 ) : java.io.Serializable {

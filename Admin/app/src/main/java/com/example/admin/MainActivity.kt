@@ -8,6 +8,7 @@ import android.widget.Button
 import com.example.admin.cinemas.AddCinema
 import com.example.admin.cinemas.CinemaList
 import com.example.admin.cinemas.EditCinema
+import com.example.admin.seats.SeatScreen
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

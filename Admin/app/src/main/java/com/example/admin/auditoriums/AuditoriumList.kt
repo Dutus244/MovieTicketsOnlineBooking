@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
+import com.example.admin.RequestCode
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
@@ -25,7 +26,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-
 
 class AuditoriumList : AppCompatActivity() {
     var autoCompleteTextView: AutoCompleteTextView? = null
@@ -55,51 +55,8 @@ class AuditoriumList : AppCompatActivity() {
         audiRecyclerView!!.layoutManager = LinearLayoutManager(this)
 
         addBtn!!.setOnClickListener {
-            val dialog: AlertDialog? = this.let {
-                val builder = AlertDialog.Builder(it)
-                val input = EditText(it)
-                input.setSingleLine()
-                input.filters = arrayOf<InputFilter>(LengthFilter(25))
-                builder.setView(input)
-                builder.setMessage("Nhập tên phòng chiếu")
-                    .setPositiveButton("Thêm", DialogInterface.OnClickListener { dialog, id ->
-                        var name = input.text.toString()
-                        if (name.isEmpty()) {
-                            Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            val db = Firebase.firestore
-                            db.collection("auditorium")
-                                .add(Auditorium(name, cinema_id = cinema_id!!))
-                                .addOnSuccessListener {
-                                    db.collection("cinema")
-                                        .document(cinema_id!!)
-                                        .update("auditoriums_no", FieldValue.increment(1))
-                                        .addOnSuccessListener {
-                                            Toast.makeText(
-                                                this,
-                                                "Thêm thành công",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            recreate()
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.w("DB", "Error adding document", e)
-                                        }
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.w("DB", "Error adding document", e)
-                                }
-                        }
-                    })
-                    .setNegativeButton("Hủy", DialogInterface.OnClickListener { dialog, id ->
-
-                    })
-                builder.create()
-            }
-            if (dialog != null) {
-                dialog!!.show()
-            }
+            val dialog: AlertDialog = createaAuditorimDialog(cinema_id!!)
+            dialog.show()
         }
 
         coroutineScope.launch {
@@ -140,10 +97,68 @@ class AuditoriumList : AppCompatActivity() {
             .get()
             .await()
         result.toObjects(Auditorium::class.java)
-    }.getOrElse {
-        Log.w("DB", "Error getting documents.", it)
-        emptyList()
+    }
+        .getOrElse {
+            Log.w("DB", "Error getting documents.", it)
+            emptyList()
+        }
+
+    fun createAuditorium(name: String, cinema_id: String) {
+        val db = Firebase.firestore
+        db.collection("auditorium")
+            .add(Auditorium(name, cinema_id = cinema_id))
+            .addOnSuccessListener {
+                db.collection("cinema")
+                    .document(cinema_id)
+                    .update("auditoriums_no", FieldValue.increment(1))
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Thêm thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        recreate()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("DB", "Error adding document", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.w("DB", "Error adding document", e)
+            }
+    }
+
+    fun createaAuditorimDialog(cinema_id: String): AlertDialog {
+        val builder = AlertDialog.Builder(this@AuditoriumList)
+        val input = EditText(this@AuditoriumList)
+        input.setSingleLine()
+        input.filters = arrayOf<InputFilter>(LengthFilter(25))
+        builder.setView(input)
+        builder.setMessage("Nhập tên phòng chiếu")
+            .setPositiveButton("Thêm") { _, _ ->
+                var name = input.text.toString()
+                if (name.isEmpty()) {
+                    Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    createAuditorium(name, cinema_id)
+                }
+            }
+            .setNegativeButton("Hủy") { _, _ ->
+
+            }
+        return builder.create()
     }
 
     fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RequestCode.AUDITORIUM_SCREEN_EDIT) {
+            if (resultCode == Activity.RESULT_OK) {
+                recreate()
+            }
+        }
+    }
 }
