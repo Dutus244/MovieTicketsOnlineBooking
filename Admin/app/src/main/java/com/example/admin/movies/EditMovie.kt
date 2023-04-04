@@ -106,7 +106,6 @@ class EditMovie : AppCompatActivity() {
         }
     }
     fun editMovie() {
-        FirebaseApp.initializeApp(this)
         val db = Firebase.firestore
         db.collection("movie")
             .document(movie!!.id).set(
