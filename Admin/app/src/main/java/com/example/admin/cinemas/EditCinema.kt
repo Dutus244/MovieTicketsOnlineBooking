@@ -132,19 +132,4 @@ class EditCinema : AppCompatActivity() {
             finish()
         }
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == RequestCode.AUDITORIUM_SCREEN_EDIT) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                recreate()
-//            }
-//        }
-//    }
 }

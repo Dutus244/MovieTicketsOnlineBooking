@@ -27,6 +27,8 @@ import dev.jahidhasanco.seatbookview.SeatClickListener
 class SeatScreen : AppCompatActivity() {
     private lateinit var seatBookView: SeatBookView
 
+    var title: TextView? = null
+    var changeNameBtn: Button? = null
     var seatBtn: Button? = null
     var instructionTV: TextView? = null
     var isNew: Boolean? = null // check if auditorium has created map before
@@ -46,8 +48,11 @@ class SeatScreen : AppCompatActivity() {
         intent = intent
         auditorium = intent.getSerializableExtra("auditorium") as? Auditorium
 
+        title = findViewById(R.id.seatScreenTitle)
+        changeNameBtn = findViewById(R.id.changeNameBtn)
         seatBtn = findViewById(R.id.seatBtn)
         instructionTV = findViewById(R.id.instructionTV)
+        title!!.text = auditorium!!.name
         if (auditorium!!.map.isEmpty()) {
             seatBtn!!.text = "Tạo sơ đồ"
         } else {
@@ -61,9 +66,13 @@ class SeatScreen : AppCompatActivity() {
                 .isCustomTitle(true)
                 .setCustomTitle(titles)
                 .setSeatLayoutPadding(2)
-                .setSeatSize(500)
+                .setSeatSize(400)
                 .setSelectSeatLimit(0)
             seatBookView.show()
+        }
+        changeNameBtn!!.setOnClickListener {
+            val dialog = createChangeNameDialog()
+            dialog.show()
         }
         seatBtn!!.setOnClickListener {
             when (seatBtn!!.text) {
@@ -96,6 +105,42 @@ class SeatScreen : AppCompatActivity() {
         }
 
 
+    }
+
+    fun createChangeNameDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(this@SeatScreen)
+        val input = EditText(this@SeatScreen)
+        input.setSingleLine()
+        input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(20))
+        builder.setView(input)
+        builder.setMessage("Nhập tên phòng chiếu")
+            .setPositiveButton("Đổi") { _, _ ->
+                var name = input.text.toString()
+                if (name.isEmpty()) {
+                    Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    val db = Firebase.firestore
+                    db.collection("auditorium")
+                        .document(auditorium!!.id)
+                        .update("name", name)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this@SeatScreen,
+                                "Đổi thành công",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            title!!.text = name
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w("DB", "Error getting documents.", exception)
+                        }
+                }
+            }
+            .setNegativeButton("Hủy") { _, _ ->
+
+            }
+        return builder.create()
     }
 
     fun createMapDialog(): AlertDialog {
@@ -134,7 +179,7 @@ class SeatScreen : AppCompatActivity() {
                         .isCustomTitle(true)
                         .setCustomTitle(titles)
                         .setSeatLayoutPadding(2)
-                        .setSeatSize(500)
+                        .setSeatSize(400)
                     seatBookView.setSeatClickListener(object : SeatClickListener {
                         override fun onAvailableSeatClick(selectedIdList: List<Int>, view: View) {
                             seatsRemove = selectedIdList
@@ -246,13 +291,14 @@ class SeatScreen : AppCompatActivity() {
         var rowTitle = 'A'
         var count = 0
         for (item in map) {
+            var colTitle = 1
             count++
             title.add("/")
             for (i in 1..item.length) {
                 count++
-                if (item[i - 1] == '1')
-                    title.add(rowTitle + i.toString())
-                else
+                if (item[i - 1] == '1') {
+                    title.add(rowTitle + (colTitle++).toString())
+                } else
                     title.add("")
             }
             ++rowTitle
