@@ -15,6 +15,15 @@
             android:name="com.example.admin.seats.SeatScreen"
             android:exported="false" />
         <activity
+            android:name="com.example.admin.movies.MovieList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.movies.EditMovie"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.movies.AddMovie"
+            android:exported="false" />
+        <activity
             android:name="com.example.admin.auditoriums.AuditoriumList"
             android:exported="false" />
         <activity

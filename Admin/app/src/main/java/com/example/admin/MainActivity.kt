@@ -3,15 +3,14 @@ package com.example.admin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import com.example.admin.cinemas.AddCinema
 import com.example.admin.cinemas.CinemaList
 import com.example.admin.cinemas.EditCinema
 import com.example.admin.seats.SeatScreen
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.example.admin.movies.MovieList
 
 class MainActivity : AppCompatActivity() {
     var goToCinemaBtn: Button? = null
@@ -29,7 +28,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         goToMovieBtn!!.setOnClickListener {
-
+            val intent = Intent(this, MovieList::class.java)
+            startActivity(intent)
         }
 
     }
