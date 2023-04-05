@@ -51,6 +51,7 @@ class ScreeningList : AppCompatActivity() {
 
         addBtn!!.setOnClickListener {
             val intent = Intent(this, AddScreening::class.java)
+            intent.putExtra("cinema", cinema)
             startActivityForResult(intent, RequestCode.SCREENING_SCREEN_ADD)
         }
 

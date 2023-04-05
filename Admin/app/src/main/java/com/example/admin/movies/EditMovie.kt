@@ -52,7 +52,7 @@ class EditMovie : AppCompatActivity() {
         val dateTextView = findViewById<ImageView>(R.id.calendar_icon)
         var cal = Calendar.getInstance()
         movieRealeasedDateET!!.setText(
-            "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR}")
+            "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH+1}/${Calendar.YEAR}")
         dateTextView.setOnClickListener {
             val datePickerDialog = DatePickerDialog(this@EditMovie,
                 { view, year, monthOfYear, dayOfMonth ->
