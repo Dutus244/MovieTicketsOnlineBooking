@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.admin.R
+import com.example.admin.RequestCode
 import com.example.admin.auditoriums.AuditoriumList
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
@@ -28,6 +29,8 @@ class EditCinema : AppCompatActivity() {
     var saveBtn: Button? = null
 
     var cinema: Cinema? = null
+
+    var shouldRecreateActivity: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +65,8 @@ class EditCinema : AppCompatActivity() {
 
         audiBtn!!.setOnClickListener {
             val intent = Intent(this, AuditoriumList::class.java)
+            intent.putExtra("cinema_id", cinema!!.id)
+            shouldRecreateActivity = true
             startActivity(intent)
         }
         delBtn!!.setOnClickListener {
@@ -74,6 +79,11 @@ class EditCinema : AppCompatActivity() {
                             .document(cinema!!.id)
                             .update("is_deleted", true)
                             .addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Xóa thành công",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 val replyIntent = Intent()
                                 setResult(Activity.RESULT_OK, replyIntent)
                                 finish()
@@ -117,6 +127,8 @@ class EditCinema : AppCompatActivity() {
                 .addOnFailureListener { exception ->
                     Log.w("DB", "Error getting documents.", exception)
                 }
+            val replyIntent = Intent()
+            setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
     }

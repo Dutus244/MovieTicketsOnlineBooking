@@ -17,7 +17,7 @@ class CinemaListAdapter(private val activity: Activity, private val list: List<C
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         var position: Int? = null
-        val imageView: ImageView = listItemView.findViewById(R.id.cinemaImg) as ImageView
+        val imageView = listItemView.findViewById(R.id.cinemaImg) as ImageView
         val nameText = listItemView.findViewById(R.id.cinemaNameTV) as TextView
         val addrText = listItemView.findViewById(R.id.cinemaAddrTV) as TextView
         val audiNumText = listItemView.findViewById(R.id.cinemaAudiNumTV) as TextView
@@ -30,9 +30,9 @@ class CinemaListAdapter(private val activity: Activity, private val list: List<C
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         // Inflate the custom layout
-        val studentView = inflater.inflate(R.layout.cinema_item, parent, false)
+        val cinemaView = inflater.inflate(R.layout.cinema_item, parent, false)
         // Return a new holder instance
-        return ViewHolder(studentView)
+        return ViewHolder(cinemaView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
