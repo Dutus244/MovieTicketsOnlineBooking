@@ -15,6 +15,7 @@ import com.example.admin.cinemas.Cinema
 import com.example.admin.movies.Movie
 import com.google.firebase.FirebaseApp
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -174,8 +175,9 @@ class AddScreening : AppCompatActivity() {
     fun addScreening(auditorium_id: String,cinema_id: String,movie_id: String,
                      screening_start: Timestamp,screening_end: Timestamp) {
         val db = Firebase.firestore
+        val screening = ScreeningWithoutNames(auditorium_id, cinema_id, movie_id, screening_start, screening_end)
         db.collection("screening")
-            .add(Screening(auditorium_id,cinema_id,movie_id,screening_start,screening_end))
+            .add(screening)
             .addOnSuccessListener {
                 val replyIntent = Intent()
                 setResult(Activity.RESULT_OK, replyIntent)
