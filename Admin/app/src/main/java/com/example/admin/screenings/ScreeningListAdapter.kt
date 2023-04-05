@@ -39,10 +39,10 @@ class ScreeningListAdapter(private val activity: Activity, private val list: Lis
             holder.position = position
             holder.nameText.text = list[position].movie_name
             holder.audiNameText.text = "Tên phòng chiếu: ${list[position].auditorium_name}"
-            holder.timeStartText.text = "Bắt đầu: ${SimpleDateFormat("dd/MM/yyyy hh:mm",
-                Locale.getDefault()).format(list[position].screening_start.seconds*1000)}"
-            holder.timeEndText.text = "Kết thúc: ${SimpleDateFormat("dd/MM/yyyy hh:mm",
-                Locale.getDefault()).format(list[position].screening_end.seconds*1000)}"
+            holder.timeStartText.text = SimpleDateFormat("dd/MM/yyyy HH:mm",
+                Locale.getDefault()).format(list[position].screening_start)
+            holder.timeEndText.text = SimpleDateFormat("dd/MM/yyyy HH:mm",
+                Locale.getDefault()).format(list[position].screening_end)
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(activity, EditScreening::class.java)

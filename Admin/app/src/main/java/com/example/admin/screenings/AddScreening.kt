@@ -169,11 +169,11 @@ class AddScreening : AppCompatActivity() {
             Log.e("bucu", auditoriumChoice + " " + movieChoice)
             Log.e("bucu", start.toString() + " " + end.toString())
             addScreening(auditoriumChoice, cinema!!.id, movieChoice,
-                Timestamp(start), Timestamp(end))
+                start, end)
         }
     }
     fun addScreening(auditorium_id: String,cinema_id: String,movie_id: String,
-                     screening_start: Timestamp,screening_end: Timestamp) {
+                     screening_start: Date,screening_end: Date) {
         val db = Firebase.firestore
         val screening = ScreeningWithoutNames(auditorium_id, cinema_id, movie_id, screening_start, screening_end)
         db.collection("screening")
