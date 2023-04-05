@@ -13,6 +13,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.admin.R
 import com.example.admin.RequestCode
 import com.example.admin.auditoriums.AuditoriumList
+import com.example.admin.movies.EditMovie
+import com.example.admin.screenings.ScreeningList
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -130,6 +132,21 @@ class EditCinema : AppCompatActivity() {
             val replyIntent = Intent()
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
+        }
+        findViewById<Button>(R.id.editCinemaDeleteBtn2).setOnClickListener {
+            val intent = Intent(this, ScreeningList::class.java)
+            intent.putExtra("cinema", cinema)
+            this.startActivityForResult(intent, RequestCode.SCREENING_SCREEN_DETAIL)
+        }
+
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RequestCode.SCREENING_SCREEN_DETAIL) {
+            if (resultCode == Activity.RESULT_OK) {
+
+            }
         }
     }
 }
