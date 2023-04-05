@@ -130,7 +130,9 @@ class SeatScreen : AppCompatActivity() {
                                 "Đổi thành công",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            title!!.text = name
+                            val replyIntent = Intent()
+                            setResult(Activity.RESULT_OK, replyIntent)
+                            finish()
                         }
                         .addOnFailureListener { exception ->
                             Log.w("DB", "Error getting documents.", exception)
