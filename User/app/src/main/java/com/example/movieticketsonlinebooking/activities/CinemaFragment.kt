@@ -1,6 +1,5 @@
 package com.example.movieticketsonlinebooking.activities
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -49,7 +48,8 @@ class CinemaFragment : Fragment(), TextWatcher {
             holder.textViewAddress.text = data.address
             holder.textViewPhone.text = data.phone
             holder.itemView.setOnClickListener {
-
+                val intent = Intent(context, CinemaFilmDetailActivity::class.java)
+                context.startActivity(intent)
             }
         }
 
