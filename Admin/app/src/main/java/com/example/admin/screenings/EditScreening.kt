@@ -14,7 +14,6 @@ import com.example.admin.auditoriums.Auditorium
 import com.example.admin.cinemas.Cinema
 import com.example.admin.movies.Movie
 import com.google.firebase.FirebaseApp
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -177,8 +176,6 @@ class EditScreening : AppCompatActivity() {
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
             val start = format.parse(startTimeET!!.text.toString())
             val end = format.parse(endTimeET!!.text.toString())
-            Log.e("bucu", auditoriumChoice + " " + movieChoice)
-            Log.e("bucu", start.toString() + " " + end.toString())
             editScreening(auditoriumChoice, screening!!.cinema_id, movieChoice,
                 start, end
             )

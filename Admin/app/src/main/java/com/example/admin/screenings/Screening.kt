@@ -1,9 +1,6 @@
 package com.example.admin.screenings
 
-import com.google.firebase.Timestamp
-import com.google.firebase.Timestamp.*
 import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.*
 

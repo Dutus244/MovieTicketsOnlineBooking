@@ -23,17 +23,16 @@
         app:layout_constraintStart_toStartOf="@+id/editCinemaSaveBtn" />
 
     <Button
-        android:id="@+id/editCinemaDeleteBtn2"
+        android:id="@+id/editCinemaScreeningBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:backgroundTint="#df4759"
         android:text="Xóa"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/editCinemaSaveBtn"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/editCinemaAudiNumTV3"
         app:layout_constraintEnd_toEndOf="@+id/editCinemaSaveBtn"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editCinemaSaveBtn" />
+        app:layout_constraintStart_toStartOf="@+id/editCinemaAudiBtn"
+        app:layout_constraintTop_toTopOf="@+id/editCinemaAudiNumTV3" />
 
     <Button
         android:id="@+id/editCinemaSaveBtn"
@@ -136,6 +135,15 @@
         android:text="Số phòng chiếu: "
         app:layout_constraintStart_toStartOf="@+id/editCinemaAddrET"
         app:layout_constraintTop_toBottomOf="@+id/editCinemaAddrET" />
+
+    <TextView
+        android:id="@+id/editCinemaAudiNumTV3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Danh sách suất chiếu: "
+        app:layout_constraintStart_toStartOf="@+id/editCinemaStatusTV"
+        app:layout_constraintTop_toBottomOf="@+id/editCinemaStatusRG" />
 
     <TextView
         android:id="@+id/editCinemaStatusTV"
