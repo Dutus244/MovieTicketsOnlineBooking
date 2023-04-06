@@ -13,7 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieTicketsOnlineBooking"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.PayActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.BookSeatActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -33,12 +40,11 @@
             android:name=".activities.MapCinemaActivity"
             android:exported="false"
             android:label="@string/title_activity_map_cinema"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CinemaFilmDetailActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.FilmShowtimesActivity"
             android:exported="false"

@@ -72,21 +72,15 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
                 }
             }
 
-            val adapter = ArrayAdapter(context, R.layout.showtime_grid_item, film.showtimes)
+            val adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1,  film.showtimes)
             holder.showtimesGridView.adapter = adapter
             holder.showtimesGridView.numColumns = 3
 
-            // Add OnClickListener to each showtime button
-            for (i in 0 until holder.showtimesGridView.childCount) {
-                val button = holder.showtimesGridView.getChildAt(i) as Button
-                val showtime = film.showtimes[i]
-
-                button.setOnClickListener {
-//                    val intent = Intent(context, ShowtimeActivity::class.java)
+            holder.showtimesGridView.setOnItemClickListener { _, _, position, _ ->
+                val intent = Intent(context, BookSeatActivity::class.java)
 //                    intent.putExtra("cinemaName", cinema.name)
 //                    intent.putExtra("showtime", showtime)
-//                    context.startActivity(intent)
-                }
+                    context.startActivity(intent)
             }
 
             return view

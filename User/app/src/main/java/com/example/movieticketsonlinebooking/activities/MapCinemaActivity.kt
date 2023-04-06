@@ -55,7 +55,7 @@ class MapCinemaActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
 
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Galaxy Nguyễn Du"))
+        mMap.addMarker(MarkerOptions().position(sydney).title("Galaxy Nguyễn Du"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,20f))
     }
 }
