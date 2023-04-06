@@ -16,10 +16,7 @@ import com.example.admin.movies.Movie
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
@@ -229,5 +226,9 @@ class EditScreening : AppCompatActivity() {
     }.getOrElse {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
+    }
+    override fun onDestroy(){
+        super.onDestroy()
+        coroutineScope.cancel()
     }
 }
