@@ -12,6 +12,15 @@
         android:theme="@style/Theme.Material3.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name="com.example.admin.screenings.ScreeningList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.screenings.AddScreening"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.screenings.EditScreening"
+            android:exported="false" />
+        <activity
             android:name="com.example.admin.seats.SeatScreen"
             android:exported="false" />
         <activity

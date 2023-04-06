@@ -2,17 +2,16 @@ package com.example.admin.cinemas
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
-import androidx.fragment.app.DialogFragment
 import com.example.admin.R
 import com.example.admin.RequestCode
 import com.example.admin.auditoriums.AuditoriumList
+import com.example.admin.screenings.ScreeningList
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -131,5 +130,11 @@ class EditCinema : AppCompatActivity() {
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
+        findViewById<Button>(R.id.editCinemaScreeningBtn).setOnClickListener {
+            val intent = Intent(this, ScreeningList::class.java)
+            intent.putExtra("cinema", cinema)
+            this.startActivityForResult(intent, RequestCode.SCREENING_SCREEN_DETAIL)
+        }
+
     }
 }
