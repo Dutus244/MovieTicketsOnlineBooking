@@ -98,9 +98,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:numColumns="3"
+        android:clickable="true"
+        android:focusable="true"
         android:columnWidth="100dp"
         android:verticalSpacing="16dp"
         android:horizontalSpacing="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:stretchMode="columnWidth" />
 
 
