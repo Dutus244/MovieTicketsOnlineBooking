@@ -137,13 +137,4 @@ class EditCinema : AppCompatActivity() {
         }
 
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RequestCode.SCREENING_SCREEN_DETAIL) {
-            if (resultCode == Activity.RESULT_OK) {
-
-            }
-        }
-    }
 }
