@@ -1,11 +1,13 @@
 package com.example.movieticketsonlinebooking.activities
 
 import android.content.Intent
+import android.graphics.Color
 import com.example.movieticketsonlinebooking.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.GridView
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -18,11 +20,16 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
-    private var listItems: ArrayList<The_Slide_Items_Model_Class_HomePage>? = null
+    private var listItems: ArrayList<The_Slide_Items_Model_Class_HomePage>? = ArrayList()
     private var page: ViewPager? = null
     private var tabLayout: TabLayout? = null
     var adapter : MyGridAdapter? = null
     var gridView: GridView? = null
+    var buttonCurrentFilm: Button? = null
+    var buttonComingFilm: Button? = null
+    var current: Int? = 1
+    var arrayList: ArrayList<Item> = ArrayList()
+    var buttonMore: Button? = null
 
     inner class The_slide_timer : TimerTask() {
         override fun run() {
@@ -43,6 +50,36 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    fun getDataForSlider () {
+        // Lấy 3 item mới nhất
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+    }
+
+    fun getDataForList () {
+        arrayList.clear()
+        if (current == 1) {
+            // Ds phim hiện tại 6 phần tử
+            arrayList.add(Item("hello",R.drawable.foreplay_background))
+            arrayList.add(Item("hello",R.drawable.foreplay_background))
+            arrayList.add(Item("hello",R.drawable.foreplay_background))
+            arrayList.add(Item("hello",R.drawable.foreplay_background))
+            arrayList.add(Item("hello",R.drawable.foreplay_background))
+            arrayList.add(Item("hello",R.drawable.foreplay_background))
+        }
+        else {
+            // Ds phim sắp chiếu
+            arrayList.add(Item("hi",R.drawable.foreplay_background))
+            arrayList.add(Item("hi",R.drawable.foreplay_background))
+            arrayList.add(Item("hi",R.drawable.foreplay_background))
+            arrayList.add(Item("hi",R.drawable.foreplay_background))
+            arrayList.add(Item("hio",R.drawable.foreplay_background))
+            arrayList.add(Item("hi",R.drawable.foreplay_background))
+        }
+        adapter?.notifyDataSetChanged()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,15 +88,32 @@ class HomeFragment : Fragment() {
             R.layout.fragment_home,
             container, false
         )
+
         page = view.findViewById(R.id.activity_home_page_my_pager)
         tabLayout = view.findViewById(R.id.activity_home_page_my_tablayout)
 
         // Test slide
-        listItems = java.util.ArrayList()
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
-        listItems!!.add(The_Slide_Items_Model_Class_HomePage(R.drawable.foreplay_background, "Bệnh viện Hoàn Mỹ"))
+        getDataForSlider()
+
+        // Test list
+        getDataForList ()
+
+        buttonCurrentFilm = view.findViewById(R.id.activity_home_page_button_current_film)
+        buttonComingFilm = view.findViewById(R.id.activity_home_page_button_comming_film)
+
+        buttonComingFilm?.setOnClickListener {
+            current = 0
+            buttonComingFilm?.setTextColor(Color.parseColor("#FF0303"));
+            buttonCurrentFilm?.setTextColor(Color.parseColor("#C8C8C8"));
+            getDataForList ()
+        }
+
+        buttonCurrentFilm?.setOnClickListener {
+            current = 1
+            buttonComingFilm?.setTextColor(Color.parseColor("#C8C8C8"));
+            buttonCurrentFilm?.setTextColor(Color.parseColor("#FF0303"));
+            getDataForList ()
+        }
 
         val itemsPager_adapter = The_Slide_items_Pager_Adapter_HomePage(requireActivity(), listItems)
         page!!.adapter = itemsPager_adapter
@@ -72,16 +126,6 @@ class HomeFragment : Fragment() {
         )
         tabLayout!!.setupWithViewPager(page, true)
 
-        var arrayList: ArrayList<Item> = ArrayList()
-
-        // Test
-        arrayList.add(Item("hello",R.drawable.foreplay_background))
-        arrayList.add(Item("hello",R.drawable.foreplay_background))
-        arrayList.add(Item("hello",R.drawable.foreplay_background))
-        arrayList.add(Item("hello",R.drawable.foreplay_background))
-        arrayList.add(Item("hello",R.drawable.foreplay_background))
-        arrayList.add(Item("hello",R.drawable.foreplay_background))
-
         gridView = view.findViewById(R.id.activity_home_page_gridview_list_film)
         adapter = MyGridAdapter(requireActivity(), arrayList)
         gridView!!.adapter = adapter
@@ -89,6 +133,13 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, FilmInfoActivity::class.java)
             startActivity(intent)
         }
+
+        buttonMore = view.findViewById(R.id.activity_home_page_list_fim_more)
+        buttonMore?.setOnClickListener {
+            val intent = Intent(activity, FilmListActivity::class.java)
+            startActivity(intent)
+        }
+
         return view
     }
 
