@@ -22,6 +22,7 @@ class AddMovie : AppCompatActivity() {
     var movieVideoURLET: EditText? = null
     var movieClassificationRG: RadioGroup? = null
     var movieRealeasedDateET: EditText? = null
+    var movieDurationET: EditText? = null
     var movieDescriptionET: EditText? = null
     var saveBtn: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,7 @@ class AddMovie : AppCompatActivity() {
         movieVideoURLET = findViewById(R.id.addMovieVideoET)
         movieClassificationRG = findViewById(R.id.addMovieClassificationRG)
         movieRealeasedDateET = findViewById(R.id.addMovieReleasedDateET)
+        movieDurationET = findViewById(R.id.addMovieDurationET)
         movieDescriptionET = findViewById(R.id.addMovieDescriptionET)
         saveBtn = findViewById(R.id.addMovieSaveBtn)
 
@@ -61,9 +63,10 @@ class AddMovie : AppCompatActivity() {
         }
 
         saveBtn!!.setOnClickListener {
-            if (movieNameET!!.text.toString().isEmpty()
+            if (movieNameET!!.text.toString().isEmpty() ||
+                movieDurationET!!.text.toString().isEmpty()
             ) {
-                Toast.makeText(this, "No", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill every information", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             addMovie(
@@ -74,17 +77,18 @@ class AddMovie : AppCompatActivity() {
                 movieVideoURLET!!.text.toString(),
                 findViewById<RadioButton>(movieClassificationRG!!.checkedRadioButtonId).text.toString(),
                 SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(movieRealeasedDateET!!.text.toString()),
+                movieDurationET!!.text.toString().toInt(),
                 movieDescriptionET!!.text.toString(),
             )
         }
     }
     fun addMovie(title: String, cast: String, director: String,
                  poster_url: String, vid_url: String, classification: String,
-                 release_date: Date, description: String) {
+                 release_date: Date, duration: Int, description: String) {
         val db = Firebase.firestore
         db.collection("movie")
             .add(Movie(title, cast, director, poster_url, vid_url,
-                classification, release_date, description))
+                classification, release_date, duration, description))
             .addOnSuccessListener {
                 val replyIntent = Intent()
                 setResult(Activity.RESULT_OK, replyIntent)

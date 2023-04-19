@@ -13,6 +13,7 @@ data class Movie(
     val vid_url: String = "",
     val classification: String = "",
     val release_date: Date = Date(),
+    val duration: Int = 0,
     val description: String = "",
     val rating: Double = 0.0,
     @field:JvmField

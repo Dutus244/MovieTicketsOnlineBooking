@@ -26,6 +26,7 @@ class EditMovie : AppCompatActivity() {
     var movieDescriptionET: EditText? = null
     var movieActiveRG: RadioGroup? = null
     var movieRatingET: TextView? = null
+    var movieDurationET: EditText? = null
     var delBtn: Button? = null
     var saveBtn: Button? = null
 
@@ -46,6 +47,7 @@ class EditMovie : AppCompatActivity() {
         movieDescriptionET = findViewById(R.id.editMovieDescriptionET)
         movieActiveRG = findViewById(R.id.editMovieActiveRG)
         movieRatingET = findViewById(R.id.editMovieRatingET)
+        movieDurationET = findViewById(R.id.editMovieDurationET)
         delBtn = findViewById(R.id.editMovieDeleteBtn)
         saveBtn = findViewById(R.id.editMovieSaveBtn)
 
@@ -96,6 +98,7 @@ class EditMovie : AppCompatActivity() {
         }
         if (radioButtonId2 != -1) movieActiveRG!!.check(radioButtonId2)
         movieRatingET!!.setText(movie?.rating.toString())
+        movieDurationET!!.setText(movie?.duration.toString())
 
         delBtn!!.setOnClickListener {
             delMovie(movie!!)
@@ -116,6 +119,7 @@ class EditMovie : AppCompatActivity() {
                     movieVideoURLET!!.text.toString(),
                     findViewById<RadioButton>(movieClassificationRG!!.checkedRadioButtonId).text.toString(),
                     SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(movieRealeasedDateET!!.text.toString()),
+                    movieDurationET!!.text.toString().toInt(),
                     movieDescriptionET!!.text.toString(),
                     movieRatingET!!.text.toString().toDouble(),
                     movieActiveRG!!.checkedRadioButtonId == R.id.radioButton5

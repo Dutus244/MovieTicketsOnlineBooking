@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".reviews.ReviewDetail">
+
+    <Button
+        android:id="@+id/detailReviewDeleteBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#df4759"
+        android:text="Xóa"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/detailReviewDateET"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewDateTV"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewDateTV" />
+
+    <TextView
+        android:id="@+id/detailReviewDateTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Thời điểm đánh giá"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewUsernameET"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewUsernameET" />
+
+    <TextView
+        android:id="@+id/detailReviewRatingTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Điểm đánh giá"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewDateET"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewDateET" />
+
+    <TextView
+        android:id="@+id/detailReviewDescriptionTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Điểm đánh giá"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewDateET"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewRatingET" />
+
+    <EditText
+        android:id="@+id/detailReviewUsernameET"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewMovieNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewUsernameTV" />
+
+    <TextView
+        android:id="@+id/detailReviewUsernameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Tên tài khoản người đánh giá"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewMovieNameET"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewMovieNameET" />
+
+    <TextView
+        android:id="@+id/detailReviewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Chi tiết đánh giá"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detailReviewMovieNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Tên phim"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewTitle" />
+
+    <EditText
+        android:id="@+id/detailReviewMovieNameET"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewMovieNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewMovieNameTV" />
+
+    <EditText
+        android:id="@+id/detailReviewRatingET"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:enabled="false"
+        android:gravity="center"
+        android:inputType="none"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewRatingTV"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewRatingTV" />
+
+    <EditText
+        android:id="@+id/detailReviewDescriptionET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="@+id/detailReviewDateET"
+        app:layout_constraintStart_toStartOf="@+id/detailReviewDateET"
+        app:layout_constraintTop_toBottomOf="@+id/detailReviewDescriptionTV" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,6 @@ class EditScreening : AppCompatActivity() {
     var auditoriumNameSpinner: Spinner? = null
     var movieNameSpinner: Spinner? = null
     var startTimeET: EditText? = null
-    var endTimeET: EditText? = null
     var delBtn: Button? = null
     var saveBtn: Button? = null
 
@@ -48,7 +47,6 @@ class EditScreening : AppCompatActivity() {
         auditoriumNameSpinner = findViewById(R.id.editScreeningAuditoriumSpinner)
         movieNameSpinner = findViewById(R.id.editScreeningMovieSpinner)
         startTimeET = findViewById(R.id.editScreeningStartET)
-        endTimeET = findViewById(R.id.editScreeningEndET)
         delBtn = findViewById(R.id.editScreeningDeleteBtn)
         saveBtn = findViewById(R.id.editScreeningSaveBtn)
 
@@ -88,44 +86,6 @@ class EditScreening : AppCompatActivity() {
                 cal1.get(Calendar.DAY_OF_MONTH)
             )
 
-            datePickerDialog.show()
-        }
-
-        val dateTextView2 = findViewById<ImageView>(R.id.calendar_icon2)
-        val cal2 = Calendar.getInstance()
-        endTimeET!!.setText(SimpleDateFormat("dd/MM/yyyy HH:mm",
-            Locale.getDefault()).format(screening!!.screening_end))
-        dateTextView2.setOnClickListener {
-            // Create a DatePicker dialog
-            val datePickerDialog = DatePickerDialog(
-                this@EditScreening,
-                { _, year, monthOfYear, dayOfMonth ->
-                    cal2.set(Calendar.YEAR, year)
-                    cal2.set(Calendar.MONTH, monthOfYear)
-                    cal2.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                    // Create a TimePicker dialog
-                    val timePickerDialog = TimePickerDialog(
-                        this@EditScreening,
-                        { _, hourOfDay, minute ->
-                            cal2.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                            cal2.set(Calendar.MINUTE, minute)
-
-                            val myFormat = "dd/MM/yyyy HH:mm"
-                            val sdf = SimpleDateFormat(myFormat, Locale.US)
-                            endTimeET!!.setText(sdf.format(cal2.time))
-                        },
-                        cal2.get(Calendar.HOUR_OF_DAY),
-                        cal2.get(Calendar.MINUTE),
-                        false
-                    )
-
-                    timePickerDialog.show()
-                },
-                cal2.get(Calendar.YEAR),
-                cal2.get(Calendar.MONTH),
-                cal2.get(Calendar.DAY_OF_MONTH)
-            )
             datePickerDialog.show()
         }
 
@@ -172,21 +132,35 @@ class EditScreening : AppCompatActivity() {
         saveBtn!!.setOnClickListener {
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
             val start = format.parse(startTimeET!!.text.toString())
-            val end = format.parse(endTimeET!!.text.toString())
-            editScreening(auditoriumChoice, screening!!.cinema_id, movieChoice,
-                start, end
-            )
+            coroutineScope.launch {
+                editScreening(auditoriumChoice, screening!!.cinema_id, movieChoice,
+                    start
+                )
+            }
+        }
+        delBtn!!.setOnClickListener {
+            delScreening()
         }
     }
-    fun editScreening(auditorium_id: String,cinema_id: String,movie_id: String,
-                     screening_start: Date,screening_end: Date) {
+    suspend fun editScreening(auditorium_id: String,cinema_id: String,
+                      movie_id: String, screening_start: Date) {
         val db = Firebase.firestore
+        val result = db.collection("movie")
+            .document(movie_id)
+            .get()
+            .await()
+        val movie = result.toObject(Movie::class.java)?: Movie()
+
+        val calendar = Calendar.getInstance()
+        calendar.time = screening_start
+        calendar.add(Calendar.MINUTE, movie.duration)
+
         db.collection("screening")
             .document(screening!!.id).update(
                 "auditorium_id", auditorium_id,
                 "movie_id", movie_id,
                 "screening_start", screening_start,
-                "screening_end", screening_end
+                "screening_end", calendar.time
             )
             .addOnSuccessListener {
                 val replyIntent = Intent()
@@ -226,6 +200,20 @@ class EditScreening : AppCompatActivity() {
     }.getOrElse {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
+    }
+    fun delScreening(){
+        val db = Firebase.firestore
+        db.collection("screening")
+            .document(screening!!.id)
+            .update("is_deleted", true)
+            .addOnSuccessListener {
+                val replyIntent = Intent()
+                setResult(Activity.RESULT_OK, replyIntent)
+                finish()
+            }
+            .addOnFailureListener { exception ->
+                Log.w("DB", "Error getting documents.", exception)
+            }
     }
     override fun onDestroy(){
         super.onDestroy()
