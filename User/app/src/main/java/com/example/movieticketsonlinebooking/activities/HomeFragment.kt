@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.GridView
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.movieticketsonlinebooking.fragments.Item
 import com.example.movieticketsonlinebooking.fragments.MyGridAdapter
 import com.example.movieticketsonlinebooking.fragments.The_Slide_Items_Model_Class_HomePage
 import com.example.movieticketsonlinebooking.fragments.The_Slide_items_Pager_Adapter_HomePage
@@ -34,11 +33,10 @@ class HomeFragment : Fragment() {
     var buttonCurrentFilm: Button? = null
     var buttonComingFilm: Button? = null
     var current: Int? = 1
-    var arrayList: ArrayList<Item> = ArrayList()
     var buttonMore: Button? = null
 
-    var sliderMovies: List<Movie> = listOf()
-    var airingMovies: List<Movie> = listOf()
+    var moviesList: MutableList<Movie> = listOf<Movie>().toMutableList()
+    var sliderMovies: MutableList<Movie> = listOf<Movie>().toMutableList()
 
     inner class The_slide_timer : TimerTask() {
         override fun run() {
@@ -60,7 +58,7 @@ class HomeFragment : Fragment() {
         FirebaseApp.initializeApp(requireContext())
     }
 
-    fun getDataForSlider() {
+    fun getMovieForSlider() {
         // Lấy 3 item mới nhất
         val db = Firebase.firestore
         db.collection("movie")
@@ -80,6 +78,10 @@ class HomeFragment : Fragment() {
                         )
                     )
                 }
+                activity?.runOnUiThread {
+                    page!!.adapter =
+                        The_Slide_items_Pager_Adapter_HomePage(requireActivity(), listItems)
+                }
             }
             .addOnFailureListener { e ->
                 Log.w("DB", "Error getting document", e)
@@ -87,21 +89,21 @@ class HomeFragment : Fragment() {
     }
 
     fun getDataForList() {
-        arrayList.clear()
+        moviesList.clear()
         if (current == 1) {
             // Ds phim hiện tại 6 phần tử
             val db = Firebase.firestore
             db.collection("movie")
                 .whereEqualTo("is_active", true)
                 .whereEqualTo("is_deleted", false)
+                .whereLessThan("release_date", Date())
                 .orderBy("release_date", Query.Direction.DESCENDING)
                 .limit(6)
                 .get()
                 .addOnSuccessListener { documents ->
-                    airingMovies = documents.toObjects(Movie::class.java)
-                    var arrayList: ArrayList<Item> = ArrayList()
-                    for (element in airingMovies) {
-                        arrayList.add(Item(element.title, R.drawable.foreplay_background))
+                    activity?.runOnUiThread {
+                        moviesList.addAll(documents.toObjects(Movie::class.java))
+                        adapter?.notifyDataSetChanged()
                     }
                 }
                 .addOnFailureListener { e ->
@@ -109,14 +111,24 @@ class HomeFragment : Fragment() {
                 }
         } else {
             // Ds phim sắp chiếu
-            arrayList.add(Item("hi", R.drawable.foreplay_background))
-            arrayList.add(Item("hi", R.drawable.foreplay_background))
-            arrayList.add(Item("hi", R.drawable.foreplay_background))
-            arrayList.add(Item("hi", R.drawable.foreplay_background))
-            arrayList.add(Item("hio", R.drawable.foreplay_background))
-            arrayList.add(Item("hi", R.drawable.foreplay_background))
+            val db = Firebase.firestore
+            db.collection("movie")
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("is_deleted", false)
+                .whereGreaterThan("release_date", Date())
+                .orderBy("release_date", Query.Direction.ASCENDING)
+                .limit(6)
+                .get()
+                .addOnSuccessListener { documents ->
+                    activity?.runOnUiThread {
+                        moviesList.addAll(documents.toObjects(Movie::class.java))
+                        adapter?.notifyDataSetChanged()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("DB", "Error getting document", e)
+                }
         }
-        adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateView(
@@ -132,7 +144,7 @@ class HomeFragment : Fragment() {
         tabLayout = view.findViewById(R.id.activity_home_page_my_tablayout)
 
         // Test slide
-        getDataForSlider()
+        getMovieForSlider()
 
         // Test list
         getDataForList()
@@ -167,7 +179,7 @@ class HomeFragment : Fragment() {
         tabLayout!!.setupWithViewPager(page, true)
 
         gridView = view.findViewById(R.id.activity_home_page_gridview_list_film)
-        adapter = MyGridAdapter(requireActivity(), arrayList)
+        adapter = MyGridAdapter(requireActivity(), moviesList)
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(activity, FilmInfoActivity::class.java)

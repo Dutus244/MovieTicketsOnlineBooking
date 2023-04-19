@@ -9,11 +9,10 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.movieticketsonlinebooking.R
-
-class Item(var name: String, var avatar: Int )
+import com.example.movieticketsonlinebooking.viewmodels.Movie
 
 class MyGridAdapter (private var context: Context, private var items:
-ArrayList<Item>) : BaseAdapter() {
+List<Movie>) : BaseAdapter() {
     private class ViewHolder(row: View?) {
         var logoImgV: ImageView? = null
         var textView: TextView? = null
@@ -35,12 +34,12 @@ ArrayList<Item>) : BaseAdapter() {
             view = convertView
             viewHolder = view.tag as ViewHolder
         }
-        viewHolder.logoImgV?.setImageResource(items[position].avatar)
-        viewHolder.textView?.text = items[position].name
+        viewHolder.logoImgV?.setImageResource(R.drawable.foreplay_background)
+        viewHolder.textView?.text = items[position].title
         return view
     }
 
-    override fun getItem(i: Int): Item {
+    override fun getItem(i: Int): Movie {
         return items[i]
     }
     override fun getItemId(p0: Int): Long {

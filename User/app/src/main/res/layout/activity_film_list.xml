@@ -31,25 +31,27 @@
 
     <Button
         android:id="@+id/activity_film_list_button_current_film"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/transparent_black_ten_percent"
         android:text="Đang chiếu"
         android:textAllCaps="false"
         android:textColor="@color/red"
         android:textSize="17dp"
+        app:layout_constraintEnd_toStartOf="@+id/activity_film_list_button_comming_film"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_film_list_layout_1" />
 
     <Button
         android:id="@+id/activity_film_list_button_comming_film"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/transparent_black_ten_percent"
         android:text="Sắp chiếu"
         android:textAllCaps="false"
         android:textColor="#C8C8C8"
         android:textSize="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activity_film_list_button_current_film"
         app:layout_constraintTop_toBottomOf="@+id/activity_film_list_layout_1" />
 

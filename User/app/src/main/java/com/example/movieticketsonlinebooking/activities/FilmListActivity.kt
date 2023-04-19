@@ -4,41 +4,68 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.GridView
 import com.example.movieticketsonlinebooking.R
-import com.example.movieticketsonlinebooking.fragments.Item
 import com.example.movieticketsonlinebooking.fragments.MyGridAdapter
+import com.example.movieticketsonlinebooking.viewmodels.Movie
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FilmListActivity : AppCompatActivity() {
-    var arrayList: ArrayList<Item> = ArrayList()
     var adapter : MyGridAdapter? = null
     var gridView: GridView? = null
     var buttonCurrentFilm: Button? = null
     var buttonComingFilm: Button? = null
     var current: Int? = 1
 
-    fun getDataForList () {
-        arrayList.clear()
+    var moviesList: MutableList<Movie> = listOf<Movie>().toMutableList()
+
+    fun getDataForList() {
+        moviesList.clear()
         if (current == 1) {
-            // Ds phim hiện lấy all
-            arrayList.add(Item("hello",R.drawable.foreplay_background))
-            arrayList.add(Item("hello",R.drawable.foreplay_background))
-            arrayList.add(Item("hello",R.drawable.foreplay_background))
-            arrayList.add(Item("hello",R.drawable.foreplay_background))
-            arrayList.add(Item("hello",R.drawable.foreplay_background))
-            arrayList.add(Item("hello",R.drawable.foreplay_background))
-        }
-        else {
+            // Ds phim hiện tại 6 phần tử
+            val db = Firebase.firestore
+            db.collection("movie")
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("is_deleted", false)
+                .whereLessThan("release_date", Date())
+                .orderBy("release_date", Query.Direction.DESCENDING)
+                .limit(6)
+                .get()
+                .addOnSuccessListener { documents ->
+                    this.runOnUiThread {
+                        moviesList.addAll(documents.toObjects(Movie::class.java))
+                        adapter?.notifyDataSetChanged()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("DB", "Error getting document", e)
+                }
+        } else {
             // Ds phim sắp chiếu
-            arrayList.add(Item("hi",R.drawable.foreplay_background))
-            arrayList.add(Item("hi",R.drawable.foreplay_background))
-            arrayList.add(Item("hi",R.drawable.foreplay_background))
-            arrayList.add(Item("hi",R.drawable.foreplay_background))
-            arrayList.add(Item("hio",R.drawable.foreplay_background))
-            arrayList.add(Item("hi",R.drawable.foreplay_background))
+            val db = Firebase.firestore
+            db.collection("movie")
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("is_deleted", false)
+                .whereGreaterThan("release_date", Date())
+                .orderBy("release_date", Query.Direction.ASCENDING)
+                .limit(6)
+                .get()
+                .addOnSuccessListener { documents ->
+                    this.runOnUiThread {
+                        moviesList.addAll(documents.toObjects(Movie::class.java))
+                        adapter?.notifyDataSetChanged()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("DB", "Error getting document", e)
+                }
         }
-        adapter?.notifyDataSetChanged()
     }
 
 
@@ -66,7 +93,7 @@ class FilmListActivity : AppCompatActivity() {
         getDataForList ()
 
         gridView = findViewById(R.id.activity_film_list_gridview_list_film)
-        adapter = MyGridAdapter(this, arrayList)
+        adapter = MyGridAdapter(this, moviesList)
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(applicationContext, FilmInfoActivity::class.java)
