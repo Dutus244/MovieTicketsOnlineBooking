@@ -97,6 +97,7 @@ class FilmListActivity : AppCompatActivity() {
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(applicationContext, FilmInfoActivity::class.java)
+            intent.putExtra("movie", moviesList[i])
             startActivity(intent)
         }
     }

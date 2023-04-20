@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.movieticketsonlinebooking.R
 import com.example.movieticketsonlinebooking.viewmodels.Movie
+import com.squareup.picasso.Picasso
 
 class MyGridAdapter (private var context: Context, private var items:
 List<Movie>) : BaseAdapter() {
@@ -34,7 +35,7 @@ List<Movie>) : BaseAdapter() {
             view = convertView
             viewHolder = view.tag as ViewHolder
         }
-        viewHolder.logoImgV?.setImageResource(R.drawable.foreplay_background)
+        Picasso.get().load(items[position].poster_url).into(viewHolder.logoImgV)
         viewHolder.textView?.text = items[position].title
         return view
     }

@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
                 for (element in sliderMovies) {
                     listItems!!.add(
                         The_Slide_Items_Model_Class_HomePage(
-                            R.drawable.foreplay_background,
+                            element.poster_url,
                             element.title
                         )
                     )
