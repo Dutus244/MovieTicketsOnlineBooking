@@ -49,4 +49,8 @@ List<Movie>) : BaseAdapter() {
     override fun getCount(): Int {
         return items.size
     }
+    fun updateData(newMoviesList: List<Movie>) {
+        items = newMoviesList
+        notifyDataSetChanged()
+    }
 }
