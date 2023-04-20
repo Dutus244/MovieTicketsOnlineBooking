@@ -183,6 +183,7 @@ class HomeFragment : Fragment() {
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(activity, FilmInfoActivity::class.java)
+            intent.putExtra("movie", moviesList[i])
             startActivity(intent)
         }
 

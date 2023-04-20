@@ -15,6 +15,7 @@ data class Movie(
     val release_date: Date = Date(),
     val description: String = "",
     val rating: Double = 0.0,
+    val duration: Int = 0,
     @field:JvmField
     val is_active: Boolean = true,
     @field:JvmField

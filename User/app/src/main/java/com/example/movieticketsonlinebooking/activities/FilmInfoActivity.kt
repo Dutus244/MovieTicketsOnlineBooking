@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.Movie
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FilmInfoActivity : AppCompatActivity() {
@@ -24,11 +30,24 @@ class FilmInfoActivity : AppCompatActivity() {
     var adapter2: MyAdapter? = null
     var actorList: ArrayList<People> = ArrayList()
     var directorList: ArrayList<People> = ArrayList()
-    class People(var name: String, var avatar: Int )
 
+    class People(var name: String, var avatar: Int)
+
+    val dateFormat = "dd/MM/yyyy"
+    val dateFormatter = SimpleDateFormat(dateFormat, Locale.getDefault())
+
+    var movie: Movie? = null
+    var movieTitle: TextView? = null
+    var movieRating: TextView? = null
+    var movieClassification: TextView? = null
+    var movieDuration: TextView? = null
+    var movieReleaseDate: TextView? = null
     var showtimesButton: Button? = null
 
-    class MyAdapter(private val context: Context, private val arrayList: java.util.ArrayList<People>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+    class MyAdapter(
+        private val context: Context,
+        private val arrayList: java.util.ArrayList<People>
+    ) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val textViewName: TextView = itemView.findViewById(R.id.textViewName)
@@ -36,7 +55,8 @@ class FilmInfoActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.custom_layout_listview_list_actors, parent, false)
+            val itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.custom_layout_listview_list_actors, parent, false)
             return ViewHolder(itemView)
         }
 
@@ -58,6 +78,54 @@ class FilmInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_info)
 
+        intent = intent
+        movie = intent.getSerializableExtra("movie") as Movie
+
+        movieTitle = findViewById(R.id.activity_film_info_textview_name)
+        movieRating = findViewById(R.id.activity_film_info_textview_rating)
+        movieClassification = findViewById(R.id.activity_film_info_textview_age)
+        movieDuration = findViewById(R.id.activity_film_info_textview_time)
+        movieReleaseDate = findViewById(R.id.activity_film_info_textview_date)
+
+        movieTitle!!.text = movie!!.title
+        movieRating!!.text = movie!!.rating.toString()
+        movieClassification!!.text = movie!!.classification
+        when (movie!!.classification) {
+            "P" -> {
+                movieClassification!!.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.movieClassification_P
+                    )
+                )
+            }
+            "C13" -> {
+                movieClassification!!.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.movieClassification_C13
+                    )
+                )
+            }
+            "C16" -> {
+                movieClassification!!.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.movieClassification_C16
+                    )
+                )
+            }
+            "C18" -> {
+                movieClassification!!.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.movieClassification_C18
+                    )
+                )
+            }
+        }
+        movieDuration!!.text = getString(R.string.movie_duration, movie!!.duration)
+        movieReleaseDate!!.text = dateFormatter.format(movie!!.release_date)
 
         val youTubePlayerView = findViewById<YouTubePlayerView>(R.id.youtube_player_view)
         youTubePlayerView.getYouTubePlayerWhenReady(object : YouTubePlayerCallback {
@@ -86,12 +154,12 @@ class FilmInfoActivity : AppCompatActivity() {
             seeMoreButton.visibility = View.VISIBLE
         }
 
-        actorList.add(People("Skipper",R.drawable.test_avatar))
-        actorList.add(People("Kowalski",R.drawable.test_avatar))
-        actorList.add(People("Private",R.drawable.test_avatar))
-        actorList.add(People("Rico",R.drawable.test_avatar))
+        actorList.add(People("Skipper", R.drawable.test_avatar))
+        actorList.add(People("Kowalski", R.drawable.test_avatar))
+        actorList.add(People("Private", R.drawable.test_avatar))
+        actorList.add(People("Rico", R.drawable.test_avatar))
 
-        directorList.add(People("Skipper",R.drawable.test_avatar))
+        directorList.add(People("Skipper", R.drawable.test_avatar))
 
         val recyclerView1: RecyclerView = findViewById(R.id.customRecyclerView1)
         val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
