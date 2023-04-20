@@ -14,8 +14,8 @@ class ForeplayActivity : AppCompatActivity() {
         setContentView(R.layout.activity_foreplay)
 
         // Neu nguoi dung da dang nhap thi duy tri trang thai dang nhap
-        val sharedPreferences = getSharedPreferences("TumLumCinemas", Context.MODE_PRIVATE)
-        val email = sharedPreferences.getString("email", "")
+//        val sharedPreferences = getSharedPreferences("TumLumCinemas", Context.MODE_PRIVATE)
+//        val email = sharedPreferences.getString("email", "")
 //        if (email != "") {
 //            UserManager.login("", email!!)
 //        }

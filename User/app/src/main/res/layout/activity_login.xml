@@ -90,6 +90,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutpassword" />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_signin_button"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_button_login" />
+
     <Button
         android:id="@+id/activity_login_button_signup"
         android:layout_width="120dp"
@@ -101,7 +110,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_button_login" />
+        app:layout_constraintTop_toBottomOf="@+id/google_signin_button" />
 
     <Button
         android:id="@+id/activity_login_button_forgot_password"

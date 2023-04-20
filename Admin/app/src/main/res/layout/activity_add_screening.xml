@@ -36,20 +36,6 @@ android:focusableInTouchMode="true">
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-    <EditText
-        android:id="@+id/addScreeningEndET"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:enabled="false"
-        android:inputType="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
     <TextView
         android:id="@+id/addCinemaAddrTV"
         android:layout_width="wrap_content"
@@ -116,15 +102,6 @@ android:focusableInTouchMode="true">
         app:layout_constraintStart_toStartOf="@+id/addScreeningMovieSpinner"
         app:layout_constraintTop_toBottomOf="@+id/addScreeningMovieSpinner" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Chọn giờ kết thúc"
-        app:layout_constraintStart_toStartOf="@+id/addScreeningStartET"
-        app:layout_constraintTop_toBottomOf="@+id/addScreeningStartET" />
-
     <Spinner
         android:id="@+id/addScreeningAuditoriumSpinner"
         android:layout_width="0dp"
@@ -172,15 +149,5 @@ android:focusableInTouchMode="true">
         app:layout_constraintBottom_toBottomOf="@+id/addScreeningStartET"
         app:layout_constraintEnd_toEndOf="@+id/addScreeningStartET"
         app:layout_constraintTop_toTopOf="@+id/addScreeningStartET" />
-
-    <ImageView
-        android:id="@+id/calendar_icon2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/baseline_calendar_today_24"
-        app:layout_constraintBottom_toBottomOf="@+id/addScreeningEndET"
-        app:layout_constraintEnd_toEndOf="@+id/addScreeningEndET"
-        app:layout_constraintTop_toTopOf="@+id/addScreeningEndET" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

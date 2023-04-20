@@ -26,7 +26,6 @@ class AddScreening : AppCompatActivity() {
     var auditoriumNameSpinner: Spinner? = null
     var movieNameSpinner: Spinner? = null
     var startTimeET: EditText? = null
-    var endTimeET: EditText? = null
     var saveBtn: Button? = null
 
     var cinema: Cinema? = null
@@ -47,7 +46,6 @@ class AddScreening : AppCompatActivity() {
         auditoriumNameSpinner = findViewById(R.id.addScreeningAuditoriumSpinner)
         movieNameSpinner = findViewById(R.id.addScreeningMovieSpinner)
         startTimeET = findViewById(R.id.addScreeningStartET)
-        endTimeET = findViewById(R.id.addScreeningEndET)
         saveBtn = findViewById(R.id.addScreeningSaveBtn)
 
         cinemaNameET!!.setText(cinema!!.name)
@@ -92,45 +90,6 @@ class AddScreening : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        val dateTextView2 = findViewById<ImageView>(R.id.calendar_icon2)
-        val cal2 = Calendar.getInstance()
-        endTimeET!!.setText(
-            "${cal2.get(Calendar.DAY_OF_MONTH)}/${cal2.get(Calendar.MONTH)+1}/${cal2.get(Calendar.YEAR)} " +
-                    "${cal2.get(Calendar.HOUR_OF_DAY)}:${cal2.get(Calendar.MINUTE)}")
-        dateTextView2.setOnClickListener {
-            // Create a DatePicker dialog
-            val datePickerDialog = DatePickerDialog(
-                this@AddScreening,
-                { _, year, monthOfYear, dayOfMonth ->
-                    cal2.set(Calendar.YEAR, year)
-                    cal2.set(Calendar.MONTH, monthOfYear)
-                    cal2.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                    // Create a TimePicker dialog
-                    val timePickerDialog = TimePickerDialog(
-                        this@AddScreening,
-                        { _, hourOfDay, minute ->
-                            cal2.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                            cal2.set(Calendar.MINUTE, minute)
-
-                            val myFormat = "dd/MM/yyyy HH:mm"
-                            val sdf = SimpleDateFormat(myFormat, Locale.US)
-                            endTimeET!!.setText(sdf.format(cal2.time))
-                        },
-                        cal2.get(Calendar.HOUR_OF_DAY),
-                        cal2.get(Calendar.MINUTE),
-                        false
-                    )
-
-                    timePickerDialog.show()
-                },
-                cal2.get(Calendar.YEAR),
-                cal2.get(Calendar.MONTH),
-                cal2.get(Calendar.DAY_OF_MONTH)
-            )
-            datePickerDialog.show()
-        }
-
         coroutineScope.launch {
             val auditoriuIDs = getAuditoriumData().map { it.id }
             val auditoriumNames = getAuditoriumData().map { it.name }
@@ -160,15 +119,30 @@ class AddScreening : AppCompatActivity() {
         saveBtn!!.setOnClickListener {
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
             val start = format.parse(startTimeET!!.text.toString())
-            val end = format.parse(endTimeET!!.text.toString())
-            addScreening(auditoriumChoice, cinema!!.id, movieChoice,
-                start, end)
+            coroutineScope.launch {
+                addScreening(
+                    auditoriumChoice, cinema!!.id, movieChoice,
+                    start
+                )
+            }
         }
     }
-    fun addScreening(auditorium_id: String,cinema_id: String,movie_id: String,
-                     screening_start: Date,screening_end: Date) {
+    suspend fun addScreening(auditorium_id: String,cinema_id: String,movie_id: String,
+                     screening_start: Date) {
         val db = Firebase.firestore
-        val screening = ScreeningWithoutNames(auditorium_id, cinema_id, movie_id, screening_start, screening_end)
+
+        val result = db.collection("movie")
+            .document(movie_id)
+            .get()
+            .await()
+        val movie = result.toObject(Movie::class.java)?: Movie()
+        val calendar = Calendar.getInstance()
+        calendar.time = screening_start
+        calendar.add(Calendar.MINUTE, movie.duration)
+
+        val screening = ScreeningWithoutNames(
+            auditorium_id, cinema_id, movie_id,
+            screening_start, calendar.time)
         db.collection("screening")
             .add(screening)
             .addOnSuccessListener {
