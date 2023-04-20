@@ -34,8 +34,8 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
-        android:layout_width="412dp"
-        android:layout_height="601dp"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/addMovieSaveBtn"
@@ -112,13 +112,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/addMovieClassificationRG" />
 
             <TextView
+                android:id="@+id/addMovieDurationTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Thời lượng"
+                app:layout_constraintStart_toStartOf="@+id/addMovieReleasedDateET"
+                app:layout_constraintTop_toBottomOf="@+id/addMovieReleasedDateET" />
+
+            <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Mô tả"
-                app:layout_constraintStart_toStartOf="@+id/addMovieReleasedDateET"
-                app:layout_constraintTop_toBottomOf="@+id/addMovieReleasedDateET" />
+                app:layout_constraintStart_toStartOf="@+id/addMovieDurationET"
+                app:layout_constraintTop_toBottomOf="@+id/addMovieDurationET" />
 
             <EditText
                 android:id="@+id/addMovieNameET"
@@ -223,11 +232,12 @@
                 android:id="@+id/addMovieClassificationRG"
                 android:layout_width="369dp"
                 android:layout_height="50dp"
+                android:checkedButton="@+id/radioButton1"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="@+id/addMovieVideoET"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                android:checkedButton="@+id/radioButton1">
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
                 <RadioButton
                     android:id="@+id/radioButton1"
                     android:layout_width="wrap_content"
@@ -256,6 +266,19 @@
                     android:layout_weight="1"
                     android:text="C18" />
             </RadioGroup>
+
+            <EditText
+                android:id="@+id/addMovieDurationET"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                app:layout_constraintStart_toStartOf="@+id/addMovieDurationTV"
+                app:layout_constraintTop_toBottomOf="@+id/addMovieDurationTV" />
 
             <EditText
                 android:id="@+id/addMovieDescriptionET"

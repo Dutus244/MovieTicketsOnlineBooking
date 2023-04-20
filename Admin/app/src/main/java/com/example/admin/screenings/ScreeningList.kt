@@ -76,9 +76,6 @@ class ScreeningList : AppCompatActivity() {
                 }
             })
         }
-        for (i in screenings){
-            Log.e("bucu", i.id + " " + i.movie_name)
-        }
     }
 
     override fun onDestroy() {
