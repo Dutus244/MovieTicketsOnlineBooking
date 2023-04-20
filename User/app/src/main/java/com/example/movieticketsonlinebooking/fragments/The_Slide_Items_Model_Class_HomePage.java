@@ -2,15 +2,15 @@ package com.example.movieticketsonlinebooking.fragments;
 
 public class The_Slide_Items_Model_Class_HomePage {
 
-    private int featured_image;
+    private String featured_image;
     private String the_caption_Title;
 
-    public The_Slide_Items_Model_Class_HomePage(int hero, String title) {
+    public The_Slide_Items_Model_Class_HomePage(String hero, String title) {
         this.featured_image = hero;
         this.the_caption_Title = title;
     }
 
-    public int getFeatured_image() {
+    public String getFeatured_image() {
         return featured_image;
     }
 
@@ -18,7 +18,7 @@ public class The_Slide_Items_Model_Class_HomePage {
         return the_caption_Title;
     }
 
-    public void setFeatured_image(int featured_image) {
+    public void setFeatured_image(String featured_image) {
         this.featured_image = featured_image;
     }
 
