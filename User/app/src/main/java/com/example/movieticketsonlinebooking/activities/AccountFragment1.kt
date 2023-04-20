@@ -1,5 +1,6 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.databinding.ActivityHomeBinding
 
 
 class AccountFragment1 : Fragment() {
@@ -33,7 +35,7 @@ class AccountFragment1 : Fragment() {
 
         loginButton?.setOnClickListener {
             val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1001)
         }
 
         signupButton?.setOnClickListener {
@@ -46,5 +48,18 @@ class AccountFragment1 : Fragment() {
 
     companion object {
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
+            val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+
+            transaction.replace(R.id.frame_layout, AccountFragment2())
+
+            transaction.commit()
+        }
     }
 }
