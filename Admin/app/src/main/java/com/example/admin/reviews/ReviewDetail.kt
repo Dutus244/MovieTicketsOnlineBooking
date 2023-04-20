@@ -1,12 +1,14 @@
 package com.example.admin.reviews
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.admin.R
 import com.example.admin.auditoriums.Auditorium
 import com.example.admin.movies.Movie
@@ -59,7 +61,8 @@ class ReviewDetail : AppCompatActivity() {
         }
 
         delBtn!!.setOnClickListener {
-            deleteReview()
+            val dialog = createDeleteDialog()
+            dialog.show()
         }
 
     }
@@ -100,5 +103,31 @@ class ReviewDetail : AppCompatActivity() {
         Log.w("DB", "Error deleting document $review!!.id", it)
         false
     }
+    fun createDeleteDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(this@ReviewDetail)
+        builder.setMessage("Bạn có chắc là muốn xóa!")
+            .setPositiveButton("Có") { dialog, id ->
+                val db = Firebase.firestore
+                db.collection("review")
+                    .document(review!!.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this@ReviewDetail,
+                            "Xóa thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val replyIntent = Intent()
+                        setResult(Activity.RESULT_OK, replyIntent)
+                        finish()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("DB", "Error getting documents.", exception)
+                    }
+            }
+            .setNegativeButton("Không") { dialog, id ->
 
+            }
+        return builder.create()
+    }
 }

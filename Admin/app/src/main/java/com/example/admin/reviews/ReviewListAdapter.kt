@@ -39,9 +39,8 @@ class ReviewListAdapter(private val activity: Activity, private val list: List<R
         holder.position = position
         holder.nameText.text = list[position].user_name
         holder.ratingText.text = list[position].rating.toString()
-        holder.dateText.text = "Ngày đánh giá: ${
-            SimpleDateFormat("dd/MM/yyyy",
-                Locale.getDefault()).format(list[position].date)}"
+        holder.dateText.text = SimpleDateFormat("dd/MM/yyyy",
+                Locale.getDefault()).format(list[position].date)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(activity, ReviewDetail::class.java)

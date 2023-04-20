@@ -16,7 +16,5 @@ data class Review(
     @DocumentId
     val id: String = "",
 ) : java.io.Serializable {
-    override fun toString(): String {
-        return "Review(id=$id, movie_id=$movie_id, user_id=$user_id, detail=$detail, date=$date, rating=$rating, user_name=$user_name)"
-    }
+
 }

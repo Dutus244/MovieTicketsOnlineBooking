@@ -1,6 +1,7 @@
 package com.example.admin.movies
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -101,7 +102,8 @@ class EditMovie : AppCompatActivity() {
         movieDurationET!!.setText(movie?.duration.toString())
 
         delBtn!!.setOnClickListener {
-            delMovie(movie!!)
+            val dialog = createDeleteDialog()
+            dialog.show()
         }
 
         saveBtn!!.setOnClickListener {
@@ -147,5 +149,32 @@ class EditMovie : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.w("DB", "Error getting documents.", exception)
             }
+    }
+    fun createDeleteDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(this@EditMovie)
+        builder.setMessage("Bạn có chắc là muốn xóa!")
+            .setPositiveButton("Có") { dialog, id ->
+                val db = Firebase.firestore
+                db.collection("movie")
+                    .document(movie!!.id)
+                    .update("is_deleted", true)
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this@EditMovie,
+                            "Xóa thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val replyIntent = Intent()
+                        setResult(Activity.RESULT_OK, replyIntent)
+                        finish()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("DB", "Error getting documents.", exception)
+                    }
+            }
+            .setNegativeButton("Không") { dialog, id ->
+
+            }
+        return builder.create()
     }
 }

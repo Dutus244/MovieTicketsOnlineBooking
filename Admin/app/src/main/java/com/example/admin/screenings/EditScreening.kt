@@ -1,6 +1,7 @@
 package com.example.admin.screenings
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -139,8 +140,13 @@ class EditScreening : AppCompatActivity() {
             }
         }
         delBtn!!.setOnClickListener {
-            delScreening()
+            val dialog = createDeleteDialog()
+            dialog.show()
         }
+    }
+    override fun onDestroy(){
+        super.onDestroy()
+        coroutineScope.cancel()
     }
     suspend fun editScreening(auditorium_id: String,cinema_id: String,
                       movie_id: String, screening_start: Date) {
@@ -215,8 +221,31 @@ class EditScreening : AppCompatActivity() {
                 Log.w("DB", "Error getting documents.", exception)
             }
     }
-    override fun onDestroy(){
-        super.onDestroy()
-        coroutineScope.cancel()
+    fun createDeleteDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(this@EditScreening)
+        builder.setMessage("Bạn có chắc là muốn xóa!")
+            .setPositiveButton("Có") { dialog, id ->
+                val db = Firebase.firestore
+                db.collection("screening")
+                    .document(screening!!.id)
+                    .update("is_deleted", true)
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this@EditScreening,
+                            "Xóa thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val replyIntent = Intent()
+                        setResult(Activity.RESULT_OK, replyIntent)
+                        finish()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("DB", "Error getting documents.", exception)
+                    }
+            }
+            .setNegativeButton("Không") { dialog, id ->
+
+            }
+        return builder.create()
     }
 }

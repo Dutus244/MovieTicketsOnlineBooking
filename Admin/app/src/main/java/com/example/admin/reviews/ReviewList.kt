@@ -41,9 +41,6 @@ class ReviewList : AppCompatActivity() {
 
         coroutineScope.launch {
             reviews = getReviewData()
-            for (i in reviews) {
-                Log.e("bucu", i.toString())
-            }
             movieRecyclerView!!.adapter = ReviewListAdapter(this@ReviewList, reviews)
         }
     }

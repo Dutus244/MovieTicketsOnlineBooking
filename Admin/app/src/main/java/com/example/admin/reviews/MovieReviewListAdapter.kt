@@ -42,8 +42,8 @@ class MovieReviewListAdapter(private val activity: Activity, private val list: L
             SimpleDateFormat("dd/MM/yyyy",
             Locale.getDefault()).format(list[position].release_date)}"
         holder.activeText.text = ""
-        if(list[position].is_active) holder.activeText.append("Hiện đang hoạt động")
-        else holder.activeText.append("Hiện không hoạt động")
+        if(list[position].is_active) holder.activeText.append("Hiện đang chiếu")
+        else holder.activeText.append("Hiện không chiếu")
 
         holder.itemView.setOnClickListener {
             val intent = Intent(activity, ReviewList::class.java)
