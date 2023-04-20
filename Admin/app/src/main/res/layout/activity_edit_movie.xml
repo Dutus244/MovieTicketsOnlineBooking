@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
-        android:layout_width="412dp"
+        android:layout_width="match_parent"
         android:layout_height="520dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -138,8 +138,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đánh giá"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editMovieActiveRG"
+                app:layout_constraintEnd_toEndOf="@+id/editMovieRatingET"
+                app:layout_constraintStart_toStartOf="@+id/editMovieRatingET"
                 app:layout_constraintTop_toTopOf="@+id/textView7" />
 
             <EditText
@@ -327,14 +327,24 @@
                 android:id="@+id/editMovieRatingET"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:gravity="center"
+                android:inputType="none"
+                app:layout_constraintEnd_toStartOf="@+id/editMovieDurationET"
+                app:layout_constraintStart_toEndOf="@+id/editMovieActiveRG"
+                app:layout_constraintTop_toTopOf="@+id/editMovieActiveRG" />
+
+            <EditText
+                android:id="@+id/editMovieDurationET"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:ems="10"
                 android:gravity="center"
-                android:enabled="false"
-                android:inputType="none"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editMovieActiveRG"
+                app:layout_constraintStart_toEndOf="@+id/editMovieRatingET"
                 app:layout_constraintTop_toTopOf="@+id/editMovieActiveRG" />
 
             <TextView
@@ -345,6 +355,15 @@
                 android:text="Mô tả"
                 app:layout_constraintStart_toStartOf="@+id/textView7"
                 app:layout_constraintTop_toBottomOf="@+id/editMovieActiveRG" />
+
+            <TextView
+                android:id="@+id/editMovieDurationTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời lượng"
+                app:layout_constraintEnd_toEndOf="@+id/editMovieDurationET"
+                app:layout_constraintStart_toStartOf="@+id/editMovieDurationET"
+                app:layout_constraintTop_toTopOf="@+id/textView10" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

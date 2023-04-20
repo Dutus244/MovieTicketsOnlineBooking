@@ -12,6 +12,15 @@
         android:theme="@style/Theme.Material3.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name="com.example.admin.reviews.ReviewDetail"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reviews.MovieReviewList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reviews.ReviewList"
+            android:exported="false" />
+        <activity
             android:name="com.example.admin.screenings.ScreeningList"
             android:exported="false" />
         <activity

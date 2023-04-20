@@ -1,6 +1,7 @@
 package com.example.admin.movies
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import com.example.admin.R
-import com.example.admin.cinemas.Cinema
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -26,6 +26,7 @@ class EditMovie : AppCompatActivity() {
     var movieDescriptionET: EditText? = null
     var movieActiveRG: RadioGroup? = null
     var movieRatingET: TextView? = null
+    var movieDurationET: EditText? = null
     var delBtn: Button? = null
     var saveBtn: Button? = null
 
@@ -46,6 +47,7 @@ class EditMovie : AppCompatActivity() {
         movieDescriptionET = findViewById(R.id.editMovieDescriptionET)
         movieActiveRG = findViewById(R.id.editMovieActiveRG)
         movieRatingET = findViewById(R.id.editMovieRatingET)
+        movieDurationET = findViewById(R.id.editMovieDurationET)
         delBtn = findViewById(R.id.editMovieDeleteBtn)
         saveBtn = findViewById(R.id.editMovieSaveBtn)
 
@@ -96,9 +98,11 @@ class EditMovie : AppCompatActivity() {
         }
         if (radioButtonId2 != -1) movieActiveRG!!.check(radioButtonId2)
         movieRatingET!!.setText(movie?.rating.toString())
+        movieDurationET!!.setText(movie?.duration.toString())
 
         delBtn!!.setOnClickListener {
-            delMovie(movie!!)
+            val dialog = createDeleteDialog()
+            dialog.show()
         }
 
         saveBtn!!.setOnClickListener {
@@ -116,6 +120,7 @@ class EditMovie : AppCompatActivity() {
                     movieVideoURLET!!.text.toString(),
                     findViewById<RadioButton>(movieClassificationRG!!.checkedRadioButtonId).text.toString(),
                     SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(movieRealeasedDateET!!.text.toString()),
+                    movieDurationET!!.text.toString().toInt(),
                     movieDescriptionET!!.text.toString(),
                     movieRatingET!!.text.toString().toDouble(),
                     movieActiveRG!!.checkedRadioButtonId == R.id.radioButton5
@@ -130,18 +135,31 @@ class EditMovie : AppCompatActivity() {
                 Log.w("DB", "Error adding document", e)
             }
     }
-    fun delMovie(movie: Movie){
-        val db = Firebase.firestore
-        db.collection("movie")
-            .document(movie!!.id)
-            .update("is_deleted", true)
-            .addOnSuccessListener {
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
+    fun createDeleteDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(this@EditMovie)
+        builder.setMessage("Bạn có chắc là muốn xóa!")
+            .setPositiveButton("Có") { dialog, id ->
+                val db = Firebase.firestore
+                db.collection("movie")
+                    .document(movie!!.id)
+                    .update("is_deleted", true)
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this@EditMovie,
+                            "Xóa thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val replyIntent = Intent()
+                        setResult(Activity.RESULT_OK, replyIntent)
+                        finish()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("DB", "Error getting documents.", exception)
+                    }
             }
-            .addOnFailureListener { exception ->
-                Log.w("DB", "Error getting documents.", exception)
+            .setNegativeButton("Không") { dialog, id ->
+
             }
+        return builder.create()
     }
 }
