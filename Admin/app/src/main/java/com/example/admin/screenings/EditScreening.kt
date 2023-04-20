@@ -207,20 +207,6 @@ class EditScreening : AppCompatActivity() {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
     }
-    fun delScreening(){
-        val db = Firebase.firestore
-        db.collection("screening")
-            .document(screening!!.id)
-            .update("is_deleted", true)
-            .addOnSuccessListener {
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
-            }
-            .addOnFailureListener { exception ->
-                Log.w("DB", "Error getting documents.", exception)
-            }
-    }
     fun createDeleteDialog(): AlertDialog {
         val builder = AlertDialog.Builder(this@EditScreening)
         builder.setMessage("Bạn có chắc là muốn xóa!")

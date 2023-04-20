@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import com.example.admin.R
-import com.example.admin.cinemas.Cinema
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -134,20 +133,6 @@ class EditMovie : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Log.w("DB", "Error adding document", e)
-            }
-    }
-    fun delMovie(movie: Movie){
-        val db = Firebase.firestore
-        db.collection("movie")
-            .document(movie!!.id)
-            .update("is_deleted", true)
-            .addOnSuccessListener {
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
-            }
-            .addOnFailureListener { exception ->
-                Log.w("DB", "Error getting documents.", exception)
             }
     }
     fun createDeleteDialog(): AlertDialog {

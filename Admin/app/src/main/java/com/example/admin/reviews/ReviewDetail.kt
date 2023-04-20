@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.admin.R
-import com.example.admin.auditoriums.Auditorium
 import com.example.admin.movies.Movie
 import com.example.admin.users.User
 import com.google.firebase.FirebaseApp
@@ -87,21 +86,6 @@ class ReviewDetail : AppCompatActivity() {
     }.getOrElse {
         Log.w("DB", "Error getting documents.", it)
         User()
-    }
-    fun deleteReview(): Boolean = runCatching {
-        val db = Firebase.firestore
-        db.collection("review")
-            .document(review!!.id)
-            .delete()
-            .addOnSuccessListener {
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
-            }
-        true
-    }.getOrElse {
-        Log.w("DB", "Error deleting document $review!!.id", it)
-        false
     }
     fun createDeleteDialog(): AlertDialog {
         val builder = AlertDialog.Builder(this@ReviewDetail)

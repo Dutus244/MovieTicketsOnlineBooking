@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
-import com.example.admin.movies.Movie
 import java.text.SimpleDateFormat
 import java.util.*
 
