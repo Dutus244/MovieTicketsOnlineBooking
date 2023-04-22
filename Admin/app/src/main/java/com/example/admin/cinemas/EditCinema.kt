@@ -7,11 +7,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import com.example.admin.R
-import com.example.admin.RequestCode
 import com.example.admin.auditoriums.AuditoriumList
-import com.example.admin.screenings.ScreeningList
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -22,14 +21,15 @@ class EditCinema : AppCompatActivity() {
     var cinemaAddrET: EditText? = null
     var cinemaAudiNumTV: TextView? = null
     var statusRadioGroup: RadioGroup? = null
-    var statusRadioButton: RadioButton? = null
+    var cinemaTypeTV: TextView? = null
+    var cinemaPriceTV: TextView? = null
+    var cinemaPriceET: EditText? = null
     var audiBtn: Button? = null
     var delBtn: Button? = null
     var saveBtn: Button? = null
 
     var cinema: Cinema? = null
 
-    var shouldRecreateActivity: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +45,9 @@ class EditCinema : AppCompatActivity() {
         cinemaAddrET = findViewById(R.id.editCinemaAddrET)
         cinemaAudiNumTV = findViewById(R.id.editCinemaAudiNumTV2)
         statusRadioGroup = findViewById(R.id.editCinemaStatusRG)
+        cinemaTypeTV = findViewById(R.id.editCinemaTypeTV)
+        cinemaPriceTV = findViewById(R.id.editCinemaPriceTV)
+        cinemaPriceET = findViewById(R.id.editCinemaPriceET)
         audiBtn = findViewById(R.id.editCinemaAudiBtn)
         delBtn = findViewById(R.id.editCinemaDeleteBtn)
         saveBtn = findViewById(R.id.editCinemaSaveBtn)
@@ -61,18 +64,29 @@ class EditCinema : AppCompatActivity() {
                 findViewById<RadioButton>(R.id.editCinemaStatusRB2).isChecked = true
             }
         }
+        when (cinema?.type) {
+            "Big" -> {
+                cinemaTypeTV!!.append("thường")
+                cinemaPriceET!!.setText(cinema?.price.toString())
+            }
+            "Small" -> {
+                cinemaTypeTV!!.append("mini")
+                cinemaPriceTV!!.visibility = View.GONE
+                cinemaPriceET!!.visibility = View.GONE
+            }
+        }
 
         audiBtn!!.setOnClickListener {
             val intent = Intent(this, AuditoriumList::class.java)
             intent.putExtra("cinema_id", cinema!!.id)
-            shouldRecreateActivity = true
+            intent.putExtra("cinema_type", cinema!!.type)
             startActivity(intent)
         }
         delBtn!!.setOnClickListener {
             val dialog: AlertDialog? = this.let {
                 val builder = AlertDialog.Builder(it)
                 builder.setMessage("Bạn có chắc là muốn xóa!")
-                    .setPositiveButton("Có", DialogInterface.OnClickListener { dialog, id ->
+                    .setPositiveButton("Có") { dialog, id ->
                         val db = Firebase.firestore
                         db.collection("cinema")
                             .document(cinema!!.id)
@@ -90,8 +104,7 @@ class EditCinema : AppCompatActivity() {
                             .addOnFailureListener { exception ->
                                 Log.w("DB", "Error getting documents.", exception)
                             }
-
-                    })
+                    }
                     .setNegativeButton("Không", DialogInterface.OnClickListener { dialog, id ->
 
                     })
@@ -102,38 +115,57 @@ class EditCinema : AppCompatActivity() {
             }
         }
         saveBtn!!.setOnClickListener {
-            if (cinemaNameET!!.text.toString().isEmpty() ||
-                cinemaAddrET!!.text.toString().isEmpty()
-            ) {
-                Toast.makeText(this, "Vui lòng nhập tên và địa chỉ", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            var updates = hashMapOf<String, Any>()
+            when (cinema?.type) {
+                "Big" -> {
+                    if (cinemaNameET!!.text.toString().isEmpty() ||
+                        cinemaAddrET!!.text.toString().isEmpty() ||
+                        cinemaPriceET!!.text.toString().isEmpty()
+                    ) {
+                        Toast.makeText(this, "Vui lòng nhập tên và địa chỉ và giá", Toast.LENGTH_SHORT)
+                            .show()
+                        return@setOnClickListener
+                    }
+                    updates = hashMapOf<String, Any>(
+                        "img_url" to cinemaImgURLET!!.text.toString(),
+                        "name" to cinemaNameET!!.text.toString(),
+                        "address" to cinemaAddrET!!.text.toString(),
+                        "status" to findViewById<RadioButton>(
+                            statusRadioGroup!!.checkedRadioButtonId).text.toString(),
+                        "price" to cinemaPriceET!!.text.toString().toInt()
+                    )
+                }
+                "Small" -> {
+                    if (cinemaNameET!!.text.toString().isEmpty() ||
+                        cinemaAddrET!!.text.toString().isEmpty()
+                    ) {
+                        Toast.makeText(this, "Vui lòng nhập tên và địa chỉ và giá", Toast.LENGTH_SHORT)
+                            .show()
+                        return@setOnClickListener
+                    }
+                    updates = hashMapOf<String, Any>(
+                        "img_url" to cinemaImgURLET!!.text.toString(),
+                        "name" to cinemaNameET!!.text.toString(),
+                        "address" to cinemaAddrET!!.text.toString(),
+                        "status" to findViewById<RadioButton>(
+                            statusRadioGroup!!.checkedRadioButtonId).text.toString(),
+                    )
+                }
             }
+
             val db = Firebase.firestore
             db.collection("cinema")
                 .document(cinema!!.id)
-                .set(
-                    Cinema(
-                        cinemaImgURLET!!.text.toString(),
-                        cinemaNameET!!.text.toString(),
-                        cinemaAddrET!!.text.toString(),
-                        cinemaAudiNumTV!!.text.toString().toInt(),
-                        findViewById<RadioButton>(statusRadioGroup!!.checkedRadioButtonId).text.toString(),
-                    )
-                )
+                .update(updates)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Thay đổi thông tin thành công", Toast.LENGTH_SHORT).show()
+                    val replyIntent = Intent()
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
                 }
                 .addOnFailureListener { exception ->
                     Log.w("DB", "Error getting documents.", exception)
                 }
-            val replyIntent = Intent()
-            setResult(Activity.RESULT_OK, replyIntent)
-            finish()
-        }
-        findViewById<Button>(R.id.editCinemaScreeningBtn).setOnClickListener {
-            val intent = Intent(this, ScreeningList::class.java)
-            intent.putExtra("cinema", cinema)
-            this.startActivityForResult(intent, RequestCode.SCREENING_SCREEN_DETAIL)
         }
 
     }
