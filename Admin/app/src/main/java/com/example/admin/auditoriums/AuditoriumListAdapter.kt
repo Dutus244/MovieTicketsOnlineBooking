@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
-import com.example.admin.cinemas.EditCinema
-import com.example.admin.seats.SeatScreen
+import com.example.admin.seats.SeatScreenTypeBig
+import com.example.admin.seats.SeatScreenTypeSmall
 
 class AuditoriumListAdapter(private val activity: Activity, private val list: List<Auditorium>) :
     RecyclerView.Adapter<AuditoriumListAdapter.ViewHolder>() {
@@ -38,12 +38,27 @@ class AuditoriumListAdapter(private val activity: Activity, private val list: Li
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.position = position
         holder.nameText.text = list[position].name
-        holder.audiNumText.append(list[position].seats_no.toString())
+        when (list[position].type) {
+            "Big" -> {
+                holder.audiNumText.append(list[position].seats_no.toString())
+            }
+            "Small" -> {
+                holder.audiNumText.visibility = View.GONE
+            }
+        }
         holder.itemView.setOnClickListener {
-            val intent = Intent(activity, SeatScreen::class.java)
-            intent.putExtra("auditorium", list[position])
-//            activity.startActivity(intent)
-            activity.startActivityForResult(intent, RequestCode.AUDITORIUM_SCREEN_EDIT)
+            when (list[position].type) {
+                "Big" -> {
+                    val intent = Intent(activity, SeatScreenTypeBig::class.java)
+                    intent.putExtra("auditorium", list[position])
+                    activity.startActivityForResult(intent, RequestCode.AUDITORIUM_BIG_SCREEN_EDIT)
+                }
+                "Small" -> {
+                    val intent = Intent(activity, SeatScreenTypeSmall::class.java)
+                    intent.putExtra("auditorium", list[position])
+                    activity.startActivityForResult(intent, RequestCode.AUDITORIUM_SMALL_SCREEN_EDIT)
+                }
+            }
         }
     }
 

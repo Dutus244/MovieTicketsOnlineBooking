@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.LayoutInflaterFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
@@ -20,7 +19,7 @@ class CinemaListAdapter(private val activity: Activity, private val list: List<C
         val imageView = listItemView.findViewById(R.id.cinemaImg) as ImageView
         val nameText = listItemView.findViewById(R.id.cinemaNameTV) as TextView
         val addrText = listItemView.findViewById(R.id.cinemaAddrTV) as TextView
-        val audiNumText = listItemView.findViewById(R.id.cinemaAudiNumTV) as TextView
+        val cinemaType = listItemView.findViewById(R.id.cinemaTypeTV) as TextView
     }
 
     override fun onCreateViewHolder(
@@ -39,7 +38,14 @@ class CinemaListAdapter(private val activity: Activity, private val list: List<C
         holder.position = position
         holder.nameText.text = list[position].name
         holder.addrText.text = list[position].address
-        holder.audiNumText.append(list[position].auditoriums_no.toString())
+        when (list[position].type) {
+            "Big" -> {
+                holder.cinemaType.append("thường")
+            }
+            "Small" -> {
+                holder.cinemaType.append("mini")
+            }
+        }
         holder.itemView.setOnClickListener {
             val intent = Intent(activity, EditCinema::class.java)
             intent.putExtra("cinema", list[position])

@@ -11,7 +11,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cinemaAudiNumTV"
+        app:layout_constraintBottom_toBottomOf="@+id/cinemaTypeTV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cinemaNameTV"
         app:srcCompat="@drawable/ic_launcher_background" />
@@ -35,19 +35,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/cinemaAudiNumTV"
+        app:layout_constraintBottom_toTopOf="@+id/cinemaTypeTV"
         app:layout_constraintEnd_toEndOf="@+id/cinemaNameTV"
         app:layout_constraintStart_toStartOf="@+id/cinemaNameTV"
         app:layout_constraintTop_toBottomOf="@+id/cinemaNameTV" />
 
     <TextView
-        android:id="@+id/cinemaAudiNumTV"
+        android:id="@+id/cinemaTypeTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="Số phòng chiếu: "
+        android:text="Rạp "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cinemaAddrTV"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/cinemaAddrTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
