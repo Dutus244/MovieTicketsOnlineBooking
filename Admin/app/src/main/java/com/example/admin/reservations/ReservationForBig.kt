@@ -8,12 +8,10 @@ import android.view.View
 import android.widget.TextView
 import com.example.admin.R
 import com.example.admin.auditoriums.Auditorium
-import com.example.admin.seats.Seat
-import com.example.admin.tickets.Ticket
+import com.example.admin.users.User
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
@@ -28,8 +26,9 @@ class ReservationForBig : AppCompatActivity() {
     private var auditorium_id: String = "s3zfbcJCAKCsmADYz9KU"
     private var screening_id: String = "8Fi0mDdLOCoBAA5TLXxj"
 
-    private var reservations: Map<String, CustomReservation>? = null
-    private var bookedSeat: MutableSet<String>? = null
+    private var reservations: ArrayList<Reservation>? = null
+    private var bookedSeat: ArrayList<Int>? = null
+    private var seatToReservation: HashMap<Int, Int> = hashMapOf()
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -39,11 +38,13 @@ class ReservationForBig : AppCompatActivity() {
         FirebaseApp.initializeApp(this@ReservationForBig)
 
         coroutineScope.launch {
+            reservations = getReservations(screening_id)
             auditorium = getAuditorium(auditorium_id)
-            bookedSeat = getBookedSeats(screening_id)
+            bookedSeat = getBookedSeats(reservations!!)
+
 
             val titles = makeExistedTitles(auditorium!!.map)
-            val seats = makeExistedSeats(auditorium!!.map, titles)
+            val seats = makeExistedSeats(auditorium!!.map, bookedSeat!!)
             seatBookView = findViewById(R.id.layoutSeat)
             seatBookView.setSeatsLayoutString(seats)
                 .isCustomTitle(true)
@@ -59,12 +60,26 @@ class ReservationForBig : AppCompatActivity() {
                 override fun onBookedSeatClick(view: View) {
                     val seat = view.findViewById<TextView>(view.id)
                     val seatName = seat.text.toString()
-                    val reservation_id =
-                        reservations!!.filterValues { it.seats.contains(seatName) }.keys.firstOrNull()
-                    val reservation = reservations!!.getValue(reservation_id.toString())
-                    val intent = Intent(this@ReservationForBig, ReservationForBigDetail::class.java)
-                    intent.putExtra("reservation", reservation)
-                    startActivity(intent)
+                    val pureTitles = titles.filter { it != "/" }
+                    val idx = pureTitles.indexOf(seatName)
+                    val re = reservations!![seatToReservation[idx]!!]
+                    val db = Firebase.firestore
+                    db.collection("user")
+                        .document(re.user_id)
+                        .get()
+                        .addOnSuccessListener {
+                            val user = it.toObject(User::class.java)
+                            val intent =
+                                Intent(this@ReservationForBig, ReservationForBigDetail::class.java)
+                            intent.putExtra("user", user!!.username)
+                            intent.putExtra("reservation", re)
+                            intent.putExtra("curSeat", seatName)
+                            intent.putStringArrayListExtra("titles", ArrayList(pureTitles))
+                            startActivity(intent)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("DB", "Error getting data", e)
+                        }
                 }
 
                 override fun onReservedSeatClick(view: View) {
@@ -78,50 +93,31 @@ class ReservationForBig : AppCompatActivity() {
         coroutineScope.cancel()
     }
 
-    suspend fun getBookedSeats(screening_id: String): MutableSet<String>? = runCatching {
-        val db = Firebase.firestore
-        val bookedSeats: MutableSet<String> = mutableSetOf()
-        val reservationArrayList: ArrayList<CustomReservation> = arrayListOf()
+    fun getBookedSeats(reservation: ArrayList<Reservation>): ArrayList<Int> {
+        val res = arrayListOf<Int>()
+        reservation.forEachIndexed { reservationIdx, reservationItem ->
+            res.addAll(reservationItem.seats)
+            reservationItem.seats.forEachIndexed { _, seatItem ->
+                seatToReservation[seatItem] = reservationIdx
+            }
+        }
+        return res
+    }
 
-        // Query all reservations for the given screening_id
-        val reservationsSnapshot = db.collection("reservation")
+    suspend fun getReservations(screening_id: String): ArrayList<Reservation>? = runCatching {
+        val db = Firebase.firestore
+        val result: ArrayList<Reservation> = arrayListOf()
+
+        val snapShot = db.collection("reservation")
             .whereEqualTo("screening_id", screening_id)
             .get()
             .await()
-
-        // Iterate over the reservations and get the tickets and seats for each one
-        for (reservation in reservationsSnapshot) {
-            val curReservation = reservation.toObject(CustomReservation::class.java)
-            // Query the tickets for this reservation
-            val ticketsSnapshot = db.collection("ticket")
-                .whereEqualTo("reservation_id", reservation.id)
-                .get()
-                .await()
-
-            val ticketList = ticketsSnapshot.toObjects(Ticket::class.java)
-
-            // Iterate over the tickets
-            for (ticket in ticketList) {
-                // Query the seat for this ticket
-                val seatSnapshot = db.collection("seat")
-                    .document(ticket.seat_id)
-                    .get()
-                    .await()
-
-                val seat = seatSnapshot.toObject(Seat::class.java)
-                curReservation.seats.add(seat!!.row + seat.col)
-                bookedSeats.add(seat.row + seat.col)
-            }
-            reservationArrayList.add(curReservation)
-        }
-        reservations = reservationArrayList.associateBy { it.id }
-
-        bookedSeats
+        result.addAll(snapShot.toObjects(Reservation::class.java))
+        result
     }.getOrElse {
-        Log.w("DB", "Error getting booked seats.", it)
+        Log.w("DB", "Error getting data .", it)
         null
     }
-
 
     suspend fun getAuditorium(auditorium_id: String): Auditorium? = runCatching {
         val db = Firebase.firestore
@@ -137,7 +133,7 @@ class ReservationForBig : AppCompatActivity() {
 
     fun makeExistedSeats(
         map: ArrayList<String>,
-        title: List<String>,
+        bookedSeats: ArrayList<Int>,
     ): String {
         val mapColNum = map[0].length
         var seats = ""
@@ -146,9 +142,7 @@ class ReservationForBig : AppCompatActivity() {
             seats += "/"
             seats += s.mapIndexed { cIndex, c ->
                 if (c == '1') {
-                    // Titles is like this [/, A1, A2, A3, /, B1, B2, B3, /, C1, C2, C3]
-                    // so increment col and row by 1 because of '/'
-                    if (bookedSeat!!.contains(title[sIndex * (mapColNum + 1) + 1 + cIndex])) {
+                    if (sIndex * mapColNum + cIndex in bookedSeats) {
                         "U"
                     } else {
                         "A"
