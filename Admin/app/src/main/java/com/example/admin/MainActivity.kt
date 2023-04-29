@@ -7,6 +7,7 @@ import android.widget.Button
 import com.example.admin.cinemas.CinemaList
 import com.example.admin.movies.MovieList
 import com.example.admin.reservations.ReservationForBig
+import com.example.admin.reservations.ReservationForSmall
 import com.example.admin.reviews.MovieReviewList
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         goToReviewBtn!!.setOnClickListener {
-            val intent = Intent(this, ReservationForBig::class.java)
+            val intent = Intent(this, ReservationForSmall::class.java)
             startActivity(intent)
         }
     }

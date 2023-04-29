@@ -19,6 +19,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 class ReservationForBig : AppCompatActivity() {
+    private var audiNameTV: TextView? = null
+
     private lateinit var seatBookView: SeatBookView
     private var auditorium: Auditorium? = null
 
@@ -38,8 +40,11 @@ class ReservationForBig : AppCompatActivity() {
         FirebaseApp.initializeApp(this@ReservationForBig)
 
         coroutineScope.launch {
-            reservations = getReservations(screening_id)
+            audiNameTV = findViewById(R.id.reservationBigTitle)
+
             auditorium = getAuditorium(auditorium_id)
+            audiNameTV!!.text = auditorium!!.name
+            reservations = getReservations(screening_id)
             bookedSeat = getBookedSeats(reservations!!)
 
 
