@@ -161,7 +161,8 @@ class AuditoriumList : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RequestCode.AUDITORIUM_BIG_SCREEN_EDIT ||
-            requestCode == RequestCode.AUDITORIUM_SMALL_SCREEN_EDIT) {
+            requestCode == RequestCode.AUDITORIUM_SMALL_SCREEN_EDIT
+        ) {
             if (resultCode == Activity.RESULT_OK) {
                 recreate()
             }

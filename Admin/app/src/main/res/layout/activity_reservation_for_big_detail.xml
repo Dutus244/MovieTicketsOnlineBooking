@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".reservations.ReservationForBigDetail">
+
+    <TextView
+        android:id="@+id/totalPriceTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Tổng tiền: "
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/allSeatsTV"
+        app:layout_constraintVertical_bias="0.019" />
+
+    <TextView
+        android:id="@+id/reservationBigDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Thông tin đặt vé"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/userTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:text="Người đặt: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reservationBigDetailTitle" />
+
+    <TextView
+        android:id="@+id/dateTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Ngày đặt: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/userTV"
+        app:layout_constraintStart_toStartOf="@+id/userTV"
+        app:layout_constraintTop_toBottomOf="@+id/userTV" />
+
+    <TextView
+        android:id="@+id/curSeatTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Ghế hiện tại: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTV"
+        app:layout_constraintStart_toStartOf="@+id/dateTV"
+        app:layout_constraintTop_toBottomOf="@+id/dateTV" />
+
+    <TextView
+        android:id="@+id/curSeatPriceTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Giá ghế hiện tại"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/curSeatTV"
+        app:layout_constraintStart_toStartOf="@+id/curSeatTV"
+        app:layout_constraintTop_toBottomOf="@+id/curSeatTV" />
+
+    <TextView
+        android:id="@+id/allSeatsTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Các ghế được đặt cùng:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/curSeatPriceTV"
+        app:layout_constraintStart_toStartOf="@+id/curSeatPriceTV"
+        app:layout_constraintTop_toBottomOf="@+id/curSeatPriceTV" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
