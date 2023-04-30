@@ -36,7 +36,6 @@ class SeatScreenTypeBig : AppCompatActivity() {
 
     var row: Int = 0
     var col: Int = 0
-    var seats: MutableList<Seat> = mutableListOf()
     var seatsRemove: List<Int> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -259,7 +258,6 @@ class SeatScreenTypeBig : AppCompatActivity() {
             for (j in 1..col) {
                 val colTitle = j.toString()
                 title.add(rowTitle + colTitle)
-                seats.add(Seat(rowTitle.toString(), colTitle, auditorium!!.id))
             }
             ++rowTitle
         }
@@ -275,28 +273,10 @@ class SeatScreenTypeBig : AppCompatActivity() {
             .document(auditorium!!.id)
             .set(auditorium!!)
             .addOnSuccessListener {
-                // Add data to seat doc
-                val batch = db.batch()
-                val seatCollectionRef = db.collection("seat")
-                for (seat in seats) {
-                    val newDocumentRef = seatCollectionRef.document()
-                    batch.set(newDocumentRef, seat)
-                }
-                batch.commit()
-                    .addOnSuccessListener {
-                        Toast.makeText(
-                            this,
-                            "Lưu sơ đồ thành công",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        val replyIntent = Intent()
-                        replyIntent.putExtra("seats_no", seats_no)
-                        setResult(Activity.RESULT_OK, replyIntent)
-                        finish()
-                    }
-                    .addOnFailureListener {e ->
-                        Log.w("DB", "Error adding document", e)
-                    }
+                val replyIntent = Intent()
+                replyIntent.putExtra("seats_no", seats_no)
+                setResult(Activity.RESULT_OK, replyIntent)
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.w("DB", "Error adding document", e)
