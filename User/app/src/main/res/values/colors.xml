@@ -13,4 +13,7 @@
     <color name="movieClassification_C13">#fbf654</color>
     <color name="movieClassification_C16">#e9b64d</color>
     <color name="movieClassification_C18">#d52800</color>
+    <color name="colorPrimary">#FFEB3B</color>
+    <color name="colorPrimaryDark">#D8C413</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>

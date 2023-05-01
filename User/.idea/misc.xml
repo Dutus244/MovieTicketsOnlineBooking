@@ -24,6 +24,7 @@
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_film.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_film_info.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_film_list.xml" value="0.2" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_film_review.xml" value="0.264" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_film_showtimes.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_foreplay.xml" value="0.25052083333333336" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_forgot_password1.xml" value="0.25416666666666665" />
@@ -32,6 +33,7 @@
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_home_page_the_items_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_map_cinema.xml" value="0.203125" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_pay.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_signup1.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/activity_signup2.xml" value="0.25416666666666665" />
@@ -39,12 +41,14 @@
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/custom_layout_gridview_list_films.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/custom_layout_listview_list_actors.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/custom_list_view_cinema_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/dialog_review.xml" value="0.23645833333333333" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/film_list_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/fragment_account.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/fragment_account1.xml" value="0.264" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/fragment_account2.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/fragment_cinema.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/item_review.xml" value="0.2" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/layout/showtime_grid_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/menu/activity_film_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Git/MovieTicketsOnlineBooking/User/app/src/main/res/menu/activity_home_page_bottom_navigation_main.xml" value="0.25416666666666665" />
