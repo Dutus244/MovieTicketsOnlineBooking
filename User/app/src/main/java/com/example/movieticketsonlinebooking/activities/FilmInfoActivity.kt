@@ -48,6 +48,7 @@ class FilmInfoActivity : AppCompatActivity() {
     var movieDescription: TextView? = null
     var movieReleaseDate: TextView? = null
     var showtimesButton: Button? = null
+    var showReviewButton: Button? = null
 
     class MyAdapter(
         private val context: Context,
@@ -178,6 +179,13 @@ class FilmInfoActivity : AppCompatActivity() {
         showtimesButton = findViewById(R.id.activity_film_info_showtimes)
         showtimesButton?.setOnClickListener {
             val intent = Intent(applicationContext, FilmShowtimesActivity::class.java)
+            startActivity(intent)
+        }
+
+        showReviewButton = findViewById(R.id.see_review_button)
+        showReviewButton?.setOnClickListener {
+            val intent = Intent(applicationContext, FilmReviewActivity::class.java)
+            intent.putExtra("movie", movie)
             startActivity(intent)
         }
     }

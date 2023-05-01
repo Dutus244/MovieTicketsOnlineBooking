@@ -126,7 +126,7 @@ class LoginActivity : AppCompatActivity() {
                                                 // Handle error
                                             }
                                     }
-                                    UserManager.login(account?.displayName ?: "",account?.email ?: "")
+                                    UserManager.login(firebaseUser?.uid!!,account?.displayName ?: "",account?.email ?: "")
                                     val intent = Intent()
                                     setResult(Activity.RESULT_OK, intent)
                                     finish()
