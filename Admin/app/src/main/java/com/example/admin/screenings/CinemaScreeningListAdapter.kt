@@ -42,7 +42,7 @@ class CinemaScreeningListAdapter(private val activity: Activity, private val lis
         holder.addrText.text = list[position].address
         holder.audiNumText.append(list[position].auditoriums_no.toString())
         holder.itemView.setOnClickListener {
-            val intent = Intent(activity, CinemaScreeningList::class.java)
+            val intent = Intent(activity, ScreeningList::class.java)
             intent.putExtra("cinema", list[position])
             activity.startActivityForResult(intent, RequestCode.SCREENING_SCREEN_DETAIL)
         }

@@ -3,36 +3,33 @@ package com.example.admin.screenings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R.*
 import com.example.admin.RequestCode
-import com.example.admin.auditoriums.Auditorium
 import com.example.admin.cinemas.Cinema
-import com.example.admin.movies.Movie
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ScreeningList : AppCompatActivity() {
-    var autoCompleteTextView: AutoCompleteTextView? = null
+    var cinemaNameScreeningScreenTV: TextView? = null
+    var cinemaAddressScreeningScreenTV: TextView? = null
     var screeningRecyclerView: RecyclerView? = null
     var addBtn: Button? = null
 
-    var screenings: List<Screening> = listOf()
+    var movieScreenings: List<MovieScreening> = listOf()
+    var displayMovieScreenings: List<MovieScreening> = listOf()
     var cinema: Cinema? = null
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_screening_list)
@@ -41,11 +38,15 @@ class ScreeningList : AppCompatActivity() {
         val intent = intent
         cinema = intent.getSerializableExtra("cinema") as? Cinema
 
-        autoCompleteTextView = findViewById(id.screeningListACTV)
+        cinemaNameScreeningScreenTV = findViewById(id.cinemaNameScreeningScreenTV)
+        cinemaAddressScreeningScreenTV = findViewById(id.cinemaAddressScreeningScreenTV)
         screeningRecyclerView = findViewById(id.screeningListRecyclerView)
         addBtn = findViewById(id.screeningListAddBtn)
 
-        val adapter = ScreeningListAdapter(this, screenings)
+        cinemaNameScreeningScreenTV!!.setText(cinema!!.name)
+        cinemaAddressScreeningScreenTV!!.setText(cinema!!.address)
+
+        val adapter = ScreeningListAdapter(this, movieScreenings)
         screeningRecyclerView!!.adapter = adapter
         screeningRecyclerView!!.layoutManager = LinearLayoutManager(this)
 
@@ -56,25 +57,45 @@ class ScreeningList : AppCompatActivity() {
         }
 
         coroutineScope.launch {
-            screenings = getScreeningData(cinema!!.id)
-            screeningRecyclerView!!.adapter = ScreeningListAdapter(this@ScreeningList, screenings)
+            var currentDate = Calendar.getInstance().time
 
-            val autoCompleteAdapter =
-                ArrayAdapter(
-                    this@ScreeningList,
-                    android.R.layout.simple_list_item_single_choice,
-                    screenings.map { it.movie_name })
-            autoCompleteTextView!!.setAdapter(autoCompleteAdapter)
-            autoCompleteTextView!!.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {}
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    screeningRecyclerView!!.adapter =
-                        ScreeningListAdapter(this@ScreeningList, screenings.filter {
-                            it.movie_name.contains(autoCompleteTextView!!.text, true)
-                        })
+            movieScreenings = getScreeningData(cinema!!.id)
+            initializeDisplayList()
+            filterScreening(currentDate)
+            screeningRecyclerView!!.adapter = ScreeningListAdapter(this@ScreeningList, displayMovieScreenings)
+
+
+            val sdf = SimpleDateFormat("dd/MM")
+
+            val layout = findViewById<LinearLayout>(id.scrollViewLinearLayout)
+
+            for (i in 0 until 7) {
+                val textView = TextView(this@ScreeningList)
+                textView.text = sdf.format(currentDate.time)
+
+                val layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                layoutParams.setMargins(25, 0, 25, 0)
+                textView.layoutParams = layoutParams
+
+                val dateCalendar = Calendar.getInstance()
+                dateCalendar.time = currentDate
+
+                textView.setOnClickListener {
+                    val selectedDate = dateCalendar.time
+
+                    filterScreening(selectedDate)
+                    screeningRecyclerView!!.adapter?.notifyDataSetChanged()
                 }
-            })
+                layout.addView(textView)
+
+                val calendar = Calendar.getInstance()
+                calendar.time = currentDate
+                calendar.add(Calendar.DAY_OF_YEAR, 1)
+                currentDate = calendar.time
+            }
         }
     }
 
@@ -83,39 +104,59 @@ class ScreeningList : AppCompatActivity() {
         coroutineScope.cancel()
     }
 
-    suspend fun getScreeningData(cinema_id: String): List<Screening> = runCatching {
+    suspend fun getScreeningData(cinema_id: String): List<MovieScreening> = runCatching {
         val db = Firebase.firestore
-        val result = db.collection("screening")
-            .whereEqualTo("is_deleted", false)
+
+        val screeningsQuery = db.collection("screening")
             .whereEqualTo("cinema_id", cinema_id)
             .get()
             .await()
-        val movie_name = db.collection("movie")
-            .get()
-            .await()
-        val auditorium_name = db.collection("auditorium")
-            .whereEqualTo("cinema_id", cinema_id)
-            .get()
-            .await()
-        var scr: List<Screening> = result.toObjects(Screening::class.java)
-        var mv: List<Movie> = movie_name.toObjects(Movie::class.java)
-        var au: List<Auditorium> = auditorium_name.toObjects(Auditorium::class.java)
-        for(i in scr) {
-            for(j in mv) {
-                if(i.movie_id.equals(j.id))
-                    i.movie_name = j.title
-            }
+        val matchingScreenings = screeningsQuery.toObjects(Screening::class.java)
+
+        val moviesQuery = db.collection("movie").get().await()
+        val movies = moviesQuery.toObjects(MovieScreening::class.java).map { movie ->
+            val movieScreeningsList = matchingScreenings.filter { it.movie_id == movie.id }
+                .sortedBy { it.screening_start }
+            MovieScreening(
+                title = movie.title,
+                cast = movie.cast,
+                director = movie.director,
+                poster_url = movie.poster_url,
+                vid_url = movie.vid_url,
+                classification = movie.classification,
+                release_date = movie.release_date,
+                duration = movie.duration,
+                description = movie.description,
+                rating = movie.rating,
+                is_active = movie.is_active,
+                is_deleted = movie.is_deleted,
+                screenings = movieScreeningsList,
+                id = movie.id
+            )
         }
-        for(i in scr) {
-            for(j in au) {
-                if(i.auditorium_id.equals(j.id))
-                    i.auditorium_name = j.name
-            }
-        }
-        scr
+        movies
     }.getOrElse {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
+    }
+
+    fun initializeDisplayList() {
+        displayMovieScreenings = emptyList()
+        movieScreenings.map{ movieScreening ->
+            displayMovieScreenings = displayMovieScreenings + movieScreening.copy()
+        }
+    }
+
+    fun filterScreening(selectDate: Date) {
+        displayMovieScreenings.map{ movieScreening ->
+            movieScreening.screenings = emptyList()
+            var movie = movieScreenings.firstOrNull { it.id == movieScreening.id }
+            movie!!.screenings.map{screening ->
+                if(screening.screening_start.day == selectDate.day &&
+                    screening.screening_start.month == selectDate.month)
+                    movieScreening.screenings = movieScreening.screenings + screening
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

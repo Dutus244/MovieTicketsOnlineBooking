@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         goToCinemaBtn = findViewById(R.id.goToCinemaBtn)
         goToMovieBtn = findViewById(R.id.goToMovieBtn)
-        goToScreeningBtn = findViewById(R.id.goToReviewBtn)
+        goToScreeningBtn = findViewById(R.id.goToScreeningBtn)
         goToReviewBtn = findViewById(R.id.goToReviewBtn)
 
         goToCinemaBtn!!.setOnClickListener {

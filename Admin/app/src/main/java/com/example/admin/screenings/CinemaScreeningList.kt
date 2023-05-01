@@ -82,14 +82,4 @@ class CinemaScreeningList : AppCompatActivity() {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RequestCode.SCREENING_SCREEN_DETAIL) {
-            if (resultCode == Activity.RESULT_OK) {
-                recreate()
-            }
-        }
-    }
 }
