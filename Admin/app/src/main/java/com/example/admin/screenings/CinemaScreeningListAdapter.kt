@@ -21,7 +21,7 @@ class CinemaScreeningListAdapter(private val activity: Activity, private val lis
         val imageView = listItemView.findViewById(R.id.cinemaImg) as ImageView
         val nameText = listItemView.findViewById(R.id.cinemaNameTV) as TextView
         val addrText = listItemView.findViewById(R.id.cinemaAddrTV) as TextView
-        val audiNumText = listItemView.findViewById(R.id.cinemaAudiNumTV) as TextView
+        val cinemaType = listItemView.findViewById(R.id.cinemaTypeTV) as TextView
     }
 
     override fun onCreateViewHolder(
@@ -40,7 +40,14 @@ class CinemaScreeningListAdapter(private val activity: Activity, private val lis
         holder.position = position
         holder.nameText.text = list[position].name
         holder.addrText.text = list[position].address
-        holder.audiNumText.append(list[position].auditoriums_no.toString())
+        when (list[position].type) {
+            "Big" -> {
+                holder.cinemaType.append("thường")
+            }
+            "Small" -> {
+                holder.cinemaType.append("mini")
+            }
+        }
         holder.itemView.setOnClickListener {
             val intent = Intent(activity, ScreeningList::class.java)
             intent.putExtra("cinema", list[position])
