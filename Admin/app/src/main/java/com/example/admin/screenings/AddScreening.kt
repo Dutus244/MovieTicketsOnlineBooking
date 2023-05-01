@@ -30,8 +30,11 @@ class AddScreening : AppCompatActivity() {
 
     var cinema: Cinema? = null
 
-    var auditoriumChoice: String = ""
-    var movieChoice: String = ""
+    var auditoriums: List<Auditorium> = listOf()
+    var movies: List<Movie> = listOf()
+
+    var auditoriumChoice: Auditorium? = null
+    var movieChoice: Movie? = null
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,27 +94,25 @@ class AddScreening : AppCompatActivity() {
         }
 
         coroutineScope.launch {
-            val auditoriuIDs = getAuditoriumData().map { it.id }
-            val auditoriumNames = getAuditoriumData().map { it.name }
-            val auditoriumAdapter = ArrayAdapter(this@AddScreening, R.layout.spinner_item, auditoriumNames)
+            auditoriums = getAuditoriumData()
+            movies = getMovieData()
+            val auditoriumAdapter = ArrayAdapter(this@AddScreening, R.layout.spinner_item, auditoriums.map{ it.name })
             auditoriumNameSpinner!!.adapter = auditoriumAdapter
             auditoriumNameSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     auditoriumNameSpinner!!.setSelection(position)
-                    auditoriumChoice = auditoriuIDs[position]
+                    auditoriumChoice = auditoriums[position]
                 }
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
-            val movieIDs = getMovieData().map { it.id }
-            val movieNames = getMovieData().map { it.title }
-            val adapter = ArrayAdapter(this@AddScreening, R.layout.spinner_item, movieNames)
+            val adapter = ArrayAdapter(this@AddScreening, R.layout.spinner_item, movies.map { it.title })
             movieNameSpinner!!.adapter = adapter
             movieNameSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     movieNameSpinner!!.setSelection(position)
-                    movieChoice = movieIDs[position]
+                    movieChoice = movies[position]
                 }
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
@@ -121,7 +122,7 @@ class AddScreening : AppCompatActivity() {
             val start = format.parse(startTimeET!!.text.toString())
             coroutineScope.launch {
                 addScreening(
-                    auditoriumChoice, cinema!!.id, movieChoice,
+                    auditoriumChoice!!.id, cinema!!.id, movieChoice!!.id,
                     start
                 )
             }
@@ -169,6 +170,7 @@ class AddScreening : AppCompatActivity() {
     suspend fun getMovieData(): List<Movie> = runCatching {
         val db = Firebase.firestore
         val result = db.collection("movie")
+            .whereEqualTo("is_active", true)
             .whereEqualTo("is_deleted", false)
             .get()
             .await()
