@@ -109,11 +109,16 @@ class ScreeningList : AppCompatActivity() {
 
         val screeningsQuery = db.collection("screening")
             .whereEqualTo("cinema_id", cinema_id)
+            .whereEqualTo("is_deleted", false)
             .get()
             .await()
         val matchingScreenings = screeningsQuery.toObjects(Screening::class.java)
 
-        val moviesQuery = db.collection("movie").get().await()
+        val moviesQuery = db.collection("movie")
+            .whereEqualTo("is_active", true)
+            .whereEqualTo("is_deleted", false)
+            .get()
+            .await()
         val movies = moviesQuery.toObjects(MovieScreening::class.java).map { movie ->
             val movieScreeningsList = matchingScreenings.filter { it.movie_id == movie.id }
                 .sortedBy { it.screening_start }
