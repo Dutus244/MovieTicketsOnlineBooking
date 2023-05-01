@@ -16,7 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieticketsonlinebooking.fragments.ReviewAdapter
-import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -25,7 +24,6 @@ import java.text.DecimalFormat
 import com.example.movieticketsonlinebooking.R
 import com.example.movieticketsonlinebooking.viewmodels.*
 import kotlinx.coroutines.*
-import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -144,26 +142,6 @@ class FilmReviewActivity : AppCompatActivity() {
             counts.add(count)
         }
 
-//        val usernameMap = mutableMapOf<String, String>()
-//        val reviewList = mutableListOf<Review>()
-//        for (review in reviews) {
-//            val userId = review.user_id
-//            if (userId != null && !usernameMap.containsKey(userId)) {
-//                db.collection("user")
-//                    .document(userId)
-//                    .get()
-//                    .addOnSuccessListener { document ->
-//                        if (document.exists()) {
-//                            val username = document.getString("username")
-//                            if (username != null) {
-//                                review.user_name = username
-//                            }
-//                            reviewList.add(review)
-//                        }
-//                    }
-//            }
-//        }
-
         filmReviewModel = FilmReviewModel(
             totalVoters = counts.sum(),
             totalRating = counts.withIndex().sumByDouble { (index, count) -> (index + 1) * count.toDouble() },
@@ -179,7 +157,7 @@ class FilmReviewActivity : AppCompatActivity() {
         rvReview!!.layoutManager = LinearLayoutManager(this)
         rvReview!!.setAdapter(adapter)
     }
-    
+
     private fun setRatingByColor(productModel: FilmReviewModel) {
         val widthView = constrainLayout1!!.width
         val totalAllVoters = productModel.totalVoters

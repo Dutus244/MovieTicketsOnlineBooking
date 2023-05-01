@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.example.movieticketsonlinebooking.R;
 import com.example.movieticketsonlinebooking.viewmodels.Review;
-import com.example.movieticketsonlinebooking.viewmodels.ReviewModel;
-import com.google.firebase.ktx.Firebase;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
