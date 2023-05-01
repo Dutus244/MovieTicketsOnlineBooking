@@ -32,7 +32,6 @@ class HomeFragment : Fragment() {
     var gridView: GridView? = null
     var buttonCurrentFilm: Button? = null
     var buttonComingFilm: Button? = null
-    var current: Int? = 1
     var buttonMore: Button? = null
 
     var moviesList: MutableList<Movie> = listOf<Movie>().toMutableList()
@@ -125,7 +124,6 @@ class HomeFragment : Fragment() {
             .addOnFailureListener { e ->
                 Log.w("DB", "Error getting document", e)
             }
-
     }
 
     override fun onCreateView(
@@ -150,14 +148,12 @@ class HomeFragment : Fragment() {
         buttonComingFilm = view.findViewById(R.id.activity_home_page_button_comming_film)
 
         buttonComingFilm?.setOnClickListener {
-            current = 0
             buttonComingFilm?.setTextColor(Color.parseColor("#FF0303"));
             buttonCurrentFilm?.setTextColor(Color.parseColor("#C8C8C8"));
             adapter?.updateData(upcomingMovies)
         }
 
         buttonCurrentFilm?.setOnClickListener {
-            current = 1
             buttonComingFilm?.setTextColor(Color.parseColor("#C8C8C8"));
             buttonCurrentFilm?.setTextColor(Color.parseColor("#FF0303"));
             adapter?.updateData(currentMovies)
@@ -176,7 +172,7 @@ class HomeFragment : Fragment() {
         tabLayout!!.setupWithViewPager(page, true)
 
         gridView = view.findViewById(R.id.activity_home_page_gridview_list_film)
-        adapter = MyGridAdapter(requireActivity(), moviesList)
+        adapter = MyGridAdapter(requireActivity(), currentMovies)
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(activity, FilmInfoActivity::class.java)

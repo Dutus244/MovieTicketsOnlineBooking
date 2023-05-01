@@ -23,47 +23,42 @@ class FilmListActivity : AppCompatActivity() {
     var buttonComingFilm: Button? = null
     var current: Int? = 1
 
-    var moviesList: MutableList<Movie> = listOf<Movie>().toMutableList()
+    var currentMovies: MutableList<Movie> = listOf<Movie>().toMutableList()
+    var upcomingMovies: MutableList<Movie> = listOf<Movie>().toMutableList()
 
     fun getDataForList() {
-        moviesList.clear()
-        if (current == 1) {
-            // Ds phim hiện tại 6 phần tử
-            val db = Firebase.firestore
-            db.collection("movie")
-                .whereEqualTo("is_active", true)
-                .whereEqualTo("is_deleted", false)
-                .whereLessThan("release_date", Date())
-                .orderBy("release_date", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener { documents ->
-                    this.runOnUiThread {
-                        moviesList.addAll(documents.toObjects(Movie::class.java))
-                        adapter?.notifyDataSetChanged()
-                    }
+        // Ds phim hiện tại 6 phần tử
+        val db = Firebase.firestore
+        db.collection("movie")
+            .whereEqualTo("is_active", true)
+            .whereEqualTo("is_deleted", false)
+            .whereLessThan("release_date", Date())
+            .orderBy("release_date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { documents ->
+                this.runOnUiThread {
+                    currentMovies.addAll(documents.toObjects(Movie::class.java))
+                    adapter?.updateData(currentMovies)
                 }
-                .addOnFailureListener { e ->
-                    Log.w("DB", "Error getting document", e)
+            }
+            .addOnFailureListener { e ->
+                Log.w("DB", "Error getting document", e)
+            }
+        // Ds phim sắp chiếu
+        db.collection("movie")
+            .whereEqualTo("is_active", true)
+            .whereEqualTo("is_deleted", false)
+            .whereGreaterThan("release_date", Date())
+            .orderBy("release_date", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { documents ->
+                this.runOnUiThread {
+                    upcomingMovies.addAll(documents.toObjects(Movie::class.java))
                 }
-        } else {
-            // Ds phim sắp chiếu
-            val db = Firebase.firestore
-            db.collection("movie")
-                .whereEqualTo("is_active", true)
-                .whereEqualTo("is_deleted", false)
-                .whereGreaterThan("release_date", Date())
-                .orderBy("release_date", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener { documents ->
-                    this.runOnUiThread {
-                        moviesList.addAll(documents.toObjects(Movie::class.java))
-                        adapter?.notifyDataSetChanged()
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.w("DB", "Error getting document", e)
-                }
-        }
+            }
+            .addOnFailureListener { e ->
+                Log.w("DB", "Error getting document", e)
+            }
     }
 
 
@@ -74,28 +69,32 @@ class FilmListActivity : AppCompatActivity() {
         buttonCurrentFilm = findViewById(R.id.activity_film_list_button_current_film)
         buttonComingFilm = findViewById(R.id.activity_film_list_button_comming_film)
 
+        getDataForList ()
+
         buttonComingFilm?.setOnClickListener {
             current = 0
             buttonComingFilm?.setTextColor(Color.parseColor("#FF0303"));
             buttonCurrentFilm?.setTextColor(Color.parseColor("#C8C8C8"));
-            getDataForList ()
+            adapter?.updateData(upcomingMovies)
         }
 
         buttonCurrentFilm?.setOnClickListener {
             current = 1
             buttonComingFilm?.setTextColor(Color.parseColor("#C8C8C8"));
             buttonCurrentFilm?.setTextColor(Color.parseColor("#FF0303"));
-            getDataForList ()
+            adapter?.updateData(currentMovies)
         }
 
-        getDataForList ()
-
         gridView = findViewById(R.id.activity_film_list_gridview_list_film)
-        adapter = MyGridAdapter(this, moviesList)
+        adapter = MyGridAdapter(this, currentMovies)
         gridView!!.adapter = adapter
         gridView!!.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(applicationContext, FilmInfoActivity::class.java)
-            intent.putExtra("movie", moviesList[i])
+            if (current == 1) {
+                intent.putExtra("movie", currentMovies[i])
+            } else if (current == 0) {
+                intent.putExtra("movie", upcomingMovies[i])
+            }
             startActivity(intent)
         }
     }
