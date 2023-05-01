@@ -35,7 +35,6 @@ class FilmListActivity : AppCompatActivity() {
                 .whereEqualTo("is_deleted", false)
                 .whereLessThan("release_date", Date())
                 .orderBy("release_date", Query.Direction.DESCENDING)
-                .limit(6)
                 .get()
                 .addOnSuccessListener { documents ->
                     this.runOnUiThread {
@@ -54,7 +53,6 @@ class FilmListActivity : AppCompatActivity() {
                 .whereEqualTo("is_deleted", false)
                 .whereGreaterThan("release_date", Date())
                 .orderBy("release_date", Query.Direction.ASCENDING)
-                .limit(6)
                 .get()
                 .addOnSuccessListener { documents ->
                     this.runOnUiThread {
