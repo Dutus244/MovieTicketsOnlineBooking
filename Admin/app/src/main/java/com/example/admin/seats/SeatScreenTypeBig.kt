@@ -2,7 +2,6 @@ package com.example.admin.seats
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -19,19 +18,19 @@ import android.widget.Toast
 import com.example.admin.R
 import com.example.admin.auditoriums.Auditorium
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.jahidhasanco.seatbookview.SeatBookView
 import dev.jahidhasanco.seatbookview.SeatClickListener
 
-class SeatScreen : AppCompatActivity() {
+class SeatScreenTypeBig : AppCompatActivity() {
     private lateinit var seatBookView: SeatBookView
 
     var title: TextView? = null
     var changeNameBtn: Button? = null
     var seatBtn: Button? = null
     var instructionTV: TextView? = null
-    var isNew: Boolean? = null // check if auditorium has created map before
 
     var auditorium: Auditorium? = null
 
@@ -41,14 +40,14 @@ class SeatScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_seat_screen)
+        setContentView(R.layout.activity_seat_screen_type_big)
         FirebaseApp.initializeApp(this)
 
 
         intent = intent
         auditorium = intent.getSerializableExtra("auditorium") as? Auditorium
 
-        title = findViewById(R.id.seatScreenTitle)
+        title = findViewById(R.id.seatScreenBigTitle)
         changeNameBtn = findViewById(R.id.changeNameBtn)
         seatBtn = findViewById(R.id.seatBtn)
         instructionTV = findViewById(R.id.instructionTV)
@@ -59,8 +58,8 @@ class SeatScreen : AppCompatActivity() {
             seatBtn!!.text = "Xóa"
             seatBtn!!.setBackgroundColor(Color.parseColor("#df4759"))
 
-            var seats = makeExistedSeats(auditorium!!.map)
-            var titles = makeExistedTitles(auditorium!!.map)
+            val seats = makeExistedSeats(auditorium!!.map)
+            val titles = makeExistedTitles(auditorium!!.map)
             seatBookView = findViewById(R.id.layoutSeat)
             seatBookView.setSeatsLayoutString(seats)
                 .isCustomTitle(true)
@@ -81,12 +80,12 @@ class SeatScreen : AppCompatActivity() {
                     dialog.show()
                 }
                 "Lưu" -> {
-                    var seats = IntArray(row * col) { (it + 1) }
+                    val seats = IntArray(row * col) { (it + 1) }
                     val newSeats =
                         seats.map { if (it in seatsRemove) 0 else it }
                             .map { if (it != 0) 1 else 0 }
                             .toIntArray()
-                    var seatMap = arrayListOf<String>()
+                    val seatMap = arrayListOf<String>()
                     for (i in 1..row) {
                         var line = ""
                         for (j in 1..col) {
@@ -94,7 +93,7 @@ class SeatScreen : AppCompatActivity() {
                         }
                         seatMap.add(line)
                     }
-                    var seats_no = row * col - seatsRemove.size
+                    val seats_no = row * col - seatsRemove.size
                     createSeatMap(seatMap, seats_no)
                 }
                 "Xóa" -> {
@@ -108,14 +107,14 @@ class SeatScreen : AppCompatActivity() {
     }
 
     fun createChangeNameDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(this@SeatScreen)
-        val input = EditText(this@SeatScreen)
+        val builder = AlertDialog.Builder(this@SeatScreenTypeBig)
+        val input = EditText(this@SeatScreenTypeBig)
         input.setSingleLine()
         input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(20))
         builder.setView(input)
         builder.setMessage("Nhập tên phòng chiếu")
             .setPositiveButton("Đổi") { _, _ ->
-                var name = input.text.toString()
+                val name = input.text.toString()
                 if (name.isEmpty()) {
                     Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT)
                         .show()
@@ -126,7 +125,7 @@ class SeatScreen : AppCompatActivity() {
                         .update("name", name)
                         .addOnSuccessListener {
                             Toast.makeText(
-                                this@SeatScreen,
+                                this@SeatScreenTypeBig,
                                 "Đổi thành công",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -146,18 +145,18 @@ class SeatScreen : AppCompatActivity() {
     }
 
     fun createMapDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(this@SeatScreen)
-        val parentLayout = LinearLayout(this@SeatScreen)
+        val builder = AlertDialog.Builder(this@SeatScreenTypeBig)
+        val parentLayout = LinearLayout(this@SeatScreenTypeBig)
         parentLayout.orientation = LinearLayout.VERTICAL
 
-        val rowInput = EditText(this@SeatScreen)
-        rowInput.inputType = InputType.TYPE_CLASS_NUMBER;
+        val rowInput = EditText(this@SeatScreenTypeBig)
+        rowInput.inputType = InputType.TYPE_CLASS_NUMBER
         rowInput.hint = "Số dòng"
         rowInput.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(2))
         parentLayout.addView(rowInput)
 
-        val colInput = EditText(this@SeatScreen)
-        colInput.inputType = InputType.TYPE_CLASS_NUMBER;
+        val colInput = EditText(this@SeatScreenTypeBig)
+        colInput.inputType = InputType.TYPE_CLASS_NUMBER
         colInput.hint = "Số cột"
         colInput.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(2))
         parentLayout.addView(colInput)
@@ -206,7 +205,7 @@ class SeatScreen : AppCompatActivity() {
     }
 
     fun createDeleteDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(this@SeatScreen)
+        val builder = AlertDialog.Builder(this@SeatScreenTypeBig)
         builder.setMessage("Bạn có chắc là muốn xóa!")
             .setPositiveButton("Có") { dialog, id ->
                 val db = Firebase.firestore
@@ -214,17 +213,25 @@ class SeatScreen : AppCompatActivity() {
                     .document(auditorium!!.id)
                     .update("is_deleted", true)
                     .addOnSuccessListener {
-                        Toast.makeText(
-                            this@SeatScreen,
-                            "Xóa thành công",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        val replyIntent = Intent()
-                        setResult(Activity.RESULT_OK, replyIntent)
-                        finish()
+                        db.collection("cinema")
+                            .document(auditorium!!.cinema_id)
+                            .update("auditoriums_no", FieldValue.increment(-1))
+                            .addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Xóa thành công",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val replyIntent = Intent()
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                finish()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("DB", "Error getting documents.", e)
+                            }
                     }
-                    .addOnFailureListener { exception ->
-                        Log.w("DB", "Error getting documents.", exception)
+                    .addOnFailureListener { e ->
+                        Log.w("DB", "Error getting documents.", e)
                     }
 
             }
@@ -244,12 +251,13 @@ class SeatScreen : AppCompatActivity() {
     }
 
     fun makeTitles(row: Int, col: Int): List<String> {
-        var title = arrayListOf<String>()
+        val title = arrayListOf<String>()
         var rowTitle = 'A'
         for (i in 1..row) {
             title.add("/")
             for (j in 1..col) {
-                title.add(rowTitle + j.toString())
+                val colTitle = j.toString()
+                title.add(rowTitle + colTitle)
             }
             ++rowTitle
         }
@@ -260,15 +268,11 @@ class SeatScreen : AppCompatActivity() {
         auditorium!!.map = seatMap
         auditorium!!.seats_no = seats_no
         val db = Firebase.firestore
+        // Create seat map in auditorium
         db.collection("auditorium")
             .document(auditorium!!.id)
             .set(auditorium!!)
             .addOnSuccessListener {
-                Toast.makeText(
-                    this,
-                    "Lưu sơ đồ thành công",
-                    Toast.LENGTH_SHORT
-                ).show()
                 val replyIntent = Intent()
                 replyIntent.putExtra("seats_no", seats_no)
                 setResult(Activity.RESULT_OK, replyIntent)
@@ -289,7 +293,7 @@ class SeatScreen : AppCompatActivity() {
     }
 
     fun makeExistedTitles(map: ArrayList<String>): List<String> {
-        var title = arrayListOf<String>()
+        val title = arrayListOf<String>()
         var rowTitle = 'A'
         var count = 0
         for (item in map) {

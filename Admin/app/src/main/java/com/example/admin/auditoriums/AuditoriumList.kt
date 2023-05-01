@@ -1,9 +1,7 @@
 package com.example.admin.auditoriums
 
-import android.R.attr.maxLength
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -12,9 +10,9 @@ import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
@@ -34,6 +32,7 @@ class AuditoriumList : AppCompatActivity() {
 
     var auditoriums: List<Auditorium> = listOf()
     var cinema_id: String? = null
+    var cinema_type: String? = null
 
     // Create a CoroutineScope instance in the activity
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -45,6 +44,7 @@ class AuditoriumList : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         val intent = intent
         cinema_id = intent.getStringExtra("cinema_id")
+        cinema_type = intent.getStringExtra("cinema_type")
 
         autoCompleteTextView = findViewById(R.id.audiListACTV)
         audiRecyclerView = findViewById(R.id.audiListRecyclerView)
@@ -103,10 +103,10 @@ class AuditoriumList : AppCompatActivity() {
             emptyList()
         }
 
-    fun createAuditorium(name: String, cinema_id: String) {
+    fun createAuditorium(name: String, type: String, cinema_id: String) {
         val db = Firebase.firestore
         db.collection("auditorium")
-            .add(Auditorium(name, cinema_id = cinema_id))
+            .add(Auditorium(name, type = type, cinema_id = cinema_id))
             .addOnSuccessListener {
                 db.collection("cinema")
                     .document(cinema_id)
@@ -129,19 +129,24 @@ class AuditoriumList : AppCompatActivity() {
     }
 
     fun createaAuditorimDialog(cinema_id: String): AlertDialog {
+        // Create the dialog builder
         val builder = AlertDialog.Builder(this@AuditoriumList)
-        val input = EditText(this@AuditoriumList)
-        input.setSingleLine()
-        input.filters = arrayOf<InputFilter>(LengthFilter(25))
-        builder.setView(input)
-        builder.setMessage("Nhập tên phòng chiếu")
+        val view = LayoutInflater.from(this@AuditoriumList)
+            .inflate(R.layout.create_auditorium_dialog, null)
+
+        val nameET = view.findViewById<EditText>(R.id.nameET)
+
+        nameET.setSingleLine()
+        nameET.filters = arrayOf<InputFilter>(LengthFilter(25))
+
+        builder.setView(view)
             .setPositiveButton("Thêm") { _, _ ->
-                var name = input.text.toString()
+                val name = nameET.text.toString()
                 if (name.isEmpty()) {
                     Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    createAuditorium(name, cinema_id)
+                    createAuditorium(name, cinema_type!!, cinema_id)
                 }
             }
             .setNegativeButton("Hủy") { _, _ ->
@@ -155,7 +160,9 @@ class AuditoriumList : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RequestCode.AUDITORIUM_SCREEN_EDIT) {
+        if (requestCode == RequestCode.AUDITORIUM_BIG_SCREEN_EDIT ||
+            requestCode == RequestCode.AUDITORIUM_SMALL_SCREEN_EDIT
+        ) {
             if (resultCode == Activity.RESULT_OK) {
                 recreate()
             }

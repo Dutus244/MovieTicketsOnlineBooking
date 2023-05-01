@@ -11,6 +11,10 @@ data class Auditorium(
     var is_deleted: Boolean = false,
     var cinema_id: String = "",
     var map: ArrayList<String> = arrayListOf(),
+    var type: String = "",
+    var description: String = "",
+    var img_url: String = "",
+    var price: Int = 0,
     @DocumentId
     val id: String = "",
 ) : java.io.Serializable {

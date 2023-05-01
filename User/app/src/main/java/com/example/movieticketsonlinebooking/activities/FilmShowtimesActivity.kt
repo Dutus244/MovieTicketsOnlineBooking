@@ -1,8 +1,8 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,9 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.UserManager
 
 
 class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
@@ -20,6 +22,11 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
     val cinemaList: ArrayList<Cinema> =  ArrayList()
     var adapter: CinemaAdapter? = null
     class Cinema(val name: String, val showtimes: List<String>)
+
+    fun loginToAccount() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivityForResult(intent, 1001)
+    }
 
     class CinemaAdapter(private val context: Context, private val cinemaList: ArrayList<Cinema>) : BaseAdapter() {
 
@@ -71,14 +78,14 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             holder.showtimesGridView.numColumns = 3
 
             holder.showtimesGridView.setOnItemClickListener { _, _, position, _ ->
-                    val clickedButton = adapter.getItem(position)
                 val intent = Intent(context, BookSeatActivity::class.java)
 //                    intent.putExtra("cinemaName", cinema.name)
 //                    intent.putExtra("showtime", showtime)
-                    context.startActivity(intent)
+                context.startActivity(intent)
             }
             return view
         }
+
 
         private class ViewHolder {
             lateinit var cinemaName: TextView
@@ -92,6 +99,18 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             notifyDataSetChanged()
         }
     }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
+
+        }
+    }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

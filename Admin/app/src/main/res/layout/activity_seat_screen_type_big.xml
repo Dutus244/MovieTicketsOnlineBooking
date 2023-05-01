@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".seats.SeatScreen">
+    tools:context=".seats.SeatScreenTypeBig">
 
     <TextView
-        android:id="@+id/seatScreenTitle"
+        android:id="@+id/seatScreenBigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toTopOf="@+id/instructionTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seatScreenTitle">
+        app:layout_constraintTop_toBottomOf="@+id/seatScreenBigTitle">
 
         <HorizontalScrollView
             android:layout_width="fill_parent"

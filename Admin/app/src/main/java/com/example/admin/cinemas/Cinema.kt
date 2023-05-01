@@ -12,6 +12,8 @@ data class Cinema(
     var status: String = "Open",
     @field:JvmField
     var is_deleted: Boolean = false,
+    var type: String = "Big",
+    var price: Int = 0,
     @DocumentId
     val id: String = "",
 ) : java.io.Serializable {

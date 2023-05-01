@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.example.admin.R
@@ -18,6 +19,8 @@ class AddCinema : AppCompatActivity() {
     var cinemaNameET: EditText? = null
     var cinemaImgURLET: EditText? = null
     var cinemaAddrET: EditText? = null
+    var cinemaTypeRG: RadioGroup? = null
+    var cinemaPriceET: EditText? = null
     var saveBtn: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +30,8 @@ class AddCinema : AppCompatActivity() {
         cinemaNameET = findViewById(R.id.addCinemaNameET)
         cinemaImgURLET = findViewById(R.id.addCinemaImgET)
         cinemaAddrET = findViewById(R.id.addCinemaAddrET)
+        cinemaTypeRG = findViewById(R.id.addCinemaTypeRG)
+        cinemaPriceET = findViewById(R.id.addCinemaPriceET)
         saveBtn = findViewById(R.id.addCinemaSaveBtn)
 
         saveBtn!!.setOnClickListener {
@@ -36,19 +41,31 @@ class AddCinema : AppCompatActivity() {
                 Toast.makeText(this, "Vui lòng nhập tên và địa chỉ", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            var type = ""
+            when (cinemaTypeRG!!.checkedRadioButtonId) {
+                R.id.addCinemaBigRB -> {
+                    type = "Big"
+                }
+                R.id.addCinemaSmallRB -> {
+                    type = "Small"
+                }
+            }
+
             addCinema(
                 cinemaImgURLET!!.text.toString(),
                 cinemaNameET!!.text.toString(),
-                cinemaAddrET!!.text.toString()
+                cinemaAddrET!!.text.toString(),
+                type,
+                cinemaPriceET!!.text.toString().toInt()
             )
         }
     }
 
-    fun addCinema(img_url: String, name: String, addr: String) {
+    fun addCinema(img_url: String, name: String, addr: String, type: String, price: Int) {
         FirebaseApp.initializeApp(this)
         val db = Firebase.firestore
         db.collection("cinema")
-            .add(Cinema(img_url, name, addr))
+            .add(Cinema(img_url, name, addr, type = type, price = price))
             .addOnSuccessListener {
                 val replyIntent = Intent()
                 setResult(Activity.RESULT_OK, replyIntent)

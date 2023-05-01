@@ -15,6 +15,18 @@
             android:name="com.example.admin.screenings.CinemaScreeningList"
             android:exported="false" />
         <activity
+            android:name="com.example.admin.reservations.ReservationForSmall"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reservations.ReservationForBigDetail"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reservations.ReservationForBig"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.seats.SeatScreenTypeSmall"
+            android:exported="false" />
+        <activity
             android:name="com.example.admin.reviews.ReviewDetail"
             android:exported="false" />
         <activity
@@ -33,7 +45,7 @@
             android:name="com.example.admin.screenings.EditScreening"
             android:exported="false" />
         <activity
-            android:name="com.example.admin.seats.SeatScreen"
+            android:name="com.example.admin.seats.SeatScreenTypeBig"
             android:exported="false" />
         <activity
             android:name="com.example.admin.movies.MovieList"
