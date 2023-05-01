@@ -113,6 +113,15 @@
         app:layout_constraintStart_toStartOf="@+id/editScreeningMovieSpinner"
         app:layout_constraintTop_toBottomOf="@+id/editScreeningMovieSpinner" />
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Danh sách đặt chỗ"
+        app:layout_constraintStart_toStartOf="@+id/editScreeningStartET"
+        app:layout_constraintTop_toBottomOf="@+id/editScreeningStartET" />
+
     <Spinner
         android:id="@+id/editScreeningAuditoriumSpinner"
         android:layout_width="0dp"
@@ -160,5 +169,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/editScreeningStartET"
         app:layout_constraintEnd_toEndOf="@+id/editScreeningStartET"
         app:layout_constraintTop_toTopOf="@+id/editScreeningStartET" />
+
+    <Button
+        android:id="@+id/viewReservationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xem"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="@+id/editScreeningStartET"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="@+id/textView9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

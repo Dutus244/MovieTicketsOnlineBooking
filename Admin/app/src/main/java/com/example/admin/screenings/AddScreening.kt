@@ -140,7 +140,7 @@ class AddScreening : AppCompatActivity() {
         calendar.time = screening_start
         calendar.add(Calendar.MINUTE, movie.duration)
 
-        val screening = ScreeningWithoutNames(
+        val screening = Screening(
             auditorium_id, cinema_id, movie_id,
             screening_start, calendar.time)
         db.collection("screening")

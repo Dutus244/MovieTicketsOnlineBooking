@@ -3,65 +3,104 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/screeningImg"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/screeningNameTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:text="TextView"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/screeningImg"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/showtimeGridview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/movieAvatar"
+            app:layout_constraintTop_toTopOf="@+id/movieAvatar">
 
-    <TextView
-        android:id="@+id/screeningTimeStartTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/screeningTimeEndTV"
-        app:layout_constraintEnd_toEndOf="@+id/screeningNameTV"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/screeningNameTV"
-        app:layout_constraintTop_toBottomOf="@+id/screeningAuditoriumNameTV" />
+            <Button
+                android:id="@+id/showtimeBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/baseline_keyboard_arrow_down_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/movieName" />
 
-    <TextView
-        android:id="@+id/screeningAuditoriumNameTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/screeningTimeStartTV"
-        app:layout_constraintEnd_toEndOf="@+id/screeningNameTV"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/screeningNameTV"
-        app:layout_constraintTop_toBottomOf="@+id/screeningNameTV" />
+            <TextView
+                android:id="@+id/movieClass"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="C13"
+                android:textColor="#646464"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/movieRating"
+                app:layout_constraintTop_toBottomOf="@+id/movieRating" />
 
-    <TextView
-        android:id="@+id/screeningTimeEndTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/screeningNameTV"
-        app:layout_constraintStart_toStartOf="@+id/screeningNameTV" />
+            <TextView
+                android:id="@+id/movieRating"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_star_24"
+                android:text="7.5"
+                android:textColor="#646464"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/movieName"
+                app:layout_constraintTop_toBottomOf="@+id/movieName" />
+
+            <TextView
+                android:id="@+id/movieName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Tên phim"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/showtimeBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/movieDuration"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_watch_later_24"
+                android:text="95 phút"
+                android:textColor="#646464"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/movieClass"
+                app:layout_constraintTop_toBottomOf="@+id/movieClass" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/movieAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <GridView
+            android:id="@+id/showtimeGridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:columnWidth="100dp"
+            android:focusable="true"
+            android:horizontalSpacing="16dp"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
