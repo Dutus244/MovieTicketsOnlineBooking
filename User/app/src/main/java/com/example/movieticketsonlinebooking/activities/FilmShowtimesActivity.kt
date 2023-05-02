@@ -3,34 +3,60 @@ package com.example.movieticketsonlinebooking.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.movieticketsonlinebooking.R
-import com.example.movieticketsonlinebooking.viewmodels.UserManager
+import com.example.movieticketsonlinebooking.viewmodels.CinemaScreening
+import com.example.movieticketsonlinebooking.viewmodels.Screening
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
-    var tempList: ArrayList<Cinema> = ArrayList()
-    val cinemaList: ArrayList<Cinema> =  ArrayList()
+    private var movieInfoBtn: Button? = null
+
+    var movie_id: String? = null
+    var screenings: ArrayList<Screening>? = null
+    var cinemaScreening: ArrayList<CinemaScreening>? = null
+    var activeCinemaScreening: ArrayList<CinemaScreening>? = null
+
+    var movieNameTV: TextView? = null
+    var dateBtn = arrayOfNulls<Button>(7)
+    var dateList = arrayOfNulls<Date>(7)
+    var activeDateBtn: Button? = null
+    var currentDateTV: TextView? = null
+
     var adapter: CinemaAdapter? = null
-    class Cinema(val name: String, val showtimes: List<String>)
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     fun loginToAccount() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivityForResult(intent, 1001)
     }
 
-    class CinemaAdapter(private val context: Context, private val cinemaList: ArrayList<Cinema>) : BaseAdapter() {
+    class CinemaAdapter(
+        private val context: Context,
+        private val cinemaList: ArrayList<CinemaScreening>
+    ) :
+        BaseAdapter() {
 
-        private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        private val inflater: LayoutInflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         override fun getCount(): Int {
             return cinemaList.size
@@ -42,6 +68,12 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
 
         override fun getItemId(position: Int): Long {
             return position.toLong()
+        }
+
+        private class ViewHolder {
+            lateinit var cinemaName: TextView
+            lateinit var showtimesButton: Button
+            lateinit var showtimesGridView: GridView
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -73,11 +105,23 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                 }
             }
 
-            val adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, cinema.showtimes)
+            // Convert Date to HH:mm
+            val showtimes = ArrayList<String>()
+            for (i in cinema.screenings!!) {
+                val start = Calendar.getInstance().apply { time = i.screening_start }
+                val end = Calendar.getInstance().apply { time = i.screening_end }
+
+                val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                showtimes.add(timeFormat.format(start.time) + " - " + timeFormat.format(end.time))
+            }
+
+
+            val adapter =
+                ArrayAdapter(context, android.R.layout.simple_list_item_1, showtimes)
             holder.showtimesGridView.adapter = adapter
             holder.showtimesGridView.numColumns = 3
 
-            holder.showtimesGridView.setOnItemClickListener { _, _, position, _ ->
+            holder.showtimesGridView.setOnItemClickListener { _, _, _, _ ->
                 val intent = Intent(context, BookSeatActivity::class.java)
 //                    intent.putExtra("cinemaName", cinema.name)
 //                    intent.putExtra("showtime", showtime)
@@ -86,21 +130,12 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             return view
         }
 
-
-        private class ViewHolder {
-            lateinit var cinemaName: TextView
-            lateinit var showtimesButton: Button
-            lateinit var showtimesGridView: GridView
-        }
-
-        fun updateData(newList: List<Cinema>) {
+        fun updateData(newList: List<CinemaScreening>) {
             cinemaList.clear()
             cinemaList.addAll(newList)
             notifyDataSetChanged()
         }
     }
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -110,81 +145,186 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         }
     }
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_showtimes)
+        FirebaseApp.initializeApp(this@FilmShowtimesActivity)
 
-        var temp = ArrayList<String>()
+        val intent = intent
+        val movie_title = intent.getStringExtra("movie_title")
 
-        temp.add("7:00-8:30")
-        temp.add("8:30-9:00")
-        temp.add("9:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
+        movieNameTV = findViewById(R.id.activity_film_showtimes_film_name)
+        movieNameTV!!.text = movie_title
+        movieInfoBtn = findViewById(R.id.activity_film_showtimes_info)
+        movieInfoBtn!!.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+        dateBtn[0] = findViewById(R.id.button1)
+        dateBtn[1] = findViewById(R.id.button2)
+        dateBtn[2] = findViewById(R.id.button3)
+        dateBtn[3] = findViewById(R.id.button4)
+        dateBtn[4] = findViewById(R.id.button5)
+        dateBtn[5] = findViewById(R.id.button6)
+        dateBtn[6] = findViewById(R.id.button7)
+        currentDateTV = findViewById(R.id.activity_film_showtimes_time)
 
-        cinemaList.add(Cinema("Galaxy Nguyễn Du",temp))
-        cinemaList.add(Cinema("BHD Quang Trung",temp))
-        cinemaList.add(Cinema("BHD Gò Vấp",temp))
-        cinemaList.add(Cinema("Cienstar Nguyễn Trãi",temp))
-        cinemaList.add(Cinema("Cienstar Hai Bà Trưng",temp))
+        activeDateBtn = dateBtn[0]
+        activeDateBtn!!.setBackgroundColor(Color.parseColor("#FF0303"))
+        activeDateBtn!!.setTextColor(Color.WHITE)
 
-        tempList.addAll(cinemaList)
+        val dateFormat = SimpleDateFormat("dd/MM", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        for (i in 0 until 7) {
+            val date = calendar.time
+            dateList[i] = calendar.time
+            dateBtn[i]!!.text = dateFormat.format(date)
+            calendar.add(Calendar.DATE, 1)
+            dateBtn[i]!!.setOnClickListener { btn ->
+                activeDateBtn!!.setBackgroundColor(Color.TRANSPARENT)
+                activeDateBtn!!.setTextColor(Color.BLACK)
+                (btn as Button).setBackgroundColor(Color.parseColor("#FF0303"))
+                btn.setTextColor(Color.WHITE)
+
+                if (btn != activeDateBtn) {
+                    currentDateTV!!.text =
+                        SimpleDateFormat(
+                            "'Ngày' dd 'tháng' MM 'năm' yyyy",
+                            Locale.getDefault()
+                        ).format(dateList[i]!!)
+
+                    // Get current date screenings
+                    for (j in 0 until activeCinemaScreening!!.size) {
+                        activeCinemaScreening!![j].screenings =
+                            cinemaScreening!![j].screenings!!.filter {
+                                isSameDate(it.screening_start, dateList[i]!!)
+                            }
+                    }
+                    adapter!!.updateData(activeCinemaScreening!!)
+                }
+                activeDateBtn = btn
+            }
+        }
+        currentDateTV!!.text =
+            SimpleDateFormat(
+                "'Ngày' dd 'tháng' MM 'năm' yyyy",
+                Locale.getDefault()
+            ).format(dateList[0]!!)
 
         val cinemaListView = findViewById<ListView>(R.id.activity_film_showtimes_list_cinema)
-        adapter = CinemaAdapter(this, cinemaList)
+        adapter = CinemaAdapter(this, ArrayList())
         cinemaListView.adapter = adapter
 
-        var searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
-        searchEditText.addTextChangedListener(this);
+        val searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
+        searchEditText.addTextChangedListener(this)
+
+        coroutineScope.launch {
+            movie_id = intent.getStringExtra("movie_id")
+
+            screenings = getScreenings(movie_id!!)
+            cinemaScreening = getCinemaScreening(screenings!!)
+            // Make a deep copy
+            activeCinemaScreening =
+                cinemaScreening?.map {
+                    it.copy(screenings = ArrayList(it.screenings!!))
+                } as ArrayList<CinemaScreening>?
+            // Get current date screenings
+            for (i in activeCinemaScreening!!) {
+                i.screenings = i.screenings!!.filter {
+                    isSameDate(it.screening_start, dateList[0]!!)
+                }
+            }
+            adapter!!.updateData(activeCinemaScreening!!)
+        }
     }
 
-    var resultList: ArrayList<Cinema> = ArrayList()
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel()
+    }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        resultList.clear()
-        if (s != null && s.length > 0) {
-            val query = s.toString().uppercase()
-            val filters: java.util.ArrayList<Cinema> =
-                java.util.ArrayList<Cinema>()
-            for (i in 0 until tempList.size) {
-                val name: String = tempList.get(i).name
-                if (name.uppercase().contains(query)) {
-                    filters.add(
-                        Cinema(
-                            tempList.get(i).name,
-                            tempList.get(i).showtimes
-                        )
-                    )
-                }
-            }
-            resultList.addAll(filters)
-        } else {
-            for (i in 0 until tempList.size) {
-                resultList.add(
-                    Cinema(
-                        tempList.get(i).name,
-                        tempList.get(i).showtimes
-                    )
-                )
-            }
-        }
-        for (i in resultList) {
-            println(i.name)
-        }
-        adapter!!.updateData(resultList)
+        adapter!!.updateData(activeCinemaScreening!!.filter {
+            it.name.contains(s.toString(), ignoreCase = true)
+        })
     }
 
     override fun afterTextChanged(s: Editable?) {
 
     }
+
+    fun isSameDate(date1: Date, date2: Date): Boolean {
+        val calendar1 = Calendar.getInstance().apply {
+            time = date1
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val calendar2 = Calendar.getInstance().apply {
+            time = date2
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return calendar1.time == calendar2.time
+    }
+
+    suspend fun getScreenings(movie_id: String): ArrayList<Screening>? = runCatching {
+        val db = Firebase.firestore
+        val res = arrayListOf<Screening>()
+
+        // Get the current date and time
+        val currentDate = Date()
+
+        // Get the next week end of day of current date
+        val calendar = Calendar.getInstance()
+        calendar.time = currentDate
+        calendar.add(Calendar.DAY_OF_YEAR, 6)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val oneWeekFromNow = calendar.time
+
+        // Construct the query to retrieve documents where screening_start is within a week from now
+        val snapshot = db.collection("screening")
+            .whereEqualTo("is_deleted", false)
+            .whereEqualTo("movie_id", movie_id)
+            .whereGreaterThan("screening_start", currentDate)
+            .whereLessThan("screening_start", oneWeekFromNow)
+            .get()
+            .await()
+        res.addAll(snapshot.toObjects(Screening::class.java))
+        res
+    }.getOrElse {
+        Log.w("DB", "Error getting data .", it)
+        null
+    }
+
+    suspend fun getCinemaScreening(screenings: ArrayList<Screening>): ArrayList<CinemaScreening>? =
+        runCatching {
+            val db = Firebase.firestore
+            val uniqueCinemaIds = screenings.distinctBy { it.cinema_id }.map { it.cinema_id }
+            val res = arrayListOf<CinemaScreening>()
+
+            for (cinema_id in uniqueCinemaIds) {
+                val snapshot = db.collection("cinema")
+                    .document(cinema_id)
+                    .get()
+                    .await()
+                val tempCinemaScreening = snapshot.toObject(CinemaScreening::class.java)
+                tempCinemaScreening!!.screenings = screenings.filter { it.cinema_id == cinema_id }
+                res.add(tempCinemaScreening)
+            }
+            screenings.clear()
+            res
+        }.getOrElse {
+            Log.w("DB", "Error getting data .", it)
+            null
+        }
 }
