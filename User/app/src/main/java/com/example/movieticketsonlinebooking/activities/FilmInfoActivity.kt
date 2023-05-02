@@ -181,6 +181,13 @@ class FilmInfoActivity : AppCompatActivity() {
             intent.putExtra("movie_id", movie!!.id)
             startActivity(intent)
         }
+
+        showReviewButton = findViewById(R.id.see_review_button)
+        showReviewButton?.setOnClickListener {
+            val intent = Intent(applicationContext, FilmReviewActivity::class.java)
+            intent.putExtra("movie", movie)
+            startActivity(intent)
+        }
     }
 
     fun extractYouTubeVideoId(youtubeUrl: String): String {
