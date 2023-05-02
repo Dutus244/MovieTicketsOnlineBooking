@@ -37,6 +37,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
     var dateBtn = arrayOfNulls<Button>(7)
     var dateList = arrayOfNulls<Date>(7)
     var activeDateBtn: Button? = null
+    var currentDateTV: TextView? = null
 
     var adapter: CinemaAdapter? = null
 
@@ -159,6 +160,8 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         dateBtn[4] = findViewById(R.id.button5)
         dateBtn[5] = findViewById(R.id.button6)
         dateBtn[6] = findViewById(R.id.button7)
+        currentDateTV = findViewById(R.id.activity_film_showtimes_time)
+
         activeDateBtn = dateBtn[0]
         activeDateBtn!!.setBackgroundColor(Color.parseColor("#FF0303"))
         activeDateBtn!!.setTextColor(Color.WHITE)
@@ -177,6 +180,12 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                 btn.setTextColor(Color.WHITE)
 
                 if (btn != activeDateBtn) {
+                    currentDateTV!!.text =
+                        SimpleDateFormat(
+                            "'Ngày' dd 'tháng' MM 'năm' yyyy",
+                            Locale.getDefault()
+                        ).format(dateList[i]!!)
+
                     // Get current date screenings
                     for (j in 0 until activeCinemaScreening!!.size) {
                         activeCinemaScreening!![j].screenings =
@@ -189,6 +198,11 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                 activeDateBtn = btn
             }
         }
+        currentDateTV!!.text =
+            SimpleDateFormat(
+                "'Ngày' dd 'tháng' MM 'năm' yyyy",
+                Locale.getDefault()
+            ).format(dateList[0]!!)
 
         val cinemaListView = findViewById<ListView>(R.id.activity_film_showtimes_list_cinema)
         adapter = CinemaAdapter(this, ArrayList())
