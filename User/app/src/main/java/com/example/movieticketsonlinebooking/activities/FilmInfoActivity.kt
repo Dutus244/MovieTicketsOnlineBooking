@@ -95,7 +95,6 @@ class FilmInfoActivity : AppCompatActivity() {
         movieDescription = findViewById(R.id.my_textview)
         castList = movie!!.cast.split(",")
         directorList = movie!!.director.split(",")
-        Log.i("Test", directorList.toString())
 
         Picasso.get().load(movie!!.poster_url).into(moviePoster)
         movieTitle!!.text = movie!!.title
@@ -178,6 +177,7 @@ class FilmInfoActivity : AppCompatActivity() {
         showtimesButton = findViewById(R.id.activity_film_info_showtimes)
         showtimesButton?.setOnClickListener {
             val intent = Intent(applicationContext, FilmShowtimesActivity::class.java)
+            intent.putExtra("movie_id", movie!!.id)
             startActivity(intent)
         }
     }

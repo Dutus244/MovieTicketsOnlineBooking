@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +15,33 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.CinemaScreening
+import com.example.movieticketsonlinebooking.viewmodels.Screening
 import com.example.movieticketsonlinebooking.viewmodels.UserManager
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
-    var tempList: ArrayList<Cinema> = ArrayList()
-    val cinemaList: ArrayList<Cinema> =  ArrayList()
+    private var movieInfoBtn: Button? = null
+
+    var movie_id: String? = null
+    var screenings: ArrayList<Screening>? = null
+    var cinemaScreening: ArrayList<CinemaScreening>? = null
+
+    var dayBtn = arrayOfNulls<Button>(7)
+
+    var tempList: ArrayList<Cinema> = arrayListOf()
+    val cinemaList: ArrayList<Cinema> = arrayListOf()
     var adapter: CinemaAdapter? = null
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
     class Cinema(val name: String, val showtimes: List<String>)
 
     fun loginToAccount() {
@@ -28,9 +49,11 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         startActivityForResult(intent, 1001)
     }
 
-    class CinemaAdapter(private val context: Context, private val cinemaList: ArrayList<Cinema>) : BaseAdapter() {
+    class CinemaAdapter(private val context: Context, private val cinemaList: ArrayList<Cinema>) :
+        BaseAdapter() {
 
-        private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        private val inflater: LayoutInflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         override fun getCount(): Int {
             return cinemaList.size
@@ -73,7 +96,8 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                 }
             }
 
-            val adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, cinema.showtimes)
+            val adapter =
+                ArrayAdapter(context, android.R.layout.simple_list_item_1, cinema.showtimes)
             holder.showtimesGridView.adapter = adapter
             holder.showtimesGridView.numColumns = 3
 
@@ -100,8 +124,6 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         }
     }
 
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -110,12 +132,33 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         }
     }
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_showtimes)
+        FirebaseApp.initializeApp(this@FilmShowtimesActivity)
+
+        movieInfoBtn = findViewById(R.id.activity_film_showtimes_info)
+        movieInfoBtn!!.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+        dayBtn[0] = findViewById(R.id.button1)
+        dayBtn[1] = findViewById(R.id.button2)
+        dayBtn[2] = findViewById(R.id.button3)
+        dayBtn[3] = findViewById(R.id.button4)
+        dayBtn[4] = findViewById(R.id.button5)
+        dayBtn[5] = findViewById(R.id.button6)
+        dayBtn[6] = findViewById(R.id.button7)
+
+        val currentDate = Date()
+
+
+        coroutineScope.launch {
+            val intent = intent
+            movie_id = intent.getStringExtra("movie_id")
+
+            screenings = getScreenings(movie_id!!)
+            cinemaScreening = getCinemaScreening(screenings!!)
+        }
 
         var temp = ArrayList<String>()
 
@@ -128,11 +171,11 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         temp.add("10:30-9:00")
         temp.add("10:30-9:00")
 
-        cinemaList.add(Cinema("Galaxy Nguyễn Du",temp))
-        cinemaList.add(Cinema("BHD Quang Trung",temp))
-        cinemaList.add(Cinema("BHD Gò Vấp",temp))
-        cinemaList.add(Cinema("Cienstar Nguyễn Trãi",temp))
-        cinemaList.add(Cinema("Cienstar Hai Bà Trưng",temp))
+        cinemaList.add(Cinema("Galaxy Nguyễn Du", temp))
+        cinemaList.add(Cinema("BHD Quang Trung", temp))
+        cinemaList.add(Cinema("BHD Gò Vấp", temp))
+        cinemaList.add(Cinema("Cienstar Nguyễn Trãi", temp))
+        cinemaList.add(Cinema("Cienstar Hai Bà Trưng", temp))
 
         tempList.addAll(cinemaList)
 
@@ -142,6 +185,11 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
 
         var searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
         searchEditText.addTextChangedListener(this);
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel()
     }
 
     var resultList: ArrayList<Cinema> = ArrayList()
@@ -187,4 +235,58 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
     override fun afterTextChanged(s: Editable?) {
 
     }
+
+    suspend fun getScreenings(movie_id: String): ArrayList<Screening>? = runCatching {
+        val db = Firebase.firestore
+        val res = arrayListOf<Screening>()
+
+        // Get the current date and time
+        val currentDate = Date()
+
+        // Get the next week end of day of current date
+        val calendar = Calendar.getInstance()
+        calendar.time = currentDate
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val oneWeekFromNow = calendar.time
+
+        // Construct the query to retrieve documents where screening_start is within a week from now
+        val snapshot = db.collection("screening")
+            .whereEqualTo("is_deleted", false)
+            .whereEqualTo("movie_id", movie_id)
+            .whereGreaterThan("screening_start", currentDate)
+            .whereLessThan("screening_start", oneWeekFromNow)
+            .get()
+            .await()
+        res.addAll(snapshot.toObjects(Screening::class.java))
+        res
+    }.getOrElse {
+        Log.w("DB", "Error getting data .", it)
+        null
+    }
+
+    suspend fun getCinemaScreening(screenings: ArrayList<Screening>): ArrayList<CinemaScreening>? =
+        runCatching {
+            val db = Firebase.firestore
+            val uniqueCinemaIds = screenings.distinctBy { it.cinema_id }.map { it.cinema_id }
+            val res = arrayListOf<CinemaScreening>()
+
+            for (cinema_id in uniqueCinemaIds) {
+                val snapshot = db.collection("cinema")
+                    .document(cinema_id)
+                    .get()
+                    .await()
+                val tempCinemaScreening = snapshot.toObject(CinemaScreening::class.java)
+                tempCinemaScreening!!.screenings = screenings.filter { it.cinema_id == cinema_id }
+                res.add(tempCinemaScreening)
+            }
+            screenings.clear()
+            res
+        }.getOrElse {
+            Log.w("DB", "Error getting data .", it)
+            null
+        }
 }
