@@ -179,6 +179,7 @@ class FilmInfoActivity : AppCompatActivity() {
         showtimesButton?.setOnClickListener {
             val intent = Intent(applicationContext, FilmShowtimesActivity::class.java)
             intent.putExtra("movie_id", movie!!.id)
+            intent.putExtra("movie_title", movie!!.title)
             startActivity(intent)
         }
 

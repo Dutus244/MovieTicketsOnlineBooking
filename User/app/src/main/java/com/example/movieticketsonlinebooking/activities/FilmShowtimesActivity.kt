@@ -34,6 +34,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
     var cinemaScreening: ArrayList<CinemaScreening>? = null
     var activeCinemaScreening: ArrayList<CinemaScreening>? = null
 
+    var movieNameTV: TextView? = null
     var dateBtn = arrayOfNulls<Button>(7)
     var dateList = arrayOfNulls<Date>(7)
     var activeDateBtn: Button? = null
@@ -120,7 +121,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             holder.showtimesGridView.adapter = adapter
             holder.showtimesGridView.numColumns = 3
 
-            holder.showtimesGridView.setOnItemClickListener { _, _, gridPos, _ ->
+            holder.showtimesGridView.setOnItemClickListener { _, _, _, _ ->
                 val intent = Intent(context, BookSeatActivity::class.java)
 //                    intent.putExtra("cinemaName", cinema.name)
 //                    intent.putExtra("showtime", showtime)
@@ -149,6 +150,11 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         setContentView(R.layout.activity_film_showtimes)
         FirebaseApp.initializeApp(this@FilmShowtimesActivity)
 
+        val intent = intent
+        val movie_title = intent.getStringExtra("movie_title")
+
+        movieNameTV = findViewById(R.id.activity_film_showtimes_film_name)
+        movieNameTV!!.text = movie_title
         movieInfoBtn = findViewById(R.id.activity_film_showtimes_info)
         movieInfoBtn!!.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -212,7 +218,6 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         searchEditText.addTextChangedListener(this)
 
         coroutineScope.launch {
-            val intent = intent
             movie_id = intent.getStringExtra("movie_id")
 
             screenings = getScreenings(movie_id!!)
