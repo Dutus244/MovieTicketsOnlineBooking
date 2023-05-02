@@ -12,6 +12,7 @@ import com.example.movieticketsonlinebooking.viewmodels.UserManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
 class AccountFragment2 : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,24 +35,32 @@ class AccountFragment2 : Fragment() {
             container, false
         )
 
-        gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(getString(R.string.your_web_client_id))
-                .build()
-        gsc = activity?.let { GoogleSignIn.getClient(it, gso!!) }
-
-        val acct = activity?.let { GoogleSignIn.getLastSignedInAccount(it) }
-
         nameTextView = view.findViewById(R.id.activity_account_textview_name)
         emailTextView = view.findViewById(R.id.activity_account_textview_email)
-        if (acct != null) {
-            val personName = acct.displayName
-            val personEmail = acct.email
 
-            nameTextView?.text = personName
-            emailTextView?.text = personEmail
+        if (UserManager.getCurrentUser().typeAccount == 0) {
+            nameTextView?.text = UserManager.getCurrentUser().username
+            emailTextView?.text = UserManager.getCurrentUser().email
         }
+        else if (UserManager.getCurrentUser().typeAccount == 1) {
+            gso =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(getString(R.string.your_web_client_id))
+                    .build()
+            gsc = activity?.let { GoogleSignIn.getClient(it, gso!!) }
+
+            val acct = activity?.let { GoogleSignIn.getLastSignedInAccount(it) }
+
+            if (acct != null) {
+                val personName = acct.displayName
+                val personEmail = acct.email
+
+                nameTextView?.text = personName
+                emailTextView?.text = personEmail
+            }
+        }
+
 
         signoutButton = view.findViewById(R.id.activity_account_button_logout)
         signoutButton?.setOnClickListener {
@@ -61,8 +70,8 @@ class AccountFragment2 : Fragment() {
     }
 
     fun signOut() {
-        gsc!!.signOut().addOnCompleteListener {
-            UserManager.logout()
+        if (UserManager.getCurrentUser().typeAccount == 0) {
+            FirebaseAuth.getInstance().signOut()
             val fragmentManager = requireActivity().supportFragmentManager
             val transaction = fragmentManager.beginTransaction()
 
@@ -70,6 +79,18 @@ class AccountFragment2 : Fragment() {
 
             transaction.commit()
         }
+        else if (UserManager.getCurrentUser().typeAccount == 1) {
+            gsc!!.signOut().addOnCompleteListener {
+
+                val fragmentManager = requireActivity().supportFragmentManager
+                val transaction = fragmentManager.beginTransaction()
+
+                transaction.replace(R.id.frame_layout, AccountFragment1())
+
+                transaction.commit()
+            }
+        }
+        UserManager.logout()
     }
 
     companion object {

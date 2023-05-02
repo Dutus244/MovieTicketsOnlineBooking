@@ -1,28 +1,24 @@
 package com.example.movieticketsonlinebooking.viewmodels
 
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.IgnoreExtraProperties
+import java.util.*
+
+@IgnoreExtraProperties
 data class User(
-    val userID: String?,
-    val username: String?,
-    val email: String?,
-    val isLoggedIn: Boolean = false
-)
+    val username: String = "",
+    val name: String = "",
+    val hashpassword: String = "",
+    val sex: String = "",
+    val tel: String = "",
+    val dob: Date = Date(),
+    val email: String = "",
+    @field:JvmField
+    val is_banned: Boolean = false,
+    @field:JvmField
+    val is_deleted: Boolean = false,
+    @DocumentId
+    val id: String = "",
+) : java.io.Serializable {
 
-object UserManager {
-    private var currentUser: User = User(null,null, null, false)
-
-    fun login(userID: String, username: String, email: String) {
-        currentUser = User(userID, username, email, true)
-    }
-
-    fun logout() {
-        currentUser = User(null,null, null, false)
-    }
-
-    fun getCurrentUser(): User {
-        return currentUser
-    }
-
-    fun isLoggedIn(): Boolean {
-        return currentUser.isLoggedIn
-    }
 }

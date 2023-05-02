@@ -9,6 +9,9 @@ import android.widget.EditText
 import com.example.movieticketsonlinebooking.R
 import com.example.movieticketsonlinebooking.fragments.GenericTextWatcher_ForgotPassword
 import com.example.movieticketsonlinebooking.fragments.GenericTextWatcher_Signup
+import com.example.movieticketsonlinebooking.viewmodels.Movie
+import com.example.movieticketsonlinebooking.viewmodels.User
+import java.util.*
 
 class SignupActivity2 : AppCompatActivity() {
     var otp_textbox_one: EditText? = null
@@ -17,10 +20,17 @@ class SignupActivity2 : AppCompatActivity() {
     var otp_textbox_four: EditText? = null
 
     var signupButton: Button? = null
+    var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup2)
+
+        intent = intent
+        user = intent.getSerializableExtra("user") as User
+
+        val random = Random()
+        val otp = random.nextInt(9000) + 1000
 
         otp_textbox_one = findViewById(R.id.activity_signup_2_otp_edit_box1)
         otp_textbox_two = findViewById(R.id.activity_signup_2_otp_edit_box2)

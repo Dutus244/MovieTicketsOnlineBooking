@@ -1,5 +1,6 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,7 +8,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.User
+import com.example.movieticketsonlinebooking.viewmodels.UserManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.functions.FirebaseFunctions
+import java.time.LocalDate
+import java.util.*
 
 class SignupActivity1 : AppCompatActivity() {
     var loginButton: Button? = null
@@ -28,33 +37,95 @@ class SignupActivity1 : AppCompatActivity() {
             startActivity(intent)
         }
 
-        signupButton = findViewById(R.id.activity_signup_1_button_signup)
-        signupButton?.setOnClickListener {
-            val intent = Intent(applicationContext, SignupActivity2::class.java)
-            startActivity(intent)
-        }
-
         nameEditText = findViewById(R.id.activity_signup_input_name)
         emailEditText = findViewById(R.id.activity_signup_input_email)
         phoneEditText = findViewById(R.id.activity_signup_input_phone)
         passwordEditText = findViewById(R.id.activity_signup_input_password)
 
-        if (nameEditText?.text.toString() == "") {
-            Toast.makeText(applicationContext, "You should input your name", Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (emailEditText?.text.toString() == "") {
-            Toast.makeText(applicationContext, "You should input your email", Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (phoneEditText?.text.toString() == "") {
-            Toast.makeText(applicationContext, "You should input your phone", Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (passwordEditText?.text.toString() == "") {
-            Toast.makeText(applicationContext, "You should input your password", Toast.LENGTH_SHORT).show()
-            return
-        }
+        signupButton = findViewById(R.id.activity_signup_1_button_signup)
+        signupButton?.setOnClickListener {
+            var name = nameEditText?.text.toString()
+            var email = emailEditText?.text.toString()
+            var phone = phoneEditText?.text.toString()
+            var password = passwordEditText?.text.toString()
 
+            if (name == "") {
+                Toast.makeText(applicationContext, "Bạn phải nhập tên", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (email == "") {
+                Toast.makeText(applicationContext, "Bạn phải nhập email", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (phone == "") {
+                Toast.makeText(applicationContext, "Bạn phải nhập số điện thoại", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (password == "") {
+                Toast.makeText(applicationContext, "Bạn phải nhập password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val result = task.result
+                        if (result != null && result.signInMethods != null && result.signInMethods!!.isNotEmpty()) {
+                            // Email is already registered with Firebase, handle the error
+                            Toast.makeText(applicationContext, "Email mà bạn dùng để đăng ký đã tồn tại", Toast.LENGTH_SHORT).show()
+                            return@addOnCompleteListener
+                        } else {
+                            // Email is not registered with Firebase, continue with sign-up process
+                        }
+                    } else {
+                        // Handle error
+                    }
+                }
+
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val firebaseUser = FirebaseAuth.getInstance().currentUser
+                        val firestore = FirebaseFirestore.getInstance()
+                        val usersCollection = firestore.collection("user")
+                        val userDocument = usersCollection.document(firebaseUser?.uid!!)
+                        userDocument.get().addOnCompleteListener { userDocumentTask ->
+                            if (userDocumentTask.isSuccessful) {
+                                val document = userDocumentTask.result
+                                if (document.exists()) {
+
+                                } else {
+                                    // User document does not exist, create it
+                                    val newUser = HashMap<String, Any>()
+                                    newUser["username"] = name ?: ""
+                                    newUser["name"] = name ?: ""
+                                    newUser["email"] = email ?: ""
+                                    newUser["tel"] = phone
+                                    newUser["sex"] = ""
+                                    newUser["hashpassword"] = ""
+                                    newUser["dob"] = FieldValue.serverTimestamp()
+                                    newUser["is_banned"] = false
+                                    newUser["is_deleted"] = false
+                                    // Add any additional fields and values you want to store
+                                    userDocument.set(newUser)
+                                        .addOnSuccessListener {
+
+                                        }
+                                        .addOnFailureListener { e ->
+
+                                        }
+                                }
+                                UserManager.login(firebaseUser?.uid!!,email ?: "",email ?: "", 0)
+                                val intent = Intent()
+                                setResult(Activity.RESULT_OK, intent)
+                                finish()
+                            }
+                        }
+                    } else {
+                        // The sign-up process failed, handle the error here
+                    }
+                }
+
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.movieticketsonlinebooking.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -13,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.example.movieticketsonlinebooking.R
 import com.example.movieticketsonlinebooking.viewmodels.CinemaScreening
 import com.example.movieticketsonlinebooking.viewmodels.Screening
+import com.example.movieticketsonlinebooking.viewmodels.UserManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -122,10 +125,32 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             holder.showtimesGridView.numColumns = 3
 
             holder.showtimesGridView.setOnItemClickListener { _, _, _, _ ->
-                val intent = Intent(context, BookSeatActivity::class.java)
+
+
+                if (UserManager.isLoggedIn()) {
+                    val intent = Intent(context, BookSeatActivity::class.java)
 //                    intent.putExtra("cinemaName", cinema.name)
 //                    intent.putExtra("showtime", showtime)
-                context.startActivity(intent)
+                    context.startActivity(intent)
+                }
+                else {
+                    val loginOrSignupDialog = AlertDialog.Builder(context)
+                        .setTitle("Yêu cầu đăng nhập")
+                        .setMessage("Bạn phải đăng nhập để đặt vé phim. Bạn có muốn đăng nhập hoặc đăng ký?")
+                        .setPositiveButton("Đăng nhập") { _, _ ->
+                            // Show login activity
+                            val intent = Intent(context,  LoginActivity::class.java)
+                            context.startActivity(intent)
+                        }
+                        .setNegativeButton("Đăng ký") { _, _ ->
+                            // Show signup activity
+                            val intent = Intent(context,  SignupActivity1::class.java)
+                            context.startActivity(intent)
+                        }
+                        .setNeutralButton("Hủy", null)
+                        .create()
+                    loginOrSignupDialog.show()
+                }
             }
             return view
         }
