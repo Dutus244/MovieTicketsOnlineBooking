@@ -102,7 +102,6 @@ class SignupActivity1 : AppCompatActivity() {
                                     newUser["email"] = email ?: ""
                                     newUser["tel"] = phone
                                     newUser["sex"] = ""
-                                    newUser["hashpassword"] = ""
                                     newUser["dob"] = FieldValue.serverTimestamp()
                                     newUser["is_banned"] = false
                                     newUser["is_deleted"] = false

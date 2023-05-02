@@ -72,41 +72,10 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val firebaseUser = FirebaseAuth.getInstance().currentUser
-                        val firestore = FirebaseFirestore.getInstance()
-                        val usersCollection = firestore.collection("user")
-                        val userDocument = usersCollection.document(firebaseUser?.uid!!)
-                        userDocument.get().addOnCompleteListener { userDocumentTask ->
-                            if (userDocumentTask.isSuccessful) {
-                                val document = userDocumentTask.result
-                                if (document.exists()) {
-
-                                } else {
-                                    // User document does not exist, create it
-                                    val newUser = HashMap<String, Any>()
-                                    newUser["username"] = ""
-                                    newUser["name"] = ""
-                                    newUser["email"] = email ?: ""
-                                    newUser["tel"] = ""
-                                    newUser["sex"] = ""
-                                    newUser["hashpassword"] = ""
-                                    newUser["dob"] = FieldValue.serverTimestamp()
-                                    newUser["is_banned"] = false
-                                    newUser["is_deleted"] = false
-                                    // Add any additional fields and values you want to store
-                                    userDocument.set(newUser)
-                                        .addOnSuccessListener {
-
-                                        }
-                                        .addOnFailureListener { e ->
-
-                                        }
-                                }
-                                UserManager.login(firebaseUser?.uid!!,email ?: "",email ?: "", 0)
-                                val intent = Intent()
-                                setResult(Activity.RESULT_OK, intent)
-                                finish()
-                            }
-                        }
+                        UserManager.login(firebaseUser?.uid!!,email ?: "",email ?: "", 0)
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
                         // The user has successfully authenticated and their UID is available
                     } else {
                         // The authentication failed, handle the error here
@@ -118,10 +87,6 @@ class LoginActivity : AppCompatActivity() {
 //            val editor = sharedPreferences.edit()
 //            editor.putString("email", "duynguyen24th@gmail.com")
 //            editor.apply()
-
-
-            val intent = Intent(applicationContext, HomeActivity::class.java)
-            startActivity(intent)
         }
 
         forgotPasswordButton = findViewById(R.id.activity_login_button_forgot_password)
@@ -173,7 +138,6 @@ class LoginActivity : AppCompatActivity() {
                                         newUser["email"] = account?.email ?: ""
                                         newUser["tel"] = ""
                                         newUser["sex"] = ""
-                                        newUser["hashpassword"] = ""
                                         newUser["dob"] = FieldValue.serverTimestamp()
                                         newUser["is_banned"] = false
                                         newUser["is_deleted"] = false

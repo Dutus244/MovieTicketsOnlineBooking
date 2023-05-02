@@ -181,7 +181,9 @@ class CinemaFragment : Fragment(), TextWatcher {
         recyclerView.layoutManager = linearLayoutManager
         adapter = MyAdapter(requireActivity(), arrayList)
         recyclerView.adapter = adapter
-        updateDistance()
+
+        // nếu dùng chức năng này sẽ bị delay vài s
+//        updateDistance()
 
         var searchEditText: EditText = view.findViewById(R.id.activity_cinema_search_search)
         searchEditText.addTextChangedListener(this);
