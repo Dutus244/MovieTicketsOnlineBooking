@@ -49,7 +49,6 @@ class ReviewListAdapter(private val activity: Activity, private var list: List<R
             Locale.getDefault()).format(list[position].date))
         holder.tvNamaPasien.text = list[position].user_name
         holder.btnDel.setOnClickListener {
-            Log.e("bucu", "bucu")
             createDeleteDialog(list[position].id)
         }
     }
