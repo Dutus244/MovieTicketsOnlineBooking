@@ -6,23 +6,27 @@ import android.util.Log
 import android.widget.TextView
 import com.example.admin.R
 import com.example.admin.auditoriums.Auditorium
+import com.example.admin.screenings.Screening
 import com.example.admin.users.User
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReservationForSmall : AppCompatActivity() {
     private var userTV: TextView? = null
     private var dateTV: TextView? = null
-    private var curAudiTV: TextView? = null
+    private var movieNameTV: TextView? = null
+    private var audiNameTV: TextView? = null
     private var totalPriceTV: TextView? = null
 
     // Get from previous activity
-    private var auditorium_id: String = "TILGs1pUkZfuLri5PsxW"
-    private var screening_id: String = "vrnzeVw2clzj5Uao6uT2"
+    private var movie_title: String = ""
+    private var auditorium_id: String = ""
+    private var screening_id: String = ""
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -31,19 +35,38 @@ class ReservationForSmall : AppCompatActivity() {
         setContentView(R.layout.activity_reservation_for_small)
         FirebaseApp.initializeApp(this@ReservationForSmall)
 
+        val intent = intent
+        val screening = intent.getSerializableExtra("screening") as Screening
+        movie_title = intent.getStringExtra("movie_title")!!
+        auditorium_id = screening.auditorium_id
+        screening_id = screening.id
+
+        userTV = findViewById(R.id.userTV)
+        dateTV = findViewById(R.id.dateTV)
+        movieNameTV = findViewById(R.id.reservationSmallMovieNameTV)
+        audiNameTV = findViewById(R.id.curAudiTV)
+        totalPriceTV = findViewById(R.id.totalPriceTV)
+
         coroutineScope.launch {
             val reservation = getReservation(screening_id)
+            if (reservation == null) {
+                userTV!!.append("Chưa")
+                return@launch
+            }
             val auditorium = getAuditorium(auditorium_id)
-            val user = getUser(reservation!!.user_id)
+            val user = getUser(reservation.user_id)
 
-            userTV = findViewById(R.id.userTV)
-            dateTV = findViewById(R.id.dateTV)
-            curAudiTV = findViewById(R.id.curAudiTV)
-            totalPriceTV = findViewById(R.id.totalPriceTV)
+
 
             userTV!!.append(user!!.username)
-            dateTV!!.append(reservation.date.toString())
-            curAudiTV!!.append(auditorium!!.name)
+            dateTV!!.append(
+                SimpleDateFormat(
+                    "dd/MM/yyyy hh:mm:ss",
+                    Locale.getDefault()
+                ).format(reservation.date)
+            )
+            movieNameTV!!.append(movie_title)
+            audiNameTV!!.append(auditorium!!.name)
             totalPriceTV!!.append(reservation.total_price.toString())
         }
     }
