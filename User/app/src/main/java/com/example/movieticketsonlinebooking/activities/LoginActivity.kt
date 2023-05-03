@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movieticketsonlinebooking.R
@@ -18,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
@@ -31,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
     var googleSigninButton: SignInButton? = null
     var gso: GoogleSignInOptions? = null
     var gsc: GoogleSignInClient? = null
+    var emailEditText: TextInputEditText? = null
+    var passwordEditText: TextInputEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,17 +53,40 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        emailEditText = findViewById(R.id.activity_login_input_email)
+        passwordEditText = findViewById(R.id.activity_login_input_password)
+
         loginButton = findViewById(R.id.activity_login_button_login)
         loginButton?.setOnClickListener {
+            var email = emailEditText!!.text.toString()
+            var password = passwordEditText!!.text.toString()
+            if (email == "") {
+                Toast.makeText(applicationContext, "Vui lòng nhập email", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (password == "") {
+                Toast.makeText(applicationContext, "Vui lòng nhập password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val firebaseUser = FirebaseAuth.getInstance().currentUser
+                        UserManager.login(firebaseUser?.uid!!,email ?: "",email ?: "", 0)
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                        // The user has successfully authenticated and their UID is available
+                    } else {
+                        // The authentication failed, handle the error here
+                        Toast.makeText(applicationContext, "Đăng nhập không thành công", Toast.LENGTH_SHORT).show()
+                    }
+                }
             // Luu thong tin dang nhap cua nguoi dung tren ung dung
 //            val sharedPreferences = getSharedPreferences("TumLumCinemas", Context.MODE_PRIVATE)
 //            val editor = sharedPreferences.edit()
 //            editor.putString("email", "duynguyen24th@gmail.com")
 //            editor.apply()
-
-
-            val intent = Intent(applicationContext, HomeActivity::class.java)
-            startActivity(intent)
         }
 
         forgotPasswordButton = findViewById(R.id.activity_login_button_forgot_password)
@@ -111,35 +138,29 @@ class LoginActivity : AppCompatActivity() {
                                         newUser["email"] = account?.email ?: ""
                                         newUser["tel"] = ""
                                         newUser["sex"] = ""
-                                        newUser["hashpassword"] = ""
                                         newUser["dob"] = FieldValue.serverTimestamp()
                                         newUser["is_banned"] = false
                                         newUser["is_deleted"] = false
                                         // Add any additional fields and values you want to store
                                         userDocument.set(newUser)
                                             .addOnSuccessListener {
-                                                Log.d(TAG, "User document created successfully")
-                                                // Do further processing or update UI
+
                                             }
                                             .addOnFailureListener { e ->
-                                                Log.e(TAG, "Error creating user document: ${e.message}")
-                                                // Handle error
+
                                             }
                                     }
-                                    UserManager.login(firebaseUser?.uid!!,account?.displayName ?: "",account?.email ?: "")
+                                    UserManager.login(firebaseUser?.uid!!,account?.displayName ?: "",account?.email ?: "", 1)
                                     val intent = Intent()
                                     setResult(Activity.RESULT_OK, intent)
                                     finish()
-                                } else {
-                                    Log.e(TAG, "Error getting user document: ${userDocumentTask.exception?.message}")
-                                    // Handle error
                                 }
                             }
 
                         } else {
                             // Sign-in failed, handle the exception
                             Log.e(TAG, "Sign-in failed: ${authTask.exception}")
-                            Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Đăng nhập không thành công", Toast.LENGTH_SHORT).show()
                         }
                     }
             } catch (e: ApiException) {
