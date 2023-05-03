@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
 import com.example.admin.cinemas.Cinema
-import com.example.admin.cinemas.EditCinema
 
 class CinemaScreeningListAdapter(private val activity: Activity, private val list: List<Cinema>) :
     RecyclerView.Adapter<CinemaScreeningListAdapter.ViewHolder>() {

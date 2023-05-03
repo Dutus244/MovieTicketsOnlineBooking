@@ -1,7 +1,5 @@
 package com.example.admin.screenings
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,14 +7,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
-import com.example.admin.RequestCode
-import com.example.admin.cinemas.AddCinema
 import com.example.admin.cinemas.Cinema
-import com.example.admin.cinemas.CinemaListAdapter
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
