@@ -100,8 +100,10 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             holder.showtimesButton.setOnClickListener {
                 if (holder.showtimesGridView.visibility == View.VISIBLE) {
                     holder.showtimesGridView.visibility = View.GONE
+                    holder.showtimesButton.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
                 } else {
                     holder.showtimesGridView.visibility = View.VISIBLE
+                    holder.showtimesButton.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_down_24)
                 }
             }
 

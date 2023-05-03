@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import com.example.admin.R
 import com.example.admin.auditoriums.Auditorium
+import com.example.admin.screenings.Screening
 import com.example.admin.users.User
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
@@ -25,8 +26,9 @@ class ReservationForBig : AppCompatActivity() {
     private var auditorium: Auditorium? = null
 
     // Get from previous activity
-    private var auditorium_id: String = "s3zfbcJCAKCsmADYz9KU"
-    private var screening_id: String = "8Fi0mDdLOCoBAA5TLXxj"
+    private var auditorium_id: String = ""
+    private var screening_id: String = ""
+    private var movie_title: String = ""
 
     private var reservations: ArrayList<Reservation>? = null
     private var bookedSeat: ArrayList<Int>? = null
@@ -38,6 +40,12 @@ class ReservationForBig : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reservation_for_big)
         FirebaseApp.initializeApp(this@ReservationForBig)
+
+        val intent = intent
+        val screening = intent.getSerializableExtra("screening") as Screening
+        movie_title = intent.getStringExtra("movie_title")!!
+        auditorium_id = screening.auditorium_id
+        screening_id = screening.id
 
         coroutineScope.launch {
             audiNameTV = findViewById(R.id.reservationBigTitle)
@@ -78,7 +86,8 @@ class ReservationForBig : AppCompatActivity() {
                                 Intent(this@ReservationForBig, ReservationForBigDetail::class.java)
                             intent.putExtra("user", user!!.username)
                             intent.putExtra("reservation", re)
-                            intent.putExtra("curSeat", seatName)
+                            intent.putExtra("auditorium_name", auditorium!!.name)
+                            intent.putExtra("movie_title", movie_title)
                             intent.putStringArrayListExtra("titles", ArrayList(pureTitles))
                             startActivity(intent)
                         }

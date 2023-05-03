@@ -7,6 +7,17 @@
     tools:context=".reservations.ReservationForBigDetail">
 
     <TextView
+        android:id="@+id/reservationBigAudiNameTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Phòng chiếu: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/reservationBigMovieNameTV"
+        app:layout_constraintStart_toStartOf="@+id/reservationBigMovieNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/reservationBigMovieNameTV" />
+
+    <TextView
         android:id="@+id/totalPriceTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,36 +68,25 @@
         app:layout_constraintTop_toBottomOf="@+id/userTV" />
 
     <TextView
-        android:id="@+id/curSeatTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Ghế hiện tại: "
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/dateTV"
-        app:layout_constraintStart_toStartOf="@+id/dateTV"
-        app:layout_constraintTop_toBottomOf="@+id/dateTV" />
-
-    <TextView
-        android:id="@+id/curSeatPriceTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Giá ghế hiện tại: "
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/curSeatTV"
-        app:layout_constraintStart_toStartOf="@+id/curSeatTV"
-        app:layout_constraintTop_toBottomOf="@+id/curSeatTV" />
-
-    <TextView
         android:id="@+id/allSeatsTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Các ghế được đặt cùng: "
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/curSeatPriceTV"
-        app:layout_constraintStart_toStartOf="@+id/curSeatPriceTV"
-        app:layout_constraintTop_toBottomOf="@+id/curSeatPriceTV" />
+        app:layout_constraintEnd_toEndOf="@+id/reservationBigAudiNameTV"
+        app:layout_constraintStart_toStartOf="@+id/reservationBigAudiNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/reservationBigAudiNameTV" />
+
+    <TextView
+        android:id="@+id/reservationBigMovieNameTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Phim: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTV"
+        app:layout_constraintStart_toStartOf="@+id/dateTV"
+        app:layout_constraintTop_toBottomOf="@+id/dateTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

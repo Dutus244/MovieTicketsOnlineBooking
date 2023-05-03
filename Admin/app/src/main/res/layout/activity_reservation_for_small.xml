@@ -7,6 +7,18 @@
     tools:context=".reservations.ReservationForSmall">
 
     <TextView
+        android:id="@+id/reservationSmallMovieNameTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Phim: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTV"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dateTV"
+        app:layout_constraintTop_toBottomOf="@+id/dateTV" />
+
+    <TextView
         android:id="@+id/totalPriceTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,8 +75,8 @@
         android:layout_marginTop="32dp"
         android:text="Phòng chiếu: "
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/dateTV"
-        app:layout_constraintStart_toStartOf="@+id/dateTV"
-        app:layout_constraintTop_toBottomOf="@+id/dateTV" />
+        app:layout_constraintEnd_toEndOf="@+id/reservationSmallMovieNameTV"
+        app:layout_constraintStart_toStartOf="@+id/reservationSmallMovieNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/reservationSmallMovieNameTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

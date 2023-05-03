@@ -61,8 +61,12 @@ class EditScreening : AppCompatActivity() {
 
         val dateTextView1 = findViewById<ImageView>(R.id.calendar_icon1)
         val cal1 = Calendar.getInstance()
-        startTimeET!!.setText(SimpleDateFormat("dd/MM/yyyy HH:mm",
-            Locale.getDefault()).format(screening!!.screening_start))
+        startTimeET!!.setText(
+            SimpleDateFormat(
+                "dd/MM/yyyy HH:mm",
+                Locale.getDefault()
+            ).format(screening!!.screening_start)
+        )
         dateTextView1.setOnClickListener {
             // Create a DatePicker dialog
             val datePickerDialog = DatePickerDialog(
@@ -102,26 +106,34 @@ class EditScreening : AppCompatActivity() {
             auditoriums = getAuditoriumList()
             movies = getMovieList()
             cinema = getCinemaData()
-            val auditoriumAdapter = ArrayAdapter(this@EditScreening, R.layout.spinner_item, auditoriums.map{ it.name })
+            val auditoriumAdapter =
+                ArrayAdapter(this@EditScreening, R.layout.spinner_item, auditoriums.map { it.name })
             auditoriumNameSpinner!!.adapter = auditoriumAdapter
-            auditoriumNameSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    auditoriumNameSpinner!!.setSelection(position)
-                    auditoriumChoice = auditoriums[position]
+            auditoriumNameSpinner!!.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>, view: View?, position: Int, id: Long
+                    ) {
+                        auditoriumNameSpinner!!.setSelection(position)
+                        auditoriumChoice = auditoriums[position]
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {}
                 }
-                override fun onNothingSelected(parent: AdapterView<*>) {}
-            }
-            val adapter = ArrayAdapter(this@EditScreening, R.layout.spinner_item, movies.map { it.title })
+            val adapter =
+                ArrayAdapter(this@EditScreening, R.layout.spinner_item, movies.map { it.title })
             movieNameSpinner!!.adapter = adapter
-            movieNameSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    movieNameSpinner!!.setSelection(position)
-                    movieChoice = movies[position]
+            movieNameSpinner!!.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>, view: View?, position: Int, id: Long
+                    ) {
+                        movieNameSpinner!!.setSelection(position)
+                        movieChoice = movies[position]
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {}
                 }
-                override fun onNothingSelected(parent: AdapterView<*>) {}
-            }
             val auditoriumIndex = auditoriums.map { it.id }.indexOf(screening!!.auditorium_id)
             if (auditoriumIndex != -1) {
                 auditoriumNameSpinner!!.setSelection(auditoriumIndex)
@@ -135,20 +147,24 @@ class EditScreening : AppCompatActivity() {
         goToReservationBtn!!.setOnClickListener {
             coroutineScope.launch {
                 val type: String = cinema!!.type
-                var intent: Intent
-                if(type.equals("Big"))
-                    intent = Intent(this@EditScreening, ReservationForBig::class.java)
+                val nextIntent = if (type == "Big")
+                    Intent(this@EditScreening, ReservationForBig::class.java)
                 else
-                    intent = Intent(this@EditScreening, ReservationForSmall::class.java)
-                intent.putExtra("screening", screening)
-                startActivity(intent)
+                    Intent(this@EditScreening, ReservationForSmall::class.java)
+                nextIntent.putExtra("screening", screening)
+                nextIntent.putExtra(
+                    "movie_title",
+                    movies.filter { it.id == screening!!.movie_id }[0].title
+                )
+                startActivity(nextIntent)
             }
         }
         saveBtn!!.setOnClickListener {
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
             val start = format.parse(startTimeET!!.text.toString())
             coroutineScope.launch {
-                editScreening(auditoriumChoice!!.id, screening!!.cinema_id, movieChoice!!.id,
+                editScreening(
+                    auditoriumChoice!!.id, screening!!.cinema_id, movieChoice!!.id,
                     start
                 )
             }
@@ -158,18 +174,22 @@ class EditScreening : AppCompatActivity() {
             dialog.show()
         }
     }
-    override fun onDestroy(){
+
+    override fun onDestroy() {
         super.onDestroy()
         coroutineScope.cancel()
     }
-    suspend fun editScreening(auditorium_id: String,cinema_id: String,
-                      movie_id: String, screening_start: Date) {
+
+    suspend fun editScreening(
+        auditorium_id: String, cinema_id: String,
+        movie_id: String, screening_start: Date
+    ) {
         val db = Firebase.firestore
         val result = db.collection("movie")
             .document(movie_id)
             .get()
             .await()
-        val movie = result.toObject(Movie::class.java)?: Movie()
+        val movie = result.toObject(Movie::class.java) ?: Movie()
 
         val calendar = Calendar.getInstance()
         calendar.time = screening_start
@@ -191,6 +211,7 @@ class EditScreening : AppCompatActivity() {
                 Log.w("DB", "Error adding document", e)
             }
     }
+
     suspend fun getAuditoriumList(): List<Auditorium> = runCatching {
         val db = Firebase.firestore
         val result = db.collection("auditorium")
@@ -203,6 +224,7 @@ class EditScreening : AppCompatActivity() {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
     }
+
     suspend fun getMovieList(): List<Movie> = runCatching {
         val db = Firebase.firestore
         val result = db.collection("movie")
@@ -215,6 +237,7 @@ class EditScreening : AppCompatActivity() {
         Log.w("DB", "Error getting documents.", it)
         emptyList()
     }
+
     suspend fun getCinemaData(): Cinema = runCatching {
         val db = Firebase.firestore
         val result = db.collection("cinema")
@@ -228,6 +251,7 @@ class EditScreening : AppCompatActivity() {
         Log.w("DB", "Error getting documents.", it)
         Cinema()
     }
+
     fun createDeleteDialog(): AlertDialog {
         val builder = AlertDialog.Builder(this@EditScreening)
         builder.setMessage("Bạn có chắc là muốn xóa!")

@@ -2,16 +2,17 @@ package com.example.admin.reservations
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import com.example.admin.R
 import com.google.firebase.FirebaseApp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReservationForBigDetail : AppCompatActivity() {
     private var userTV: TextView? = null
     private var dateTV: TextView? = null
-    private var curSeatTV: TextView? = null
-    private var curSeatPriceTV: TextView? = null
+    private var movieNameTV: TextView? = null
+    private var audiNameTV: TextView? = null
     private var allSeatsTV: TextView? = null
     private var totalPriceTV: TextView? = null
 
@@ -22,8 +23,9 @@ class ReservationForBigDetail : AppCompatActivity() {
 
         val intent = intent
         val user = intent.getStringExtra("user")
-        val curSeat = intent.getStringExtra("curSeat")
         val reservation = intent.getSerializableExtra("reservation") as? Reservation
+        val movie_title = intent.getStringExtra("movie_title")!!
+        val auditorium_name = intent.getStringExtra("auditorium_name")
         val titles = intent.getStringArrayListExtra("titles")
         val allSeats = titles!!.filterIndexed { index, s ->
             reservation!!.seats.contains(index)
@@ -31,15 +33,20 @@ class ReservationForBigDetail : AppCompatActivity() {
 
         userTV = findViewById(R.id.userTV)
         dateTV = findViewById(R.id.dateTV)
-        curSeatTV = findViewById(R.id.curSeatTV)
-        curSeatPriceTV = findViewById(R.id.curSeatPriceTV)
+        movieNameTV = findViewById(R.id.reservationBigMovieNameTV)
+        audiNameTV = findViewById(R.id.reservationBigAudiNameTV)
         allSeatsTV = findViewById(R.id.allSeatsTV)
         totalPriceTV = findViewById(R.id.totalPriceTV)
 
         userTV!!.append(user)
-        dateTV!!.append(reservation!!.date.toString())
-        curSeatTV!!.append(curSeat)
-        curSeatPriceTV!!.append((reservation.total_price / allSeats.size).toString())
+        dateTV!!.append(
+            SimpleDateFormat(
+                "dd/MM/yyyy hh:mm:ss",
+                Locale.getDefault()
+            ).format(reservation!!.date)
+        )
+        movieNameTV!!.append(movie_title)
+        audiNameTV!!.append(auditorium_name)
         allSeatsTV!!.append(allSeats.joinToString(", "))
         totalPriceTV!!.append(reservation.total_price.toString())
     }
