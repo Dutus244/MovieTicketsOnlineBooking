@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         goToReviewBtn!!.setOnClickListener {
-            val intent = Intent(this, ReservationForSmall::class.java)
+            val intent = Intent(this, MovieReviewList::class.java)
             startActivity(intent)
         }
     }

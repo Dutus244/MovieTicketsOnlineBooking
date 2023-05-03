@@ -2,6 +2,7 @@ package com.example.admin.screenings
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -28,6 +29,8 @@ class ScreeningList : AppCompatActivity() {
     var movieScreenings: List<MovieScreening> = listOf()
     var displayMovieScreenings: List<MovieScreening> = listOf()
     var cinema: Cinema? = null
+
+    var selectedTextView: TextView? = null
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +67,6 @@ class ScreeningList : AppCompatActivity() {
             filterScreening(currentDate)
             screeningRecyclerView!!.adapter = ScreeningListAdapter(this@ScreeningList, displayMovieScreenings)
 
-
             val sdf = SimpleDateFormat("dd/MM")
 
             val layout = findViewById<LinearLayout>(id.scrollViewLinearLayout)
@@ -84,8 +86,16 @@ class ScreeningList : AppCompatActivity() {
                 dateCalendar.time = currentDate
 
                 textView.setOnClickListener {
-                    val selectedDate = dateCalendar.time
+                    val clickedTextView = it as TextView
+                    if (selectedTextView != null) {
+                        selectedTextView!!.setTextColor(Color.BLACK)
+                        selectedTextView!!.setBackgroundColor(Color.WHITE)
+                    }
+                    clickedTextView.setTextColor(Color.WHITE)
+                    clickedTextView.setBackgroundColor(Color.parseColor("#673AB7"))
+                    selectedTextView = clickedTextView
 
+                    val selectedDate = dateCalendar.time
                     filterScreening(selectedDate)
                     screeningRecyclerView!!.adapter?.notifyDataSetChanged()
                 }

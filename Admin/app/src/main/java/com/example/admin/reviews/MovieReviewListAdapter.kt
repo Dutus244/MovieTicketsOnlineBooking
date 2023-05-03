@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
 import com.example.admin.movies.Movie
+import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +37,9 @@ class MovieReviewListAdapter(private val activity: Activity, private val list: L
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val picasso = Picasso.get()
         holder.position = position
+        picasso.load(list[position].poster_url).into(holder.imageView)
         holder.nameText.text = list[position].title
         holder.dateText.text = "Ngày phát hành: ${
             SimpleDateFormat("dd/MM/yyyy",

@@ -11,7 +11,6 @@ data class Review(
     val detail: String = "",
     val date: Date = Date(),
     val rating: Double = 0.0,
-    @field:Transient
     var user_name: String = "",
     @DocumentId
     val id: String = "",
