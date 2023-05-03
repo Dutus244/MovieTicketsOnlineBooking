@@ -72,10 +72,7 @@ class ReviewListAdapter(private val activity: Activity, private var list: List<R
                             "Xóa thành công",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val mutableList = list.toMutableList()
-                        mutableList.removeIf { it.id == review_id }
-                        list = mutableList.toList()
-                        notifyDataSetChanged()
+                        activity.recreate()
                     }
                     .addOnFailureListener { exception ->
                         Log.w("DB", "Error getting documents.", exception)

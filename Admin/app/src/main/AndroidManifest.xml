@@ -27,9 +27,6 @@
             android:name="com.example.admin.seats.SeatScreenTypeSmall"
             android:exported="false" />
         <activity
-            android:name="com.example.admin.reviews.ReviewDetail"
-            android:exported="false" />
-        <activity
             android:name="com.example.admin.reviews.MovieReviewList"
             android:exported="false" />
         <activity
