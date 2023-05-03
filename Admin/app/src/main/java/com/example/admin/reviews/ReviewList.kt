@@ -95,7 +95,7 @@ class ReviewList : AppCompatActivity() {
         )
 
         setRatingByColor(movieReviewModel!!)
-        adapter = ReviewListAdapter(this@ReviewList, reviews)
+        adapter = ReviewListAdapter(this@ReviewList, reviews, movieReviewModel!!)
         rvReview!!.adapter = adapter
         rvReview!!.layoutManager = LinearLayoutManager(this@ReviewList)
     }

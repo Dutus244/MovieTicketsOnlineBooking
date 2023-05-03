@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Int
 
-class ReviewListAdapter(private val activity: Activity, private var list: List<Review>) :
+class ReviewListAdapter(private val activity: Activity, private var list: List<Review>, private var model: MovieReviewModel) :
     RecyclerView.Adapter<ReviewListAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
@@ -72,6 +72,13 @@ class ReviewListAdapter(private val activity: Activity, private var list: List<R
                             "Xóa thành công",
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val cur: Review = list.first{it.id == review_id}
+                        model.totalVoters = model.totalVoters - 1
+                        model.totalRating = model.totalRating - cur.rating
+                        val newRating = model.totalRating / model.totalVoters
+                        db.collection("movie").document(cur.movie_id).update("rating", newRating)
+
                         activity.recreate()
                     }
                     .addOnFailureListener { exception ->

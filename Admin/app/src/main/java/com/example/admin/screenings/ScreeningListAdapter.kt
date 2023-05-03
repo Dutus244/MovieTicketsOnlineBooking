@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
+import com.squareup.picasso.Picasso
 import java.lang.Math.ceil
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -37,7 +38,9 @@ class ScreeningListAdapter(private val activity: Activity, private var list: Lis
         return ViewHolder(screeningView)
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val picasso = Picasso.get()
         holder.position = position
+        picasso.load(list[position].poster_url).into(holder.imageView)
         holder.nameText.text = list[position].title
         holder.ratingText.text = list[position].rating.toString()
         holder.classText.text = list[position].classification
