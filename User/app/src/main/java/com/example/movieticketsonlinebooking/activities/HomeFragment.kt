@@ -13,7 +13,6 @@ import android.widget.GridView
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.movieticketsonlinebooking.fragments.MyGridAdapter
-import com.example.movieticketsonlinebooking.fragments.The_Slide_Items_Model_Class_HomePage
 import com.example.movieticketsonlinebooking.fragments.The_Slide_items_Pager_Adapter_HomePage
 import com.example.movieticketsonlinebooking.viewmodels.Movie
 import com.google.android.material.tabs.TabLayout
@@ -25,7 +24,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
-    private var listItems: ArrayList<The_Slide_Items_Model_Class_HomePage>? = ArrayList()
+    private var listItems: ArrayList<Movie>? = ArrayList()
     private var page: ViewPager? = null
     private var tabLayout: TabLayout? = null
     var adapter: MyGridAdapter? = null
@@ -72,12 +71,7 @@ class HomeFragment : Fragment() {
                 sliderMovies = documents.toObjects(Movie::class.java)
                 listItems = java.util.ArrayList()
                 for (element in sliderMovies) {
-                    listItems!!.add(
-                        The_Slide_Items_Model_Class_HomePage(
-                            element.poster_url,
-                            element.title
-                        )
-                    )
+                    listItems!!.add(element)
                 }
                 activity?.runOnUiThread {
                     page!!.adapter =
@@ -162,6 +156,7 @@ class HomeFragment : Fragment() {
         val itemsPager_adapter =
             The_Slide_items_Pager_Adapter_HomePage(requireActivity(), listItems)
         page!!.adapter = itemsPager_adapter
+
 
         val timer = Timer()
         timer.scheduleAtFixedRate(
