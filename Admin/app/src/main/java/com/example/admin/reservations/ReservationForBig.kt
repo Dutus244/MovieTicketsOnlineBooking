@@ -32,6 +32,7 @@ class ReservationForBig : AppCompatActivity() {
 
     private var reservations: ArrayList<Reservation>? = null
     private var bookedSeat: ArrayList<Int>? = null
+    // HashMap key-value là index của ghế và index của reservation trong mảng reservations
     private var seatToReservation: HashMap<Int, Int> = hashMapOf()
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())

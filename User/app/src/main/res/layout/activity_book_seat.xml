@@ -9,69 +9,79 @@
     <LinearLayout
         android:id="@+id/activity_book_seat_layout_1"
         android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:background="@color/red"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal" />
-
-    <TextView
-        android:id="@+id/activity_book_seat_cinema_name"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Galaxy Nguyễn Du"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:background="@color/red"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/white"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/activity_book_seat_cinema_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Cinema name"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_1"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_book_seat_layout_1" >
+        app:layout_constraintTop_toBottomOf="@+id/activity_book_seat_layout_1">
 
         <TextView
             android:id="@+id/activity_book_seat_film_name"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Biệt đội cánh cụt vùng madagascar"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Movie name"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/activity_film_info_spinner_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_marginTop="5dp"
             android:id="@+id/activity_film_info_textview_age"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="C13"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:background="@drawable/account_btn1"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_book_seat_film_name" />
 
         <Spinner
-            android:layout_marginTop="10dp"
             android:id="@+id/activity_film_info_spinner_time"
             android:layout_width="100dp"
             android:layout_height="45dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:focusable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/activity_film_info_textview_audi_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_film_info_textview_age"
+            app:layout_constraintStart_toEndOf="@+id/activity_film_info_textview_age"
+            app:layout_constraintTop_toTopOf="@+id/activity_film_info_textview_age" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -80,75 +90,77 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="#F0F0F0"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_1"
-        android:orientation="horizontal" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_1" />
 
     <TextView
+        android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Màn hình"
-        app:layout_constraintTop_toBottomOf="@+id/layout_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_2" />
 
     <LinearLayout
         android:id="@+id/layout_2"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="50dp"
         android:background="@color/red"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_1" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-
-    <GridLayout
-        android:layout_marginTop="50dp"
-        android:id="@+id/seat_grid"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="50"
-        android:orientation="horizontal"
-        android:rowCount="50"
+    <ScrollView
+        android:id="@+id/seatSV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView17">
 
-    <GridLayout
-        android:paddingLeft="2dp"
-        android:id="@+id/name_seat_grid1"
-        android:layout_width="20dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="50dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="1"
-        android:orientation="horizontal"
-        android:rowCount="50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_2" />
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
-    <GridLayout
-        android:id="@+id/name_seat_grid2"
-        android:layout_width="20dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="50dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="1"
-        android:orientation="horizontal"
-        android:rowCount="50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_2" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-
+                <dev.jahidhasanco.seatbookview.SeatBookView
+                    android:id="@+id/layoutSeat"
+                    app:available_seat_background="@drawable/ic_seat_available"
+                    app:booked_seat_background="@drawable/ic_seat_sold"
+                    app:selected_seats_background="@drawable/ic_seat_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:available_seats_text_color="#59575C"
+                    app:seat_gaping="10dp"
+                    app:seat_text_size="15sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_4"
@@ -156,62 +168,39 @@
         android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
             android:text="Tổng cộng:"
-            android:textSize="17dp"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:text="0 ghế:"
-            android:textSize="17dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="200dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="A1"
-            android:textStyle="bold"
-            android:layout_marginTop="5dp"
-            android:textSize="17dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView10" />
-
-        <TextView
+            android:id="@+id/activity_film_info_price"
             android:layout_width="160dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="50,000đ"
+            android:text="0đ"
             android:textColor="@color/red"
+            android:textSize="17sp"
             android:textStyle="bold"
-            android:layout_marginTop="5dp"
-            android:textSize="17dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView6" />
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/activity_book_seat_button_confirm"
             android:layout_width="250px"
-            android:text="Tiếp tục"
-            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:background="@drawable/account_btn1"
+            android:text="Tiếp tục"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -220,72 +209,88 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#F0F0F0"
         app:layout_constraintBottom_toTopOf="@+id/layout_4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
 
-
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_seat_available"
+        <LinearLayout
+            android:id="@+id/emptySeatLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bookedSeatLinearLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/test1"
+            <ImageView
+                android:id="@+id/emptySeatColor"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_seat_available" />
+
+            <TextView
+                android:id="@+id/emptySeatText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Trống" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bookedSeatLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Ghế thường"
-            app:layout_constraintBottom_toBottomOf="@+id/button8"
-            app:layout_constraintStart_toEndOf="@+id/button8"
-            app:layout_constraintTop_toTopOf="@+id/button8" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/choosingSeatLinearLayout"
+            app:layout_constraintStart_toEndOf="@+id/emptySeatLinearLayout"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_seat_sold"
-            app:layout_constraintStart_toEndOf="@+id/test1"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/bookedSeatColor"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_seat_sold"/>
 
-        <TextView
-            android:id="@+id/test2"
+            <TextView
+                android:id="@+id/bookedSeatText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Đã bán" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/choosingSeatLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Đã bán"
-            app:layout_constraintBottom_toBottomOf="@+id/button9"
-            app:layout_constraintStart_toEndOf="@+id/button9"
-            app:layout_constraintTop_toTopOf="@+id/button9" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bookedSeatLinearLayout"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/button10"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_seat_selected"
-            app:layout_constraintStart_toEndOf="@+id/test2"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/choosingSeatColor"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_seat_selected"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Đang chọn"
-            app:layout_constraintBottom_toBottomOf="@+id/button10"
-            app:layout_constraintStart_toEndOf="@+id/button10"
-            app:layout_constraintTop_toTopOf="@+id/button10" />
+            <TextView
+                android:id="@+id/choosingSeatText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Đang chọn" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
