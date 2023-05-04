@@ -6,36 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".activities.CinemaFilmDetailActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activity_cinema_film_detail_layout_1"
         android:layout_width="match_parent"
         android:layout_height="60sp"
         android:background="@color/red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/activity_cinema_film_detail_film_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Galaxy Nguyễn Du"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/activity_cinema_film_detail_film_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Galaxy Nguyễn Du"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:drawableLeft="@drawable/ic_baseline_location_on_24"
-        android:gravity="center_vertical"
         android:id="@+id/activity_cinema_film_detail_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/transparent_black_ten_percent"
+        android:drawableLeft="@drawable/ic_baseline_location_on_24"
+        android:gravity="center_vertical"
         android:text="116 Nguyễn Du, Quận 1, Tp.HCM"
         android:textAllCaps="false"
         android:textColor="#646464"
@@ -51,6 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_cinema_film_detail_address"
         android:orientation="horizontal" />
+
 
     <HorizontalScrollView
         android:id="@+id/scrollView"
@@ -70,8 +72,8 @@
                 android:id="@+id/button1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:text="02/04"
-                android:background="@drawable/transparent_black_ten_percent" />
+                android:background="@drawable/transparent_black_ten_percent"
+                android:text="02/04" />
 
             <Button
                 android:id="@+id/button2"
@@ -119,6 +121,29 @@
 
     </HorizontalScrollView>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView">
+
+        <TextView
+            android:id="@+id/activity_film_showtimes_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày 2 Tháng 4 Năm 2023"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
@@ -127,7 +152,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView"
+        app:layout_constraintTop_toBottomOf="@+id/layout3"
         android:orientation="horizontal" />
 
     <ListView
@@ -136,7 +161,9 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

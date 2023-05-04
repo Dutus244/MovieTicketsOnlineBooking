@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,13 +16,14 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="10dp"/>
+            app:layout_constraintVertical_bias="0.466" />
 
         <TextView
             android:id="@+id/textViewName"
@@ -31,6 +32,7 @@
             android:layout_marginLeft="15dp"
             android:text="TextView"
             android:textSize="15dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView" />
 
@@ -41,10 +43,9 @@
             android:layout_marginLeft="18dp"
             android:text="TextView"
             android:textSize="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
         <TextView
             android:id="@+id/textViewPhone"
@@ -53,8 +54,9 @@
             android:layout_marginLeft="18dp"
             android:text="TextView"
             android:textSize="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
 
         <TextView
             android:id="@+id/textViewDistance"
@@ -63,8 +65,9 @@
             android:layout_marginLeft="200dp"
             android:text=""
             android:textSize="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

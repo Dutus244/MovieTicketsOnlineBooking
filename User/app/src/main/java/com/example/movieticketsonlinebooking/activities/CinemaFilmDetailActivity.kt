@@ -2,21 +2,47 @@ package com.example.movieticketsonlinebooking.activities
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CinemaFilmDetailActivity : AppCompatActivity() {
     var buttonAddress: Button? = null
-    val filmList: ArrayList<Film> =  ArrayList()
     var adapter:FilmAdapter? = null
-    class Film(val name: String, val rating: String, val age: String, val time: String, var date: String,  var avatar: Int, val showtimes: List<String>)
+    var cinema: Cinema? = null
 
-    class FilmAdapter(private val context: Context, private val filmList: ArrayList<Film>) : BaseAdapter() {
+    var cinemaName: TextView? = null
+
+    var dateBtn = arrayOfNulls<Button>(7)
+    var dateList = arrayOfNulls<Date>(7)
+    var activeDateBtn: Button? = null
+    var currentDateTV: TextView? = null
+
+    var cinema_id: String? = null
+    var screenings: ArrayList<Screening>? = null
+    var movieScreening: ArrayList<MovieScreening>? = null
+    var activeMovieScreening: ArrayList<MovieScreening>? = null
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+
+    class FilmAdapter(private val context: Context, private val filmList: ArrayList<MovieScreening>) : BaseAdapter() {
 
         private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -36,6 +62,8 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
             val view: View
             val holder: ViewHolder
 
+            val film = filmList[position]
+
             if (convertView == null) {
                 view = inflater.inflate(R.layout.film_list_item, parent, false)
                 holder = ViewHolder()
@@ -54,15 +82,50 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
                 holder = convertView.tag as ViewHolder
             }
 
-            val film = filmList[position]
+            holder.filmName.text = film.title
+            holder.filmRating.text = film.rating.toString()
+            when (film!!.classification) {
+                "P" -> {
+                    holder.filmAge.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.movieClassification_P
+                        )
+                    )
+                }
+                "C13" -> {
+                    holder.filmAge.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.movieClassification_C13
+                        )
+                    )
+                }
+                "C16" -> {
+                    holder.filmAge.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.movieClassification_C16
+                        )
+                    )
+                }
+                "C18" -> {
+                    holder.filmAge.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.movieClassification_C18
+                        )
+                    )
+                }
+            }
 
 
-            holder.filmName.text = film.name
-            holder.filmRating.text = film.rating
-            holder.filmAge.text = film.age
-            holder.filmTime.text = film.time
-            holder.filmDate.text = film.date
-            holder.filmAvatar.setImageResource(film.avatar)
+            holder.filmTime.text = film.duration.toString() + " phút"
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val releaseDate = dateFormat.format(film.release_date)
+            holder.filmDate.text = releaseDate
+
+            Picasso.get().load(film.poster_url).into(holder.filmAvatar)
 
             holder.showtimesButton.setOnClickListener {
                 if (holder.showtimesGridView.visibility == View.VISIBLE) {
@@ -72,7 +135,17 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
                 }
             }
 
-            val adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1,  film.showtimes)
+            val showtimes = ArrayList<String>()
+            for (i in film.screenings!!) {
+                val start = Calendar.getInstance().apply { time = i.screening_start }
+                val end = Calendar.getInstance().apply { time = i.screening_end }
+
+                val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                showtimes.add(timeFormat.format(start.time) + " - " + timeFormat.format(end.time))
+            }
+
+            val adapter =
+                ArrayAdapter(context, android.R.layout.simple_list_item_1, showtimes)
             holder.showtimesGridView.adapter = adapter
             holder.showtimesGridView.numColumns = 3
 
@@ -96,7 +169,7 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
             lateinit var showtimesGridView: GridView
         }
 
-        fun updateData(newList: List<Film>) {
+        fun updateData(newList: List<MovieScreening>) {
             filmList.clear()
             filmList.addAll(newList)
             notifyDataSetChanged()
@@ -107,31 +180,171 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cinema_film_detail)
 
+        intent = intent
+        cinema = intent.getSerializableExtra("cinema") as Cinema
+
+        cinemaName = findViewById(R.id.activity_cinema_film_detail_film_name)
+        cinemaName!!.text = cinema!!.name
+
 
         buttonAddress = findViewById(R.id.activity_cinema_film_detail_address)
+        buttonAddress!!.text = cinema!!.address
         buttonAddress?.setOnClickListener {
             val intent = Intent(applicationContext, MapCinemaActivity::class.java)
+            intent.putExtra("cinema", cinema)
             startActivity(intent)
         }
 
-        var temp = ArrayList<String>()
+        dateBtn[0] = findViewById(R.id.button1)
+        dateBtn[1] = findViewById(R.id.button2)
+        dateBtn[2] = findViewById(R.id.button3)
+        dateBtn[3] = findViewById(R.id.button4)
+        dateBtn[4] = findViewById(R.id.button5)
+        dateBtn[5] = findViewById(R.id.button6)
+        dateBtn[6] = findViewById(R.id.button7)
+        currentDateTV = findViewById(R.id.activity_film_showtimes_time)
 
-        temp.add("7:00-8:30")
-        temp.add("8:30-9:00")
-        temp.add("9:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
-        temp.add("10:30-9:00")
+        activeDateBtn = dateBtn[0]
+        activeDateBtn!!.setBackgroundColor(Color.parseColor("#FF0303"))
+        activeDateBtn!!.setTextColor(Color.WHITE)
 
-        filmList.add(Film("Siêu lừa gặp siêu lầy","8.1","C16","112 Phút","01/03/2023",R.drawable.foreplay_background,temp))
-        filmList.add(Film("Biệt Đội Rất Ổn","6.8","C13","104 Phút","01/03/2023",R.drawable.foreplay_background,temp))
-        filmList.add(Film("Tri Kỷ","9.2","C16","124 Phút","01/03/2023",R.drawable.foreplay_background,temp))
-        filmList.add(Film("Siêu lừa gặp siêu lầy","8.1","C16","112 Phút","01/03/2023",R.drawable.foreplay_background,temp))
+        val dateFormat = SimpleDateFormat("dd/MM", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        for (i in 0 until 7) {
+            val date = calendar.time
+            dateList[i] = calendar.time
+            dateBtn[i]!!.text = dateFormat.format(date)
+            calendar.add(Calendar.DATE, 1)
+            dateBtn[i]!!.setOnClickListener { btn ->
+                activeDateBtn!!.setBackgroundColor(Color.TRANSPARENT)
+                activeDateBtn!!.setTextColor(Color.BLACK)
+                (btn as Button).setBackgroundColor(Color.parseColor("#FF0303"))
+                btn.setTextColor(Color.WHITE)
+
+                if (btn != activeDateBtn) {
+                    currentDateTV!!.text =
+                        SimpleDateFormat(
+                            "'Ngày' dd 'tháng' MM 'năm' yyyy",
+                            Locale.getDefault()
+                        ).format(dateList[i]!!)
+
+//                    // Get current date screenings
+                    for (j in 0 until activeMovieScreening!!.size) {
+                        activeMovieScreening!![j].screenings =
+                            movieScreening!![j].screenings!!.filter {
+                                isSameDate(it.screening_start, dateList[i]!!)
+                            }
+                    }
+                    adapter!!.updateData(activeMovieScreening!!)
+                }
+                activeDateBtn = btn
+            }
+        }
+        currentDateTV!!.text =
+            SimpleDateFormat(
+                "'Ngày' dd 'tháng' MM 'năm' yyyy",
+                Locale.getDefault()
+            ).format(dateList[0]!!)
+
 
         val filmListView = findViewById<ListView>(R.id.activity_cinema_film_detail_film_list_film)
-        adapter = FilmAdapter(this, filmList)
+        adapter = FilmAdapter(this, ArrayList())
         filmListView.adapter = adapter
+
+        coroutineScope.launch {
+            cinema_id = intent.getStringExtra("cinema_id")
+
+            screenings = getScreenings(cinema_id!!)
+            movieScreening = getMovieScreening(screenings!!)
+            // Make a deep copy
+            activeMovieScreening =
+                movieScreening?.map {
+                    it.copy(screenings = ArrayList(it.screenings!!))
+                } as ArrayList<MovieScreening>?
+            // Get current date screenings
+            for (i in activeMovieScreening!!) {
+                i.screenings = i.screenings!!.filter {
+                    isSameDate(it.screening_start, dateList[0]!!)
+                }
+            }
+            adapter!!.updateData(activeMovieScreening!!)
+        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel()
+    }
+
+    fun isSameDate(date1: Date, date2: Date): Boolean {
+        val calendar1 = Calendar.getInstance().apply {
+            time = date1
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val calendar2 = Calendar.getInstance().apply {
+            time = date2
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return calendar1.time == calendar2.time
+    }
+
+    suspend fun getScreenings(cinema_id: String): ArrayList<Screening>? = runCatching {
+        val db = Firebase.firestore
+        val res = arrayListOf<Screening>()
+
+        // Get the current date and time
+        val currentDate = Date()
+
+        // Get the next week end of day of current date
+        val calendar = Calendar.getInstance()
+        calendar.time = currentDate
+        calendar.add(Calendar.DAY_OF_YEAR, 6)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val oneWeekFromNow = calendar.time
+
+        // Construct the query to retrieve documents where screening_start is within a week from now
+        val snapshot = db.collection("screening")
+            .whereEqualTo("is_deleted", false)
+            .whereEqualTo("cinema_id", cinema_id)
+            .whereGreaterThan("screening_start", currentDate)
+            .whereLessThan("screening_start", oneWeekFromNow)
+            .get()
+            .await()
+        res.addAll(snapshot.toObjects(Screening::class.java))
+        res
+    }.getOrElse {
+        Log.w("DB", "Error getting data .", it)
+        null
+    }
+
+    suspend fun getMovieScreening(screenings: ArrayList<Screening>): ArrayList<MovieScreening>? =
+        runCatching {
+            val db = Firebase.firestore
+            val uniqueMovieIds = screenings.distinctBy { it.movie_id }.map { it.movie_id }
+            val res = arrayListOf<MovieScreening>()
+
+            for (movie_id in uniqueMovieIds) {
+                val snapshot = db.collection("movie")
+                    .document(movie_id)
+                    .get()
+                    .await()
+                val tempMovieScreening = snapshot.toObject(MovieScreening::class.java)
+                tempMovieScreening!!.screenings = screenings.filter { it.movie_id == movie_id }
+                res.add(tempMovieScreening)
+            }
+            screenings.clear()
+            res
+        }.getOrElse {
+            Log.w("DB", "Error getting data .", it)
+            null
+        }
 }
