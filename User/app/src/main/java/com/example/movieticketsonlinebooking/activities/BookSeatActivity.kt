@@ -1,6 +1,7 @@
 package com.example.movieticketsonlinebooking.activities
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -136,15 +137,16 @@ class BookSeatActivity : AppCompatActivity() {
                                 view: View
                             ) {
                                 val seat = view.findViewById<TextView>(view.id)
+                                if (seat.currentTextColor != Color.WHITE)
+                                    seat.setTextColor(Color.WHITE)
+                                else
+                                    seat.setTextColor(Color.parseColor("#59575C"))
                                 val seatName = seat.text.toString()
 
                                 selectedSeatsName.add(seatName)
                                 selectedSeats = selectedIdList.map { it - 1 }
                                 totalPrice = selectedIdList.size * seatPrice!!
                                 priceTV!!.text = toVND(totalPrice)
-
-                                Log.i("Test", selectedSeatsName.toString())
-                                Log.i("Test", selectedIdList.toString())
                             }
 
                             override fun onBookedSeatClick(view: View) {
