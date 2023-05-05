@@ -134,7 +134,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             holder.showtimesGridView.setOnItemClickListener { _, _, screeningPos, _ ->
 
 
-                if (!UserManager.isLoggedIn()) {
+                if (UserManager.isLoggedIn()) {
                     if (cinemaList[position].type == "Big") {
                         val intent = Intent(context, BookSeatActivity::class.java)
                         intent.putExtra("cinema_name", cinemaList[position].name)
