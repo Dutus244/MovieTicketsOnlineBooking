@@ -37,51 +37,48 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_book_seat_layout_1">
 
         <TextView
-            android:id="@+id/activity_book_seat_film_name"
+            android:id="@+id/activity_book_seat_movie_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
             android:text="Movie name"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/activity_film_info_spinner_time"
+            app:layout_constraintEnd_toStartOf="@+id/activity_book_seat_spinner_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/activity_film_info_textview_age"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_book_seat_film_name" />
-
         <Spinner
-            android:id="@+id/activity_film_info_spinner_time"
-            android:layout_width="100dp"
+            android:id="@+id/activity_book_seat_spinner_time"
+            android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="10dp"
             android:focusable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/activity_film_info_textview_audi_name"
+            android:id="@+id/activity_book_seat_auditorium_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_book_seat_movie_name" />
+
+        <TextView
+            android:id="@+id/activity_book_seat_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_film_info_textview_age"
-            app:layout_constraintStart_toEndOf="@+id/activity_film_info_textview_age"
-            app:layout_constraintTop_toTopOf="@+id/activity_film_info_textview_age" />
+            app:layout_constraintBottom_toBottomOf="@+id/activity_book_seat_auditorium_name"
+            app:layout_constraintStart_toEndOf="@+id/activity_book_seat_auditorium_name"
+            app:layout_constraintTop_toTopOf="@+id/activity_book_seat_auditorium_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,7 +179,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/activity_film_info_price"
+            android:id="@+id/activity_book_seat_price"
             android:layout_width="160dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"

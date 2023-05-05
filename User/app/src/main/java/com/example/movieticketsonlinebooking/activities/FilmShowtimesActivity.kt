@@ -59,6 +59,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         private val cinemaList: ArrayList<CinemaScreening>,
         private val movie_title: String,
         private val movie_classification: String,
+        private val date: String,
     ) :
         BaseAdapter() {
 
@@ -138,16 +139,13 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                         val intent = Intent(context, BookSeatActivity::class.java)
                         intent.putExtra("cinema_name", cinemaList[position].name)
                         intent.putExtra("movie_title", movie_title)
+                        intent.putExtra("date", date)
                         intent.putExtra("price", cinemaList[position].price)
-                        intent.putExtra("movie_classification", movie_classification)
                         intent.putExtra(
-                            "auditorium_id",
-                            cinemaList[position].screenings!![screeningPos].auditorium_id
+                            "screenings",
+                            ArrayList(cinemaList[position].screenings!!)
                         )
-                        intent.putExtra(
-                            "screening_id",
-                            cinemaList[position].screenings!![screeningPos].id
-                        )
+                        intent.putExtra("screeningSelectedPos", screeningPos)
                         context.startActivity(intent)
                     } else {
                         val intent = Intent(context, BookSeatActivity::class.java)
@@ -259,7 +257,13 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             ).format(dateList[0]!!)
 
         val cinemaListView = findViewById<ListView>(R.id.activity_film_showtimes_list_cinema)
-        adapter = CinemaAdapter(this, ArrayList(), movie_title!!, movie_classification!!)
+        adapter = CinemaAdapter(
+            this,
+            ArrayList(),
+            movie_title!!,
+            movie_classification!!,
+            activeDateBtn!!.text.toString()
+        )
         cinemaListView.adapter = adapter
 
         val searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
