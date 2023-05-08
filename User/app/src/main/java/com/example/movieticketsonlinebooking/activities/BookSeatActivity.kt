@@ -1,116 +1,268 @@
 package com.example.movieticketsonlinebooking.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
-import android.widget.Button
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.TextView
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.Auditorium
+import com.example.movieticketsonlinebooking.viewmodels.Reservation
+import com.example.movieticketsonlinebooking.viewmodels.Screening
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import dev.jahidhasanco.seatbookview.SeatBookView
+import dev.jahidhasanco.seatbookview.SeatClickListener
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BookSeatActivity : AppCompatActivity() {
-    var buttonConfirm: Button? = null
+    private var buttonConfirm: Button? = null
+    private lateinit var seatBookView: SeatBookView
+
+    private var cinema_name: String? = null
+    private var movie_title: String? = null
+    private var date: String? = null
+    private var auditorium_id: String? = null
+    private var screening_id: String? = null
+    private var seatPrice: Int? = null
+    private var screenings: ArrayList<Screening>? = null
+    private var screeningSelectedPos: Int = 0
+
+    private var cinemaNameTV: TextView? = null
+    private var movieTitleTV: TextView? = null
+    private var auditoriumNameTV: TextView? = null
+    private var dateTV: TextView? = null
+    private var priceTV: TextView? = null
+    private var timeSpinner: Spinner? = null
+
+    private var auditorium: Auditorium? = null
+    private var reservations: ArrayList<Reservation>? = null
+    private var bookedSeat: ArrayList<Int>? = null
+    private var selectedSeats: List<Int>? = null
+    private var totalPrice: Int = 0
+    private var times = listOf<String>()
+    private val selectedSeatsName = object : HashSet<String>() {
+        override fun add(element: String): Boolean {
+            return if (contains(element)) {
+                remove(element)
+                true
+            } else {
+                super.add(element)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_seat)
 
-        val seatGridLayout = findViewById<GridLayout>(R.id.seat_grid)
-        val seatPositions = arrayOf(
-            "11001111111111",
-            "11001111111111",
-            "11001111111111",
-            "11001111111111",
-            "11001111111111",
-            "11001111111111",
-            "11001111111111",
-            "11001111111111",
-            "11001111111111"
-            // add more rows as needed
-        )
+        val intent = intent
+        cinema_name = intent.getStringExtra("cinema_name")
+        movie_title = intent.getStringExtra("movie_title")
+        date = intent.getStringExtra("date")
+        seatPrice = intent.getIntExtra("price", 0)
+        screenings = intent.getSerializableExtra("screenings") as ArrayList<Screening>
+        screeningSelectedPos = intent.getIntExtra("screeningSelectedPos", 0)
 
+        val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        times = screenings!!.map { dateFormat.format(it.screening_start) }
 
-        for (i in 0 until seatPositions.size) {
-            val row = seatPositions[i]
-            for (j in 0 until row.length) {
-                val imageView = ImageView(this)
-                val layoutParams = GridLayout.LayoutParams(
-                    GridLayout.spec(i),
-                    GridLayout.spec(j)
-                )
-                layoutParams.width = 50
-                layoutParams.height = 50
-                layoutParams.setMargins(2, 4, 2, 4)
-                imageView.layoutParams = layoutParams
-                if (row[j] == '1') {
-                    imageView.setImageResource(R.drawable.ic_seat_available)
-                    imageView.tag = "available"
-                    imageView.setOnClickListener {
-                        if (imageView.tag == "available") {
-                            imageView.setImageResource(R.drawable.ic_seat_selected)
-                            imageView.tag = "selected"
-                        } else {
-                            imageView.setImageResource(R.drawable.ic_seat_available)
-                            imageView.tag = "available"
-                        }
-                    }
-                } else if (row[j] == '2') {
-                    imageView.setImageResource(R.drawable.ic_seat_sold)
-                    imageView.tag = "sold"
-                }
-                else {
-                    imageView.setImageResource(R.drawable.ic_seat_unavailable)
-                    imageView.tag = "unavailable"
-                }
-                seatGridLayout.addView(imageView)
-            }
-        }
+        seatBookView = findViewById(R.id.layoutSeat)
+        cinemaNameTV = findViewById(R.id.activity_book_seat_cinema_name)
+        movieTitleTV = findViewById(R.id.activity_book_seat_movie_name)
+        auditoriumNameTV = findViewById(R.id.activity_book_seat_auditorium_name)
+        dateTV = findViewById(R.id.activity_book_seat_date)
+        priceTV = findViewById(R.id.activity_book_seat_price)
 
-        val seatNameGridLayout1 = findViewById<GridLayout>(R.id.name_seat_grid1)
-        var c: Char = 'A'
-        seatNameGridLayout1.columnCount = 1 // set column count to 1
-        for (i in 0 until seatPositions.size) {
-            val row = seatPositions[i]
-            val textView = TextView(this)
-            val layoutParams = GridLayout.LayoutParams(
-                GridLayout.spec(i),
-                GridLayout.spec(0)
-            )
-            layoutParams.width = 50
-            layoutParams.height = 50
-            layoutParams.setMargins(0, 4, 0, 4)
-            if (row[0] == '1') {
-                textView.setText("$c")
-                ++c
-            }
-            seatNameGridLayout1.addView(textView, layoutParams)
-        }
-
-        val seatNameGridLayout2 = findViewById<GridLayout>(R.id.name_seat_grid2)
-        var d: Char = 'A'
-        seatNameGridLayout2.columnCount = 1 // set column count to 1
-        for (i in 0 until seatPositions.size) {
-            val row = seatPositions[i]
-            val textView = TextView(this)
-            val layoutParams = GridLayout.LayoutParams(
-                GridLayout.spec(i),
-                GridLayout.spec(0)
-            )
-            layoutParams.width = 50
-            layoutParams.height = 50
-            layoutParams.setMargins(0, 4, 0, 4)
-            if (row[0] == '1') {
-                textView.setText("$d")
-                ++d
-            }
-            seatNameGridLayout2.addView(textView, layoutParams)
-        }
+        cinemaNameTV!!.text = cinema_name
+        movieTitleTV!!.text = movie_title
+        dateTV!!.text = date
 
         buttonConfirm = findViewById(R.id.activity_book_seat_button_confirm)
         buttonConfirm?.setOnClickListener {
-            val intent = Intent(applicationContext, PayActivity::class.java)
-            startActivity(intent)
+            val payIntent = Intent(applicationContext, PayActivity::class.java)
+            intent.putStringArrayListExtra("selectedSeatsName", ArrayList(selectedSeatsName))
+            intent.putIntegerArrayListExtra("selectedSeats", ArrayList(selectedSeats!!))
+            intent.putExtra("totalPrice", totalPrice)
+            startActivity(payIntent)
         }
+
+        timeSpinner = findViewById(R.id.activity_book_seat_spinner_time)
+        ArrayAdapter(
+            this@BookSeatActivity,
+            android.R.layout.simple_spinner_item,
+            times
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            timeSpinner!!.adapter = adapter
+        }
+        timeSpinner!!.setSelection(screeningSelectedPos)
+        timeSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                lifecycleScope.launch {
+                    auditorium = getAuditorium(screenings!![p2].auditorium_id)
+                    auditoriumNameTV!!.text = auditorium!!.name
+                    reservations = getReservations(screenings!![p2].id)
+                    bookedSeat = getBookedSeats(reservations!!)
+
+                    runOnUiThread {
+                        // Clear previous seat map and its data
+                        resetSeatBookViewFields(seatBookView)
+                        priceTV!!.text = "0đ"
+
+                        seatBookView.setSeatsLayoutString(
+                            makeExistedSeats(
+                                auditorium!!.map,
+                                bookedSeat!!
+                            )
+                        )
+                            .isCustomTitle(true)
+                            .setCustomTitle(makeExistedTitles(auditorium!!.map))
+                            .setSeatSize(300)
+                        seatBookView.show()
+                        seatBookView.setSeatClickListener(object : SeatClickListener {
+                            override fun onAvailableSeatClick(
+                                selectedIdList: List<Int>,
+                                view: View
+                            ) {
+                                val seat = view.findViewById<TextView>(view.id)
+                                if (seat.currentTextColor != Color.WHITE)
+                                    seat.setTextColor(Color.WHITE)
+                                else
+                                    seat.setTextColor(Color.parseColor("#59575C"))
+                                val seatName = seat.text.toString()
+
+                                selectedSeatsName.add(seatName)
+                                selectedSeats = selectedIdList.map { it - 1 }
+                                totalPrice = selectedIdList.size * seatPrice!!
+                                priceTV!!.text = toVND(totalPrice)
+                            }
+
+                            override fun onBookedSeatClick(view: View) {
+
+                            }
+
+                            override fun onReservedSeatClick(view: View) {
+                            }
+                        })
+                    }
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
+    }
+
+    private fun getBookedSeats(reservation: ArrayList<Reservation>): ArrayList<Int> {
+        val res = arrayListOf<Int>()
+        reservation.forEachIndexed { reservationIdx, reservationItem ->
+            res.addAll(reservationItem.seats)
+        }
+        return res
+    }
+
+    private suspend fun getReservations(screening_id: String): ArrayList<Reservation>? =
+        runCatching {
+            val db = Firebase.firestore
+            val result: ArrayList<Reservation> = arrayListOf()
+
+            val snapShot = db.collection("reservation")
+                .whereEqualTo("screening_id", screening_id)
+                .get()
+                .await()
+            result.addAll(snapShot.toObjects(Reservation::class.java))
+            result
+        }.getOrElse {
+            Log.w("DB", "Error getting data .", it)
+            null
+        }
+
+    private suspend fun getAuditorium(auditorium_id: String): Auditorium? = runCatching {
+        val db = Firebase.firestore
+        val result = db.collection("auditorium")
+            .document(auditorium_id)
+            .get()
+            .await()
+        result.toObject(Auditorium::class.java)
+    }.getOrElse {
+        Log.w("DB", "Error getting documents.", it)
+        null
+    }
+
+    private fun makeExistedSeats(
+        map: ArrayList<String>,
+        bookedSeats: ArrayList<Int>,
+    ): String {
+        val mapColNum = map[0].length
+        var seats = ""
+        // Seat map is like this ["111", "111", "111"]
+        map.forEachIndexed { sIndex, s ->
+            seats += "/"
+            seats += s.mapIndexed { cIndex, c ->
+                if (c == '1') {
+                    if (sIndex * mapColNum + cIndex in bookedSeats) {
+                        "U"
+                    } else {
+                        "A"
+                    }
+                } else "_"
+            }.joinToString("")
+        }
+        return seats
+    }
+
+    private fun makeExistedTitles(map: ArrayList<String>): List<String> {
+        val title = arrayListOf<String>()
+        var rowTitle = 'A'
+        var count = 0
+        for (item in map) {
+            var colTitle = 1
+            count++
+            title.add("/")
+            for (i in 1..item.length) {
+                count++
+                if (item[i - 1] == '1') {
+                    title.add(rowTitle + (colTitle++).toString())
+                } else
+                    title.add("")
+            }
+            ++rowTitle
+        }
+        return title
+    }
+
+    private fun toVND(num: Int): String {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        return formatter.format(num) + "đ"
+    }
+
+    fun resetSeatBookViewFields(seatBookView: SeatBookView) {
+        selectedSeatsName.clear()
+        (seatBookView.getChildAt(0) as LinearLayout).removeAllViews()
+
+        val selectedIdListField = seatBookView::class.java.getDeclaredField("selectedIdList")
+        selectedIdListField.isAccessible = true
+        selectedIdListField.set(seatBookView, arrayListOf<Int>())
+
+        val selectedSeatsField = seatBookView::class.java.getDeclaredField("selectedSeats")
+        selectedSeatsField.isAccessible = true
+        selectedSeatsField.set(seatBookView, 0)
+
+        val countField = seatBookView::class.java.getDeclaredField("count")
+        countField.isAccessible = true
+        countField.set(seatBookView, 0)
     }
 }

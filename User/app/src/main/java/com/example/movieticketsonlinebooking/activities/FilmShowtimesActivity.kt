@@ -33,6 +33,8 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
     private var movieInfoBtn: Button? = null
 
     var movie_id: String? = null
+    var movie_title: String? = null
+    var movie_classification: String? = null
     var screenings: ArrayList<Screening>? = null
     var cinemaScreening: ArrayList<CinemaScreening>? = null
     var activeCinemaScreening: ArrayList<CinemaScreening>? = null
@@ -54,7 +56,10 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
 
     class CinemaAdapter(
         private val context: Context,
-        private val cinemaList: ArrayList<CinemaScreening>
+        private val cinemaList: ArrayList<CinemaScreening>,
+        private val movie_title: String,
+        private val movie_classification: String,
+        private val date: String,
     ) :
         BaseAdapter() {
 
@@ -126,27 +131,38 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             holder.showtimesGridView.adapter = adapter
             holder.showtimesGridView.numColumns = 3
 
-            holder.showtimesGridView.setOnItemClickListener { _, _, _, _ ->
+            holder.showtimesGridView.setOnItemClickListener { _, _, screeningPos, _ ->
 
 
                 if (UserManager.isLoggedIn()) {
-                    val intent = Intent(context, BookSeatActivity::class.java)
-//                    intent.putExtra("cinemaName", cinema.name)
-//                    intent.putExtra("showtime", showtime)
-                    context.startActivity(intent)
-                }
-                else {
+                    if (cinemaList[position].type == "Big") {
+                        val intent = Intent(context, BookSeatActivity::class.java)
+                        intent.putExtra("cinema_name", cinemaList[position].name)
+                        intent.putExtra("movie_title", movie_title)
+                        intent.putExtra("date", date)
+                        intent.putExtra("price", cinemaList[position].price)
+                        intent.putExtra(
+                            "screenings",
+                            ArrayList(cinemaList[position].screenings!!)
+                        )
+                        intent.putExtra("screeningSelectedPos", screeningPos)
+                        context.startActivity(intent)
+                    } else {
+                        val intent = Intent(context, BookSeatActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                } else {
                     val loginOrSignupDialog = AlertDialog.Builder(context)
                         .setTitle("Yêu cầu đăng nhập")
                         .setMessage("Bạn phải đăng nhập để đặt vé phim. Bạn có muốn đăng nhập hoặc đăng ký?")
                         .setPositiveButton("Đăng nhập") { _, _ ->
                             // Show login activity
-                            val intent = Intent(context,  LoginActivity::class.java)
+                            val intent = Intent(context, LoginActivity::class.java)
                             context.startActivity(intent)
                         }
                         .setNegativeButton("Đăng ký") { _, _ ->
                             // Show signup activity
-                            val intent = Intent(context,  SignupActivity1::class.java)
+                            val intent = Intent(context, SignupActivity1::class.java)
                             context.startActivity(intent)
                         }
                         .setNeutralButton("Hủy", null)
@@ -178,7 +194,10 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         FirebaseApp.initializeApp(this@FilmShowtimesActivity)
 
         val intent = intent
-        val movie_title = intent.getStringExtra("movie_title")
+        movie_id = intent.getStringExtra("movie_id")
+        movie_title = intent.getStringExtra("movie_title")
+        movie_classification = intent.getStringExtra("movie_classification")
+
 
         movieNameTV = findViewById(R.id.activity_film_showtimes_film_name)
         movieNameTV!!.text = movie_title
@@ -238,15 +257,19 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             ).format(dateList[0]!!)
 
         val cinemaListView = findViewById<ListView>(R.id.activity_film_showtimes_list_cinema)
-        adapter = CinemaAdapter(this, ArrayList())
+        adapter = CinemaAdapter(
+            this,
+            ArrayList(),
+            movie_title!!,
+            movie_classification!!,
+            activeDateBtn!!.text.toString()
+        )
         cinemaListView.adapter = adapter
 
         val searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
         searchEditText.addTextChangedListener(this)
 
         coroutineScope.launch {
-            movie_id = intent.getStringExtra("movie_id")
-
             screenings = getScreenings(movie_id!!)
             cinemaScreening = getCinemaScreening(screenings!!)
             // Make a deep copy
@@ -345,8 +368,10 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                     .get()
                     .await()
                 val tempCinemaScreening = snapshot.toObject(CinemaScreening::class.java)
-                tempCinemaScreening!!.screenings = screenings.filter { it.cinema_id == cinema_id }
-                res.add(tempCinemaScreening)
+                if (tempCinemaScreening!!.status == "Open") {
+                    tempCinemaScreening.screenings = screenings.filter { it.cinema_id == cinema_id }
+                    res.add(tempCinemaScreening)
+                }
             }
             screenings.clear()
             res

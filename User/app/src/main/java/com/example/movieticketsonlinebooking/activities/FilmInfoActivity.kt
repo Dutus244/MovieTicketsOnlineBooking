@@ -2,10 +2,8 @@ package com.example.movieticketsonlinebooking.activities
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +23,6 @@ import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 
 class FilmInfoActivity : AppCompatActivity() {
@@ -90,7 +87,7 @@ class FilmInfoActivity : AppCompatActivity() {
         moviePoster = findViewById(R.id.activity_film_info_imageview_avatar)
         movieTitle = findViewById(R.id.activity_film_info_textview_name)
         movieRating = findViewById(R.id.activity_film_info_textview_rating)
-        movieClassification = findViewById(R.id.activity_film_info_textview_age)
+        movieClassification = findViewById(R.id.activity_book_seat_classification)
         movieDuration = findViewById(R.id.activity_film_info_textview_time)
         movieReleaseDate = findViewById(R.id.activity_film_info_textview_date)
         movieDescription = findViewById(R.id.my_textview)
@@ -180,6 +177,7 @@ class FilmInfoActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, FilmShowtimesActivity::class.java)
             intent.putExtra("movie_id", movie!!.id)
             intent.putExtra("movie_title", movie!!.title)
+            intent.putExtra("movie_classification", movie!!.classification)
             startActivity(intent)
         }
 

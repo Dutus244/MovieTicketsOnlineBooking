@@ -61,4 +61,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.github.JahidHasanCO:SeatBookView:1.0.4'
 }

@@ -62,11 +62,11 @@
                 android:text="7.5"
                 android:textColor="#646464"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/activity_film_info_textview_age"
+                app:layout_constraintStart_toEndOf="@+id/activity_book_seat_classification"
                 app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_name" />
 
             <TextView
-                android:id="@+id/activity_film_info_textview_age"
+                android:id="@+id/activity_book_seat_classification"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -86,7 +86,7 @@
                 android:text="95 phút"
                 android:textColor="#646464"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/activity_film_info_textview_age"
+                app:layout_constraintStart_toStartOf="@+id/activity_book_seat_classification"
                 app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_rating" />
 
             <TextView
