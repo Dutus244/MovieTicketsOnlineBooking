@@ -84,7 +84,8 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
 
             holder.filmName.text = film.title
             holder.filmRating.text = film.rating.toString()
-            when (film!!.classification) {
+            holder.filmAge.text = film.classification
+            when (film.classification) {
                 "P" -> {
                     holder.filmAge.setBackgroundColor(
                         ContextCompat.getColor(
