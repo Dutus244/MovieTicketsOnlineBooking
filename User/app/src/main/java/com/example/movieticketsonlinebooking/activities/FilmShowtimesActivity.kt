@@ -49,11 +49,6 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun loginToAccount() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivityForResult(intent, 1001)
-    }
-
     class CinemaAdapter(
         private val context: Context,
         private val cinemaList: ArrayList<CinemaScreening>,

@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +25,17 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.Cinema
+import com.example.movieticketsonlinebooking.viewmodels.Movie
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.maps.GeoApiContext
 import com.google.maps.DirectionsApi
 import com.google.maps.model.TravelMode
+import com.squareup.picasso.Picasso
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CinemaFragment : Fragment(), TextWatcher {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +46,8 @@ class CinemaFragment : Fragment(), TextWatcher {
     var tempList: ArrayList<Cinema> = ArrayList()
     var adapter: MyAdapter? = null
 
-    class Cinema(var id: String, var name: String, var address: String, var phone: String, var avatar: Int, var distance: String )
+    var cinemas: MutableList<Cinema> = listOf<Cinema>().toMutableList()
+
 
     class MyAdapter(private val context: Context, private val arrayList: java.util.ArrayList<Cinema>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
@@ -57,15 +67,24 @@ class CinemaFragment : Fragment(), TextWatcher {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val data = arrayList[position]
             holder.textViewName.text = data.name
-            holder.imageView.setImageResource(data.avatar)
+
+            Picasso.get().load(data.img_url).into(holder.imageView)
             holder.textViewAddress.text = data.address
-            holder.textViewPhone.text = data.phone
-            if (data.distance != "") {
-                holder.textViewDistance.text = data.distance + " km"
+            holder.textViewPhone.text = "0903552552"
+//            if (data.distance != "") {
+//                holder.textViewDistance.text = data.distance + " km"
+//            }
+            if (data.type == "Big") {
+                holder.textViewDistance.text = "Phòng phim lớn"
+            }
+            else if (data.type == "Small") {
+                holder.textViewDistance.text = "Phòng phim nhỏ"
             }
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, CinemaFilmDetailActivity::class.java)
+                intent.putExtra("cinema", data)
+                intent.putExtra("cinema_id", data!!.id)
                 context.startActivity(intent)
             }
         }
@@ -81,75 +100,80 @@ class CinemaFragment : Fragment(), TextWatcher {
         }
     }
 
-    fun sortCinemasByDistanceAsc(cinemas: ArrayList<Cinema>) {
-        cinemas.sortBy { it.distance }
-    }
+//    fun sortCinemasByDistanceAsc(cinemas: ArrayList<Cinema>) {
+//        cinemas.sortBy { it.distance }
+//    }
 
-    fun updateDistance() {
-        var tempDisList: ArrayList<Cinema> = ArrayList()
-        val locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
-                val location =
-                    locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER) // or LocationManager.NETWORK_PROVIDER
-                if (location != null) {
-                    val userLatitude = location.latitude
-                    val userLongitude = location.longitude
-                    val geocoder = Geocoder(requireContext())
-                    for (i in 0 until arrayList.size) {
-                        val results = geocoder.getFromLocationName(arrayList[i].name, 1)
-                        if (results != null && results.isNotEmpty()) {
-                            val placeLatitude = results[0].latitude
-                            val placeLongitude = results[0].longitude
-
-                            val origin = "$userLatitude,$userLongitude"
-                            val destination = "$placeLatitude,$placeLongitude"
-
-                            // Calculate distance
-                            val resultsArray = FloatArray(1)
-                            Location.distanceBetween(userLatitude, userLongitude, placeLatitude, placeLongitude, resultsArray)
-                            val distance = resultsArray[0] / 1000// Distance in meters
-                            val roundedDistance = String.format("%.1f", distance)
-                            tempDisList.add(
-                                Cinema(
-                                    arrayList.get(i).id,
-                                    arrayList.get(i).name,
-                                    arrayList.get(i).address,
-                                    arrayList.get(i).phone,
-                                    arrayList.get(i).avatar,
-                                    roundedDistance
-                                )
-                            )
-                        }
-                    }
-                    sortCinemasByDistanceAsc(tempDisList)
-                    tempList.clear()
-                    tempList.addAll(tempDisList)
-                    adapter!!.updateData(tempDisList)
-                }
-            }
-    }
+//    fun updateDistance() {
+//        var tempDisList: ArrayList<Cinema> = ArrayList()
+//        val locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+//                val location =
+//                    locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER) // or LocationManager.NETWORK_PROVIDER
+//                if (location != null) {
+//                    val userLatitude = location.latitude
+//                    val userLongitude = location.longitude
+//                    val geocoder = Geocoder(requireContext())
+//                    for (i in 0 until arrayList.size) {
+//                        val results = geocoder.getFromLocationName(arrayList[i].name, 1)
+//                        if (results != null && results.isNotEmpty()) {
+//                            val placeLatitude = results[0].latitude
+//                            val placeLongitude = results[0].longitude
+//
+//                            val origin = "$userLatitude,$userLongitude"
+//                            val destination = "$placeLatitude,$placeLongitude"
+//
+//                            // Calculate distance
+//                            val resultsArray = FloatArray(1)
+//                            Location.distanceBetween(userLatitude, userLongitude, placeLatitude, placeLongitude, resultsArray)
+//                            val distance = resultsArray[0] / 1000// Distance in meters
+//                            val roundedDistance = String.format("%.1f", distance)
+//                            tempDisList.add(
+//                                Cinema(
+//                                    arrayList.get(i).id,
+//                                    arrayList.get(i).name,
+//                                    arrayList.get(i).address,
+//                                    arrayList.get(i).phone,
+//                                    arrayList.get(i).avatar,
+//                                    roundedDistance
+//                                )
+//                            )
+//                        }
+//                    }
+//                    sortCinemasByDistanceAsc(tempDisList)
+//                    tempList.clear()
+//                    tempList.addAll(tempDisList)
+//                    adapter!!.updateData(tempDisList)
+//                }
+//            }
+//    }
 
 
     fun readData() {
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background,""))
-        arrayList.add(Cinema("1","Galaxy Kinh Dương Vương","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background,""))
-        arrayList.add(Cinema("1","Cinestar Quốc Thanh","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background,""))
-        arrayList.add(Cinema("1","Galaxy Tân Bình","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background,""))
-        arrayList.add(Cinema("1","Cinestar Hai Bà Trưng","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background,""))
-        arrayList.add(Cinema("1","BHD Quang Trung","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background,""))
-
-        tempList.addAll(arrayList)
+        val db = Firebase.firestore
+        db.collection("cinema")
+            .whereEqualTo("status", "Open")
+            .whereEqualTo("is_deleted", false)
+            .get()
+            .addOnSuccessListener { documents ->
+                activity?.runOnUiThread {
+                    cinemas.addAll(documents.toObjects(Cinema::class.java))
+                    adapter?.updateData(cinemas)
+                    tempList.addAll(cinemas)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w("DB", "Error getting document", e)
+            }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 404) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                // Location permission is granted, you can proceed with getting the user's location
-                // and calculating distance as shown in the previous example
+
             } else {
-                // Location permission is denied, handle it gracefully
-                // You can show an error message or disable location-related functionality
+
             }
         }
     }
@@ -210,37 +234,18 @@ class CinemaFragment : Fragment(), TextWatcher {
             for (i in 0 until tempList.size) {
                 val name: String = tempList.get(i).name
                 if (name.uppercase().contains(query)) {
-                    filters.add(
-                        Cinema(
-                            tempList.get(i).id,
-                            tempList.get(i).name,
-                            tempList.get(i).address,
-                            tempList.get(i).phone,
-                            tempList.get(i).avatar,
-                            tempList.get(i).distance
-                        )
-                    )
+                    filters.add(tempList.get(i))
                 }
             }
             resultList.addAll(filters)
         } else {
             for (i in 0 until tempList.size) {
-                resultList.add(
-                    Cinema(
-                        tempList.get(i).id,
-                        tempList.get(i).name,
-                        tempList.get(i).address,
-                        tempList.get(i).phone,
-                        tempList.get(i).avatar,
-                        tempList.get(i).distance
-                    )
-                )
+                resultList.add(tempList.get(i))
             }
         }
         for (i in resultList) {
             println(i.name)
         }
-        sortCinemasByDistanceAsc(resultList)
         adapter!!.updateData(resultList)
     }
 
