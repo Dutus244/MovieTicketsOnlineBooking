@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.R
 import com.example.admin.RequestCode
 import com.example.admin.cinemas.Cinema
+import com.squareup.picasso.Picasso
 
 class CinemaScreeningListAdapter(private val activity: Activity, private val list: List<Cinema>) :
     RecyclerView.Adapter<CinemaScreeningListAdapter.ViewHolder>() {
@@ -37,6 +38,7 @@ class CinemaScreeningListAdapter(private val activity: Activity, private val lis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.position = position
+        Picasso.get().load(list[position].img_url).into(holder.imageView);
         holder.nameText.text = list[position].name
         holder.addrText.text = list[position].address
         when (list[position].type) {

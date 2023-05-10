@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +21,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class ScreeningList : AppCompatActivity() {
     var cinemaNameScreeningScreenTV: TextView? = null
@@ -76,10 +79,23 @@ class ScreeningList : AppCompatActivity() {
                 textView.text = sdf.format(currentDate.time)
 
                 val layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        50F,
+                        resources.displayMetrics
+                    ).toInt(),
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        50F,
+                        resources.displayMetrics
+                    ).toInt()
                 )
-                layoutParams.setMargins(25, 0, 25, 0)
+                if (i == 0) {
+                    textView.setTextColor(Color.WHITE)
+                    textView.setBackgroundColor(Color.parseColor("#673AB7"))
+                    selectedTextView = textView
+                }
+                textView.gravity = Gravity.CENTER
                 textView.layoutParams = layoutParams
 
                 val dateCalendar = Calendar.getInstance()

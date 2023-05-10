@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".screenings.ScreeningList">
 
     <LinearLayout
         android:id="@+id/activity_cinema_film_detail_layout_1"
@@ -56,7 +57,7 @@
         <LinearLayout
             android:id="@+id/scrollViewLinearLayout"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:orientation="horizontal">
 
 
