@@ -1,20 +1,21 @@
 package com.example.movieticketsonlinebooking.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.movieticketsonlinebooking.R
 import com.example.movieticketsonlinebooking.viewmodels.Movie
 import com.example.movieticketsonlinebooking.viewmodels.Reservation
 import com.example.movieticketsonlinebooking.viewmodels.Screening
-import com.example.movieticketsonlinebooking.viewmodels.UserManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
@@ -26,7 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PayActivity : AppCompatActivity() {
+class PaymentHistoryDetail : AppCompatActivity() {
     private var moviePosterIV: ImageView? = null
     private var movieTitleTV: TextView? = null
     private var movieClassificationTV: TextView? = null
@@ -34,75 +35,70 @@ class PayActivity : AppCompatActivity() {
     private var cinemaNameTV: TextView? = null
     private var screeningTimeTV: TextView? = null
     private var screeningDateTV: TextView? = null
+    private var seatTitleTV: TextView? = null
     private var seatsTV: TextView? = null
-    private var seatPriceTV: TextView? = null
+    private var reservationIdTV: TextView? = null
     private var totalPriceTV: TextView? = null
-    private var totalPriceConfirmTV: TextView? = null
-    private var payRG: RadioGroup? = null
-    private var payBtn: Button? = null
+    private var closeBtn: Button? = null
 
+    private var callingActivity: String? = null
     private var screening: Screening? = null
     private var auditorium_name: String? = null
     private var cinema_name: String? = null
-    private var selectedSeatsName: ArrayList<String>? = null
-    private var selectedSeats: ArrayList<Int>? = null
-    private var totalPrice: Int = 0
+    private var reservation_id: String? = null
 
+    private var reservation: Reservation? = null
     private var movie: Movie? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pay)
+        setContentView(R.layout.activity_payment_history_detail)
 
-        moviePosterIV = findViewById(R.id.activity_pay_film_avatar)
-        movieTitleTV = findViewById(R.id.activity_pay_film_name)
-        movieClassificationTV = findViewById(R.id.activity_pay_film_age)
-        movieDurationTV = findViewById(R.id.activity_pay_film_time)
-        cinemaNameTV = findViewById(R.id.activity_pay_cinema_name)
-        screeningTimeTV = findViewById(R.id.activity_pay_film_time_start)
-        screeningDateTV = findViewById(R.id.activity_pay_film_time_date)
-        seatsTV = findViewById(R.id.activity_pay_seat_info)
-        seatPriceTV = findViewById(R.id.activity_pay_seat_price)
-        totalPriceTV = findViewById(R.id.activity_pay_seat_price_total)
-        totalPriceConfirmTV = findViewById(R.id.activity_pay_seat_price_total_confirm)
-        payRG = findViewById(R.id.activity_pay_radio_group)
-        payBtn = findViewById(R.id.activity_pay_payBtn)
+        moviePosterIV = findViewById(R.id.activity_payment_history_detail_film_avatar)
+        movieTitleTV = findViewById(R.id.activity_payment_history_detail_film_name)
+        movieClassificationTV = findViewById(R.id.activity_payment_history_detail_film_age)
+        movieDurationTV = findViewById(R.id.activity_payment_history_detail_film_time)
+        cinemaNameTV = findViewById(R.id.activity_payment_history_detail_cinema_name)
+        screeningTimeTV = findViewById(R.id.activity_payment_history_detail_film_time_start)
+        screeningDateTV = findViewById(R.id.activity_payment_history_detail_film_time_date)
+        seatTitleTV = findViewById(R.id.activity_payment_history_detail_seat_title)
+        seatsTV = findViewById(R.id.activity_payment_history_detail_seats)
+        reservationIdTV = findViewById(R.id.activity_payment_history_detail_reservation_id)
+        totalPriceTV = findViewById(R.id.activity_payment_history_detail_total_price)
+        closeBtn = findViewById(R.id.ctivity_payment_history_detail_closeBtn)
 
         val intent = intent
+        callingActivity = intent.getStringExtra("caller")
         screening = intent.getSerializableExtra("screening") as Screening
         auditorium_name = intent.getStringExtra("auditorium_name")
         cinema_name = intent.getStringExtra("cinema_name")
-        selectedSeatsName = intent.getStringArrayListExtra("selectedSeatsName")
-        selectedSeats = intent.getIntegerArrayListExtra("selectedSeats")
-        totalPrice = intent.getIntExtra("totalPrice", 0)
+        reservation_id = intent.getStringExtra("reservation_id")
 
-        selectedSeatsName!!.sort()
-
-        payBtn!!.setOnClickListener {
-            if (payRG!!.checkedRadioButtonId == -1) {
-                Toast.makeText(
-                    this@PayActivity,
-                    "Vui lòng chọn phương thức thanh toán",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                return@setOnClickListener
+        closeBtn!!.setOnClickListener {
+            if (callingActivity == "PayActivity") {
+                val homeIntent = Intent(this@PaymentHistoryDetail, HomeActivity::class.java)
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(homeIntent)
             }
-            val reservation = Reservation(
-                screening!!.auditorium_id,
-                screening!!.id,
-                UserManager.getCurrentUser().userID!!,
-                totalPrice,
-                Date(),
-                selectedSeats!!,
-                selectedSeatsName!!,
-            )
-            addReservation(reservation)
+            finish()
         }
-
+        // set up back button listener
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // handle back button press here
+                if (callingActivity == "PayActivity") {
+                    val homeIntent = Intent(this@PaymentHistoryDetail, HomeActivity::class.java)
+                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(homeIntent)
+                }
+                finish()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
 
         lifecycleScope.launch {
+            reservation = getReservation(reservation_id!!)
             movie = getMovie(screening!!.movie_id)
 
             Picasso.get().load(movie!!.poster_url).into(moviePosterIV)
@@ -112,7 +108,7 @@ class PayActivity : AppCompatActivity() {
                 "P" -> {
                     movieClassificationTV!!.setBackgroundColor(
                         ContextCompat.getColor(
-                            this@PayActivity,
+                            this@PaymentHistoryDetail,
                             R.color.movieClassification_P
                         )
                     )
@@ -120,7 +116,7 @@ class PayActivity : AppCompatActivity() {
                 "C13" -> {
                     movieClassificationTV!!.setBackgroundColor(
                         ContextCompat.getColor(
-                            this@PayActivity,
+                            this@PaymentHistoryDetail,
                             R.color.movieClassification_C13
                         )
                     )
@@ -128,7 +124,7 @@ class PayActivity : AppCompatActivity() {
                 "C16" -> {
                     movieClassificationTV!!.setBackgroundColor(
                         ContextCompat.getColor(
-                            this@PayActivity,
+                            this@PaymentHistoryDetail,
                             R.color.movieClassification_C16
                         )
                     )
@@ -136,7 +132,7 @@ class PayActivity : AppCompatActivity() {
                 "C18" -> {
                     movieClassificationTV!!.setBackgroundColor(
                         ContextCompat.getColor(
-                            this@PayActivity,
+                            this@PaymentHistoryDetail,
                             R.color.movieClassification_C18
                         )
                     )
@@ -148,10 +144,14 @@ class PayActivity : AppCompatActivity() {
             screeningTimeTV!!.text = timeFormat.format(screening!!.screening_start)
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             screeningDateTV!!.text = dateFormat.format(screening!!.screening_start)
-            seatsTV!!.text = selectedSeatsName!!.joinToString(", ")
-            seatPriceTV!!.text = toVND(totalPrice / selectedSeats!!.size)
-            totalPriceTV!!.text = toVND(totalPrice)
-            totalPriceConfirmTV!!.text = toVND(totalPrice)
+            if (reservation!!.seats.isEmpty()) {
+                seatTitleTV!!.visibility = View.GONE
+                seatsTV!!.visibility = View.GONE
+            } else {
+                seatsTV!!.text = reservation!!.seats_name.joinToString(", ")
+            }
+            reservationIdTV!!.text = reservation_id
+            totalPriceTV!!.text = toVND(reservation!!.total_price)
         }
     }
 
@@ -167,29 +167,16 @@ class PayActivity : AppCompatActivity() {
         null
     }
 
-    fun addReservation(reservation: Reservation) {
+    suspend fun getReservation(reservation_id: String): Reservation? = runCatching {
         val db = Firebase.firestore
-        db.collection("reservation")
-            .add(reservation)
-            .addOnSuccessListener { it ->
-                payBtn!!.isEnabled = false
-                payBtn!!.isClickable = false
-                Toast.makeText(
-                    this@PayActivity,
-                    "Thanh toán thành công",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val intent = Intent(this, PaymentHistoryDetail::class.java)
-                intent.putExtra("caller", "PayActivity")
-                intent.putExtra("screening", screening)
-                intent.putExtra("auditorium_name", auditorium_name)
-                intent.putExtra("cinema_name", cinema_name)
-                intent.putExtra("reservation_id", it.id)
-                startActivity(intent)
-            }
-            .addOnFailureListener { e ->
-                Log.w("DB", "Error adding document", e)
-            }
+        val result = db.collection("reservation")
+            .document(reservation_id)
+            .get()
+            .await()
+        result.toObject(Reservation::class.java)
+    }.getOrElse {
+        Log.w("DB", "Error getting documents.", it)
+        null
     }
 
     private fun toVND(num: Int): String {

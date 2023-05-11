@@ -13,6 +13,7 @@ class Reservation(
     var total_price: Int = 0,
     var date: Date = Date(),
     var seats: ArrayList<Int> = arrayListOf(),
+    var seats_name: ArrayList<String> = arrayListOf(),
     @DocumentId
     val id: String = "",
 ) : java.io.Serializable {

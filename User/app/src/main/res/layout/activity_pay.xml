@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Thanh Toán"
+            android:text="Thanh toán"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -36,86 +36,90 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_cinema_search_layout">
 
         <ImageView
-            android:id="@+id/film_avatar"
+            android:id="@+id/activity_pay_film_avatar"
             android:layout_width="80dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/foreplay_background"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/film_name"
-            android:layout_width="250dp"
+            android:id="@+id/activity_pay_film_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text="BIỆT ĐỘI CÁNH CỤT VÙNG MADAGASCAR"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/film_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_pay_film_avatar"
+            app:layout_constraintTop_toTopOf="@+id/activity_pay_film_avatar" />
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/film_age"
+            android:id="@+id/activity_pay_film_age"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="C13"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:background="@drawable/account_btn1"
+            android:background="@color/black"
+            android:text="C13"
             android:textColor="@color/white"
             android:textSize="15dp"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintStart_toEndOf="@+id/film_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/film_name" />
+            app:layout_constraintStart_toEndOf="@+id/activity_pay_film_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/activity_pay_film_name" />
 
         <TextView
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/film_time"
+            android:id="@+id/activity_pay_film_time"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="95 phút"
+            android:layout_marginLeft="20dp"
             android:drawableLeft="@drawable/ic_baseline_access_time_24"
-            android:gravity="center"
+            android:text="95 phút"
             android:textColor="#646464"
             android:textSize="15dp"
-            app:layout_constraintStart_toEndOf="@+id/film_age"
-            app:layout_constraintTop_toBottomOf="@+id/film_name" />
+            app:layout_constraintBottom_toBottomOf="@+id/activity_pay_film_age"
+            app:layout_constraintStart_toEndOf="@+id/activity_pay_film_age"
+            app:layout_constraintTop_toTopOf="@+id/activity_pay_film_age" />
 
         <TextView
-            android:id="@+id/cinema_name"
-            android:layout_width="200dp"
+            android:id="@+id/activity_pay_cinema_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:text="Galaxy Nguyễn Du"
             android:textColor="#646464"
             android:textSize="15dp"
-            app:layout_constraintStart_toEndOf="@+id/film_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/film_age" />
+            app:layout_constraintEnd_toEndOf="@+id/activity_pay_film_name"
+            app:layout_constraintStart_toEndOf="@+id/activity_pay_film_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/activity_pay_film_time" />
 
         <TextView
-            android:id="@+id/film_time_start"
+            android:id="@+id/activity_pay_film_time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:text="9:30-10:00"
-            app:layout_constraintStart_toEndOf="@+id/film_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/cinema_name" />
+            android:text="9:30"
+            app:layout_constraintStart_toEndOf="@+id/activity_pay_film_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/activity_pay_cinema_name" />
 
         <TextView
-            android:id="@+id/film_time_date"
+            android:id="@+id/activity_pay_film_time_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:text="04/03/2023"
-            app:layout_constraintStart_toEndOf="@+id/film_time_start"
-            app:layout_constraintTop_toBottomOf="@+id/cinema_name" />
+            app:layout_constraintStart_toEndOf="@+id/activity_pay_film_time_start"
+            app:layout_constraintTop_toBottomOf="@+id/activity_pay_cinema_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -151,10 +155,10 @@
             android:id="@+id/activity_pay_seat_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1x Ghe A1"
-            android:textSize="17dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:text="1x A1"
+            android:textSize="17dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -235,7 +239,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
-            android:id="@+id/radioGroup"
+            android:id="@+id/activity_pay_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -308,7 +312,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Tổng cộng:"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -321,18 +325,19 @@
             android:layout_marginLeft="10dp"
             android:text="50,000đ"
             android:textColor="@color/red"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView13"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/activity_pay_payBtn"
             android:layout_width="140dp"
-            android:text="Thanh toán"
-            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:background="@drawable/account_btn1"
+            android:text="Thanh toán"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

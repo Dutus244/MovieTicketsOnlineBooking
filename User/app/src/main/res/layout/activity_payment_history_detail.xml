@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PaymentHistoryDetail">
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Mã vé"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_payment_history_detail_seat_title" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_reservation_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView18"
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <LinearLayout
+        android:id="@+id/activity_payment_history_detail_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Thông tin vé"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/activity_payment_history_detail_film_avatar"
+        android:layout_width="150dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/foreplay_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_payment_history_detail_header" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_film_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="BIỆT ĐỘI CÁNH CỤT VÙNG MADAGASCAR"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/activity_payment_history_detail_film_avatar"
+        app:layout_constraintTop_toTopOf="@+id/activity_payment_history_detail_film_avatar" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_film_age"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="C13"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/activity_payment_history_detail_film_name"
+        app:layout_constraintTop_toBottomOf="@+id/activity_payment_history_detail_film_name" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_film_time"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:drawableLeft="@drawable/ic_baseline_access_time_24"
+        android:text="95 phút"
+        android:textColor="#646464"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_payment_history_detail_film_age"
+        app:layout_constraintStart_toEndOf="@+id/activity_payment_history_detail_film_age"
+        app:layout_constraintTop_toTopOf="@+id/activity_payment_history_detail_film_age" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_cinema_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:text="Galaxy Nguyễn Du"
+        android:textColor="#646464"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/activity_payment_history_detail_film_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/activity_payment_history_detail_film_avatar" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_film_time_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="9:30"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_film_time_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        android:text="04/03/2023"
+        app:layout_constraintStart_toEndOf="@+id/activity_payment_history_detail_film_time_start"
+        app:layout_constraintTop_toTopOf="@+id/activity_payment_history_detail_film_time_start" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Suất chiếu: "
+        app:layout_constraintStart_toStartOf="@+id/activity_payment_history_detail_cinema_name"
+        app:layout_constraintTop_toBottomOf="@+id/activity_payment_history_detail_cinema_name" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_seat_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Ghế: "
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/activity_payment_history_detail_seat_title"
+        app:layout_constraintTop_toTopOf="@+id/activity_payment_history_detail_seat_title" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Thanh toán"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_payment_history_detail_reservation_id" />
+
+    <TextView
+        android:id="@+id/activity_payment_history_detail_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="0đ"
+        app:layout_constraintEnd_toEndOf="@+id/textView19"
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <Button
+        android:id="@+id/ctivity_payment_history_detail_closeBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:paddingVertical="10dp"
+        android:text="Đóng"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
