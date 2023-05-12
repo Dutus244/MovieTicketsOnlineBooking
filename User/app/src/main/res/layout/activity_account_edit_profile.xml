@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AccountEditProfileActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/head_layout"
+        android:layout_height="150px"
+        android:background="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Thông tin tài khoản"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/emailTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/head_layout" />
+
+    <EditText
+        android:id="@+id/emailET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/emailTV"
+        app:layout_constraintTop_toBottomOf="@+id/emailTV" />
+
+    <TextView
+        android:id="@+id/usernameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Tên tài khoản"
+        app:layout_constraintStart_toStartOf="@+id/emailET"
+        app:layout_constraintTop_toBottomOf="@+id/emailET" />
+
+    <EditText
+        android:id="@+id/usernameET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="@+id/emailET"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/usernameTV"
+        app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
+
+    <TextView
+        android:id="@+id/nameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Họ tên"
+        app:layout_constraintStart_toStartOf="@+id/usernameET"
+        app:layout_constraintTop_toBottomOf="@+id/usernameET" />
+
+    <EditText
+        android:id="@+id/nameET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:imeOptions="flagForceAscii"
+        app:layout_constraintEnd_toEndOf="@+id/usernameET"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/nameTV"
+        app:layout_constraintTop_toBottomOf="@+id/nameTV" />
+
+    <TextView
+        android:id="@+id/telTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Điện thoại"
+        app:layout_constraintStart_toStartOf="@+id/nameET"
+        app:layout_constraintTop_toBottomOf="@+id/nameET" />
+
+    <EditText
+        android:id="@+id/telET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="@+id/nameET"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/telTV" />
+
+    <TextView
+        android:id="@+id/dobTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Ngày sinh"
+        app:layout_constraintStart_toStartOf="@+id/telET"
+        app:layout_constraintTop_toBottomOf="@+id/telET" />
+
+    <EditText
+        android:id="@+id/dobET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="@+id/telET"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/dobTV"
+        app:layout_constraintTop_toBottomOf="@+id/dobTV" />
+
+    <ImageView
+        android:id="@+id/calendar_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_baseline_calendar_today_24"
+        app:layout_constraintBottom_toBottomOf="@+id/dobET"
+        app:layout_constraintEnd_toEndOf="@+id/dobET"
+        app:layout_constraintTop_toTopOf="@+id/dobET" />
+
+    <TextView
+        android:id="@+id/sexTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Giới tính"
+        app:layout_constraintStart_toStartOf="@+id/dobET"
+        app:layout_constraintTop_toBottomOf="@+id/dobET" />
+
+    <RadioGroup
+        android:id="@+id/sexRG"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/dobET"
+        app:layout_constraintStart_toStartOf="@+id/sexTV"
+        app:layout_constraintTop_toBottomOf="@+id/sexTV">
+
+        <RadioButton
+            android:id="@+id/maleRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nam" />
+
+        <RadioButton
+            android:id="@+id/femaleRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nữ" />
+
+        <RadioButton
+            android:id="@+id/otherRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Khác" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#4CAF50"
+        android:textColor="@color/white"
+        android:text="Lưu"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

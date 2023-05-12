@@ -1,6 +1,9 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.User
 import com.example.movieticketsonlinebooking.viewmodels.UserManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -21,6 +25,8 @@ class AccountFragment2 : Fragment() {
 
     var nameTextView: TextView? = null
     var emailTextView: TextView? = null
+    var editProfileButton: Button? = null
+    var historyButton: Button? = null
     var signoutButton: Button? = null
     var gso: GoogleSignInOptions? = null
     var gsc: GoogleSignInClient? = null
@@ -37,6 +43,17 @@ class AccountFragment2 : Fragment() {
 
         nameTextView = view.findViewById(R.id.activity_account_textview_name)
         emailTextView = view.findViewById(R.id.activity_account_textview_email)
+        editProfileButton = view.findViewById(R.id.activity_account_button_change_info)
+        historyButton = view.findViewById(R.id.activity_account_button_history)
+
+        editProfileButton!!.setOnClickListener {
+            val intent = Intent(activity, AccountEditProfileActivity::class.java)
+            activity?.startActivityForResult(intent, 100)
+        }
+        historyButton!!.setOnClickListener {
+            val intent = Intent(activity, HistoryBookingActivity::class.java)
+            activity?.startActivityForResult(intent, 101)
+        }
 
         if (UserManager.getCurrentUser().typeAccount == 0) {
             nameTextView?.text = UserManager.getCurrentUser().username
@@ -92,7 +109,6 @@ class AccountFragment2 : Fragment() {
         }
         UserManager.logout()
     }
-
     companion object {
 
     }
