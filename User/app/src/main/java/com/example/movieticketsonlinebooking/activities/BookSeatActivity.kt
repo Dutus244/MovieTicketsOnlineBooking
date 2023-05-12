@@ -27,12 +27,11 @@ import java.util.*
 class BookSeatActivity : AppCompatActivity() {
     private var buttonConfirm: Button? = null
     private lateinit var seatBookView: SeatBookView
+    private val SEAT_SELECT_LIMIT = 8
 
     private var cinema_name: String? = null
     private var movie_title: String? = null
     private var date: String? = null
-    private var auditorium_id: String? = null
-    private var screening_id: String? = null
     private var seatPrice: Int? = null
     private var screenings: ArrayList<Screening>? = null
     private var screeningSelectedPos: Int = 0
@@ -89,10 +88,22 @@ class BookSeatActivity : AppCompatActivity() {
 
         buttonConfirm = findViewById(R.id.activity_book_seat_button_confirm)
         buttonConfirm?.setOnClickListener {
-            val payIntent = Intent(applicationContext, PayActivity::class.java)
-            intent.putStringArrayListExtra("selectedSeatsName", ArrayList(selectedSeatsName))
-            intent.putIntegerArrayListExtra("selectedSeats", ArrayList(selectedSeats!!))
-            intent.putExtra("totalPrice", totalPrice)
+            if (selectedSeatsName.isEmpty()) {
+                Toast.makeText(
+                    this@BookSeatActivity,
+                    "Vui lòng chọn ít nhất 1 ghế",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                return@setOnClickListener
+            }
+            val payIntent = Intent(this@BookSeatActivity, PayActivity::class.java)
+            payIntent.putExtra("screening", screenings!![screeningSelectedPos])
+            payIntent.putExtra("auditorium_name", auditorium!!.name)
+            payIntent.putExtra("cinema_name", cinema_name)
+            payIntent.putStringArrayListExtra("selectedSeatsName", ArrayList(selectedSeatsName))
+            payIntent.putIntegerArrayListExtra("selectedSeats", ArrayList(selectedSeats!!))
+            payIntent.putExtra("totalPrice", totalPrice)
             startActivity(payIntent)
         }
 
@@ -129,6 +140,7 @@ class BookSeatActivity : AppCompatActivity() {
                         )
                             .isCustomTitle(true)
                             .setCustomTitle(makeExistedTitles(auditorium!!.map))
+                            .setSelectSeatLimit(SEAT_SELECT_LIMIT)
                             .setSeatSize(300)
                         seatBookView.show()
                         seatBookView.setSeatClickListener(object : SeatClickListener {

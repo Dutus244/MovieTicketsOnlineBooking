@@ -53,8 +53,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         private val context: Context,
         private val cinemaList: ArrayList<CinemaScreening>,
         private val movie_title: String,
-        private val movie_classification: String,
-        private val date: String,
+        private var date: String,
     ) :
         BaseAdapter() {
 
@@ -168,9 +167,10 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
             return view
         }
 
-        fun updateData(newList: List<CinemaScreening>) {
+        fun updateData(newList: List<CinemaScreening>, date: String) {
             cinemaList.clear()
             cinemaList.addAll(newList)
+            this.date = date
             notifyDataSetChanged()
         }
     }
@@ -208,6 +208,10 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
         dateBtn[5] = findViewById(R.id.button6)
         dateBtn[6] = findViewById(R.id.button7)
         currentDateTV = findViewById(R.id.activity_film_showtimes_time)
+        val cinemaListView = findViewById<ListView>(R.id.activity_film_showtimes_list_cinema)
+        val searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
+
+
 
         activeDateBtn = dateBtn[0]
         activeDateBtn!!.setBackgroundColor(Color.parseColor("#FF0303"))
@@ -240,7 +244,13 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                                 isSameDate(it.screening_start, dateList[i]!!)
                             }
                     }
-                    adapter!!.updateData(activeCinemaScreening!!)
+                    if (searchEditText.text.isEmpty()) {
+                        adapter!!.updateData(activeCinemaScreening!!, btn.text.toString())
+                    } else {
+                        adapter!!.updateData(activeCinemaScreening!!.filter {
+                            it.name.contains(searchEditText.text.toString(), ignoreCase = true)
+                        }, btn.text.toString())
+                    }
                 }
                 activeDateBtn = btn
             }
@@ -251,17 +261,14 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                 Locale.getDefault()
             ).format(dateList[0]!!)
 
-        val cinemaListView = findViewById<ListView>(R.id.activity_film_showtimes_list_cinema)
         adapter = CinemaAdapter(
             this,
             ArrayList(),
             movie_title!!,
-            movie_classification!!,
             activeDateBtn!!.text.toString()
         )
         cinemaListView.adapter = adapter
 
-        val searchEditText: EditText = findViewById(R.id.activity_cinema_search_search)
         searchEditText.addTextChangedListener(this)
 
         coroutineScope.launch {
@@ -278,7 +285,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                     isSameDate(it.screening_start, dateList[0]!!)
                 }
             }
-            adapter!!.updateData(activeCinemaScreening!!)
+            adapter!!.updateData(activeCinemaScreening!!, activeDateBtn!!.text.toString())
         }
     }
 
@@ -294,7 +301,7 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         adapter!!.updateData(activeCinemaScreening!!.filter {
             it.name.contains(s.toString(), ignoreCase = true)
-        })
+        }, activeDateBtn!!.text.toString())
     }
 
     override fun afterTextChanged(s: Editable?) {
