@@ -149,7 +149,12 @@ class PayActivity : AppCompatActivity() {
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             screeningDateTV!!.text = dateFormat.format(screening!!.screening_start)
             seatsTV!!.text = selectedSeatsName!!.joinToString(", ")
-            seatPriceTV!!.text = toVND(totalPrice / selectedSeats!!.size)
+            if (selectedSeats!!.size != 0) {
+                seatPriceTV!!.text = toVND(totalPrice / selectedSeats!!.size)
+            }
+            else {
+                seatPriceTV!!.text = toVND(totalPrice)
+            }
             totalPriceTV!!.text = toVND(totalPrice)
             totalPriceConfirmTV!!.text = toVND(totalPrice)
         }

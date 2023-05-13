@@ -1,5 +1,6 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -42,7 +43,7 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
 
-    class FilmAdapter(private val context: Context, private val filmList: ArrayList<MovieScreening>) : BaseAdapter() {
+    class FilmAdapter(private val context: Context, private val filmList: ArrayList<MovieScreening>, private val cinema: Cinema, private val date: String) : BaseAdapter() {
 
         private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -151,12 +152,51 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
             holder.showtimesGridView.numColumns = 3
 
             holder.showtimesGridView.setOnItemClickListener { _, _, position, _ ->
-                val intent = Intent(context, BookSeatActivity::class.java)
-//                    intent.putExtra("cinemaName", cinema.name)
-//                    intent.putExtra("showtime", showtime)
-                    context.startActivity(intent)
+                if (UserManager.isLoggedIn()) {
+                    if (cinema.type == "Big") {
+                        val intent = Intent(context, BookSeatActivity::class.java)
+                        intent.putExtra("cinema_name", cinema.name)
+                        intent.putExtra("movie_title", film.title)
+                        intent.putExtra("date", date)
+                        intent.putExtra("price", cinema.price)
+                        intent.putExtra(
+                            "screenings",
+                            ArrayList(film.screenings!!)
+                        )
+                        intent.putExtra("screeningSelectedPos", position)
+                        context.startActivity(intent)
+                    } else {
+                        val intent = Intent(context, BookSmallCinemaActivity::class.java)
+                        intent.putExtra("cinema", cinema)
+                        intent.putExtra("cinema_name", cinema.name)
+                        intent.putExtra("movie_title", film.title)
+                        intent.putExtra("date", date)
+                        intent.putExtra(
+                            "screenings",
+                            ArrayList(film.screenings!!)
+                        )
+                        intent.putExtra("screeningSelectedPos", position)
+                        context.startActivity(intent)
+                    }
+                } else {
+                    val loginOrSignupDialog = AlertDialog.Builder(context)
+                        .setTitle("Yêu cầu đăng nhập")
+                        .setMessage("Bạn phải đăng nhập để đặt vé phim. Bạn có muốn đăng nhập hoặc đăng ký?")
+                        .setPositiveButton("Đăng nhập") { _, _ ->
+                            // Show login activity
+                            val intent = Intent(context, LoginActivity::class.java)
+                            context.startActivity(intent)
+                        }
+                        .setNegativeButton("Đăng ký") { _, _ ->
+                            // Show signup activity
+                            val intent = Intent(context, SignupActivity1::class.java)
+                            context.startActivity(intent)
+                        }
+                        .setNeutralButton("Hủy", null)
+                        .create()
+                    loginOrSignupDialog.show()
+                }
             }
-
             return view
         }
         private class ViewHolder {
@@ -249,7 +289,7 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
 
 
         val filmListView = findViewById<ListView>(R.id.activity_cinema_film_detail_film_list_film)
-        adapter = FilmAdapter(this, ArrayList())
+        adapter = FilmAdapter(this, ArrayList(), cinema!!, activeDateBtn!!.text.toString())
         filmListView.adapter = adapter
 
         coroutineScope.launch {

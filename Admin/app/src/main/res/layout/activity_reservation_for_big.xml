@@ -44,6 +44,9 @@
 
                 <dev.jahidhasanco.seatbookview.SeatBookView
                     android:id="@+id/layoutSeat"
+                    app:available_seat_background="@drawable/ic_seat_available"
+                    app:booked_seat_background="@drawable/ic_seat_sold"
+                    app:selected_seats_background="@drawable/ic_seat_selected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -72,9 +75,9 @@
             android:id="@+id/emptySeatColor"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:src="@drawable/ic_seat_available"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="#e5e5e5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/emptySeatTV"
@@ -91,9 +94,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
+            android:src="@drawable/ic_seat_sold"
             app:layout_constraintStart_toEndOf="@+id/emptySeatTV"
-            app:layout_constraintTop_toTopOf="@+id/emptySeatColor"
-            android:background="#ef2173" />
+            app:layout_constraintTop_toTopOf="@+id/emptySeatColor" />
 
         <TextView
             android:id="@+id/bookedSeatTV"
