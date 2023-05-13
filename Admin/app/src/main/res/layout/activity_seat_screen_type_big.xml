@@ -45,6 +45,9 @@
 
                 <dev.jahidhasanco.seatbookview.SeatBookView
                     android:id="@+id/layoutSeat"
+                    app:available_seat_background="@drawable/ic_seat_available"
+                    app:booked_seat_background="@drawable/ic_seat_sold"
+                    app:selected_seats_background="@drawable/ic_seat_selected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
