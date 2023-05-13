@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class HistoryBookingActivity : AppCompatActivity() {
-    var reservations: List<Reservation> = listOf()
+    var reservations: List<ReservationHistoryDetail> = listOf()
 
     var historyRecyclerView: RecyclerView? = null
     var adapter = HistoryListAdapter(this, reservations)
@@ -63,7 +63,7 @@ class HistoryBookingActivity : AppCompatActivity() {
                     val reservationCount = querySnapshot.size()
                     var retrievedCount = 0
                     for (document in querySnapshot) {
-                        val reservation = document.toObject(Reservation::class.java)
+                        val reservation = document.toObject(ReservationHistoryDetail::class.java)
 
                         val screeningId = reservation.screening_id
                         screeningCollection.document(screeningId)
@@ -142,7 +142,7 @@ class HistoryBookingActivity : AppCompatActivity() {
 }
 
 @IgnoreExtraProperties
-class Reservation(
+class ReservationHistoryDetail(
     var auditorium_id: String = "",
     var screening_id: String = "",
     var user_id: String = "",
@@ -163,7 +163,7 @@ class Reservation(
     }
 }
 
-class HistoryListAdapter(private val activity: Activity, private var list: List<Reservation>) :
+class HistoryListAdapter(private val activity: Activity, private var list: List<ReservationHistoryDetail>) :
     RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
@@ -208,7 +208,7 @@ class HistoryListAdapter(private val activity: Activity, private var list: List<
         return list.size
     }
 
-    fun updateData(newList: List<Reservation>) {
+    fun updateData(newList: List<ReservationHistoryDetail>) {
         list = newList
         notifyDataSetChanged()
     }
