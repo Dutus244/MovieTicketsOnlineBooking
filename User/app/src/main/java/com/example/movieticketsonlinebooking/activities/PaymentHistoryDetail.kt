@@ -2,14 +2,21 @@ package com.example.movieticketsonlinebooking.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
+import android.view.Display
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidmads.library.qrgenearator.QRGContents
+import androidmads.library.qrgenearator.QRGEncoder
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.movieticketsonlinebooking.R
@@ -25,7 +32,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class PaymentHistoryDetail : AppCompatActivity() {
     private var moviePosterIV: ImageView? = null
@@ -49,7 +56,9 @@ class PaymentHistoryDetail : AppCompatActivity() {
 
     private var reservation: Reservation? = null
     private var movie: Movie? = null
-
+    lateinit var qrIV: ImageView
+    lateinit var bitmap: Bitmap
+    lateinit var qrEncoder: QRGEncoder
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +83,7 @@ class PaymentHistoryDetail : AppCompatActivity() {
         auditorium_name = intent.getStringExtra("auditorium_name")
         cinema_name = intent.getStringExtra("cinema_name")
         reservation_id = intent.getStringExtra("reservation_id")
+        qrIV = findViewById(R.id.idIVQrcode)
 
         closeBtn!!.setOnClickListener {
             if (callingActivity == "PayActivity") {
@@ -152,6 +162,40 @@ class PaymentHistoryDetail : AppCompatActivity() {
             }
             reservationIdTV!!.text = reservation_id
             totalPriceTV!!.text = toVND(reservation!!.total_price)
+
+            val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+
+            val display: Display = windowManager.defaultDisplay
+
+            val point: Point = Point()
+            display.getSize(point)
+
+            val width = point.x
+            val height = point.y
+
+            var dimen = if (width < height) width else height
+            dimen = dimen * 3 / 4
+
+            // on below line we are initializing our qr encoder
+            qrEncoder = QRGEncoder(reservation_id, null, QRGContents.Type.TEXT, dimen)
+            qrEncoder.setColorBlack(Color.WHITE);
+            qrEncoder.setColorWhite(Color.BLACK);
+
+            // on below line we are running a try
+            // and catch block for initializing our bitmap
+            try {
+                // on below line we are
+                // initializing our bitmap
+                bitmap = qrEncoder.getBitmap();
+
+                // on below line we are setting
+                // this bitmap to our image view
+                qrIV.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+                // on below line we
+                // are handling exception
+                e.printStackTrace()
+            }
         }
     }
 

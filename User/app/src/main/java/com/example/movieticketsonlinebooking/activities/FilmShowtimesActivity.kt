@@ -142,7 +142,16 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
                         intent.putExtra("screeningSelectedPos", screeningPos)
                         context.startActivity(intent)
                     } else {
-                        val intent = Intent(context, BookSeatActivity::class.java)
+                        val intent = Intent(context, BookSmallCinemaActivity::class.java)
+                        intent.putExtra("cinema", cinema)
+                        intent.putExtra("cinema_name", cinemaList[position].name)
+                        intent.putExtra("movie_title", movie_title)
+                        intent.putExtra("date", date)
+                        intent.putExtra(
+                            "screenings",
+                            ArrayList(cinemaList[position].screenings!!)
+                        )
+                        intent.putExtra("screeningSelectedPos", screeningPos)
                         context.startActivity(intent)
                     }
                 } else {
