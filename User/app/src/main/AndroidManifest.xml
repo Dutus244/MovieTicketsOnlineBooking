@@ -21,6 +21,18 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.HistoryBookingActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.AccountEditProfileActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.PaymentHistoryDetail"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+      <activity
             android:name=".activities.BookSmallCinemaActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
