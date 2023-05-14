@@ -38,7 +38,12 @@ class CinemaScreeningListAdapter(private val activity: Activity, private val lis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.position = position
-        Picasso.get().load(list[position].img_url).into(holder.imageView);
+        if (!list[position].img_url.isEmpty()) {
+            Picasso.get().load(list[position].img_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imageView);
+        }
         holder.nameText.text = list[position].name
         holder.addrText.text = list[position].address
         when (list[position].type) {
