@@ -148,7 +148,7 @@ class PaymentHistoryDetail : AppCompatActivity() {
                     )
                 }
             }
-            movieDurationTV!!.text = movie!!.duration.toString()
+            movieDurationTV!!.text = movie!!.duration.toString() + " phút"
             cinemaNameTV!!.text = "$cinema_name - $auditorium_name"
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             screeningTimeTV!!.text = timeFormat.format(screening!!.screening_start)
