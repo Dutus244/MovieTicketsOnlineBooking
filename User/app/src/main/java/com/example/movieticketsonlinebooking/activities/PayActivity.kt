@@ -105,7 +105,12 @@ class PayActivity : AppCompatActivity() {
         lifecycleScope.launch {
             movie = getMovie(screening!!.movie_id)
 
-            Picasso.get().load(movie!!.poster_url).into(moviePosterIV)
+            if (!movie!!.poster_url.isEmpty()) {
+                Picasso.get().load(movie!!.poster_url)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(moviePosterIV)
+            }
             movieTitleTV!!.text = movie!!.title
             movieClassificationTV!!.text = movie!!.classification
             when (movie!!.classification) {

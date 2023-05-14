@@ -35,7 +35,12 @@ List<Movie>) : BaseAdapter() {
             view = convertView
             viewHolder = view.tag as ViewHolder
         }
-        Picasso.get().load(items[position].poster_url).into(viewHolder.logoImgV)
+        if (!items[position].poster_url.isEmpty()) {
+            Picasso.get().load(items[position].poster_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(viewHolder.logoImgV)
+        }
         viewHolder.textView?.text = items[position].title
         return view
     }

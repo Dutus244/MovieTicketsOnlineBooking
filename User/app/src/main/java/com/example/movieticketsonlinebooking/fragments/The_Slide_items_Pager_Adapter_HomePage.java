@@ -38,7 +38,14 @@ public class The_Slide_items_Pager_Adapter_HomePage extends PagerAdapter {
         ImageView featured_image = sliderLayout.findViewById(R.id.activity_home_page_my_featured_image);
         TextView caption_title = sliderLayout.findViewById(R.id.activity_home_page_my_caption_title);
 
-        Picasso.get().load(theSlideItemsModelClassList.get(position).getPoster_url()).into(featured_image);
+        String movie_poster = theSlideItemsModelClassList.get(position).getPoster_url();
+        if (!movie_poster.isEmpty()) {
+            Picasso.get().load(movie_poster)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(featured_image);
+        }
+
         caption_title.setText(theSlideItemsModelClassList.get(position).getTitle());
         sliderLayout.setOnClickListener(new View.OnClickListener() {
             @Override

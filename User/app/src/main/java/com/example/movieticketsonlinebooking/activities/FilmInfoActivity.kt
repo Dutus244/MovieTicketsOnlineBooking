@@ -94,7 +94,12 @@ class FilmInfoActivity : AppCompatActivity() {
         castList = movie!!.cast.split(",")
         directorList = movie!!.director.split(",")
 
-        Picasso.get().load(movie!!.poster_url).into(moviePoster)
+        if (!movie!!.poster_url.isEmpty()) {
+            Picasso.get().load(movie!!.poster_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(moviePoster)
+        }
         movieTitle!!.text = movie!!.title
         movieRating!!.text = movie!!.rating.toString()
         movieClassification!!.text = movie!!.classification

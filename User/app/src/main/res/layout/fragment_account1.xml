@@ -18,24 +18,24 @@
             <LinearLayout
                 android:id="@+id/activity_cinema_search_layout"
                 android:layout_width="match_parent"
-                android:layout_height="60sp"
-                android:background="@color/red"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tài Khoản"
-                android:textSize="25dp"
-                android:textStyle="bold"
+                android:background="@color/red"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/white"/>
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingVertical="10dp"
+                    android:text="Tài Khoản"
+                    android:textColor="@color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

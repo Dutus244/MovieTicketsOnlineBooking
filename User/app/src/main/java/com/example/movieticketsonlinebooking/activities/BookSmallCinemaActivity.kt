@@ -95,7 +95,12 @@ class BookSmallCinemaActivity : AppCompatActivity() {
                     auditorium = getAuditorium(screenings!![p2].auditorium_id)
                     auditoriumNameTV!!.text = auditorium!!.name
 
-                    Picasso.get().load(auditorium!!.img_url).into(imageView)
+                    if (!auditorium!!.img_url.isEmpty()) {
+                        Picasso.get().load(auditorium!!.img_url)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_background)
+                            .into(imageView)
+                    }
 
                     textViewDisc!!.text = auditorium!!.description
                     textViewPrice!!.text = toVND(auditorium!!.price)
