@@ -5,8 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -19,7 +21,10 @@ class AddCinema : AppCompatActivity() {
     var cinemaNameET: EditText? = null
     var cinemaImgURLET: EditText? = null
     var cinemaAddrET: EditText? = null
+    var cinemaBigRB: RadioButton? = null
+    var cinemaSmallRB: RadioButton? = null
     var cinemaTypeRG: RadioGroup? = null
+    var cinemaPriceTV: TextView? = null
     var cinemaPriceET: EditText? = null
     var saveBtn: Button? = null
 
@@ -30,9 +35,21 @@ class AddCinema : AppCompatActivity() {
         cinemaNameET = findViewById(R.id.addCinemaNameET)
         cinemaImgURLET = findViewById(R.id.addCinemaImgET)
         cinemaAddrET = findViewById(R.id.addCinemaAddrET)
+        cinemaBigRB = findViewById(R.id.addCinemaBigRB)
+        cinemaSmallRB = findViewById(R.id.addCinemaSmallRB)
         cinemaTypeRG = findViewById(R.id.addCinemaTypeRG)
+        cinemaPriceTV = findViewById(R.id.addCinemaPriceTV)
         cinemaPriceET = findViewById(R.id.addCinemaPriceET)
         saveBtn = findViewById(R.id.addCinemaSaveBtn)
+
+        cinemaBigRB!!.setOnClickListener {
+            cinemaPriceTV!!.visibility = View.VISIBLE
+            cinemaPriceET!!.visibility = View.VISIBLE
+        }
+        cinemaSmallRB!!.setOnClickListener {
+            cinemaPriceTV!!.visibility = View.GONE
+            cinemaPriceET!!.visibility = View.GONE
+        }
 
         saveBtn!!.setOnClickListener {
             if (cinemaNameET!!.text.toString().isEmpty() ||
@@ -56,7 +73,7 @@ class AddCinema : AppCompatActivity() {
                 cinemaNameET!!.text.toString(),
                 cinemaAddrET!!.text.toString(),
                 type,
-                cinemaPriceET!!.text.toString().toInt()
+                cinemaPriceET!!.text.toString().toIntOrNull() ?: 0
             )
         }
     }
