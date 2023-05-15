@@ -75,7 +75,7 @@ class ReviewListAdapter(private val activity: Activity, private var list: List<R
                         val cur: Review = list.first{it.id == review_id}
                         model.totalVoters = model.totalVoters - 1
                         model.totalRating = model.totalRating - cur.rating
-                        val newRating = model.totalRating / model.totalVoters
+                        val newRating = if (model.totalVoters != 0) model.totalRating / model.totalVoters else 0
                         db.collection("movie").document(cur.movie_id).update("rating", newRating)
 
                         activity.recreate()
