@@ -9,8 +9,62 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Admin"
+        android:theme="@style/Theme.Material3.Light.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name="com.example.admin.screenings.CinemaScreeningList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reservations.ReservationForSmall"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reservations.ReservationForBigDetail"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reservations.ReservationForBig"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.seats.SeatScreenTypeSmall"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reviews.MovieReviewList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.reviews.ReviewList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.screenings.ScreeningList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.screenings.AddScreening"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.screenings.EditScreening"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.seats.SeatScreenTypeBig"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.movies.MovieList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.movies.EditMovie"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.movies.AddMovie"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.auditoriums.AuditoriumList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.cinemas.CinemaList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.cinemas.EditCinema"
+            android:exported="false" />
+        <activity
+            android:name="com.example.admin.cinemas.AddCinema"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

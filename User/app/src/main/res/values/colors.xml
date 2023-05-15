@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0303</color>
     <color name="transparent_black_ten_percent">#1A000000</color>
+    <color name="movieClassification_P">#43db24</color>
+    <color name="movieClassification_C13">#fbf654</color>
+    <color name="movieClassification_C16">#e9b64d</color>
+    <color name="movieClassification_C18">#d52800</color>
+    <color name="colorPrimary">#FFB400</color>
+    <color name="colorPrimaryDark">#A87B10</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>

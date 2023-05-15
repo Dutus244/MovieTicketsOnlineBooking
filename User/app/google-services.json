@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "231951623894",
+    "firebase_url": "https://tumlum-278d2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tumlum-278d2",
+    "storage_bucket": "tumlum-278d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231951623894:android:78dc2f0dcb549810c54b77",
+        "android_client_info": {
+          "package_name": "com.example.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231951623894-7bbhip6vcnt61easigrh0cj8lomlteju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.admin",
+            "certificate_hash": "d527292e84876ef47c32839128cff4265868e662"
+          }
+        },
+        {
+          "client_id": "231951623894-5dethslag5m884t5q3l0oaos89feruaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrBiLFsXmnQVcQgaMZhI3Jx3cWOOvRC44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231951623894-5dethslag5m884t5q3l0oaos89feruaa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231951623894:android:d8a2d0755b16f4c4c54b77",
+        "android_client_info": {
+          "package_name": "com.example.movieticketsonlinebooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231951623894-5dethslag5m884t5q3l0oaos89feruaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrBiLFsXmnQVcQgaMZhI3Jx3cWOOvRC44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231951623894-5dethslag5m884t5q3l0oaos89feruaa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

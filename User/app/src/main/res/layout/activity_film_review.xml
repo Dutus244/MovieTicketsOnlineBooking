@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/activity_film_showtimes_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:background="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/film_name"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="BIỆT ĐỘI CÁNH CỤT"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/add_review"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_baseline_add_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="10dp"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_value_10dp"
+            android:layout_marginRight="@dimen/margin_value_10dp"
+            android:layout_marginLeft="@dimen/margin_value_10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_value_10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_total_number_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="35sp"
+                        android:textStyle="bold"
+                        tools:text="3.1" />
+
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:id="@+id/total_star_rating"
+                        style="@style/Widget.MaterialRatingBar.RatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/margin_value_5dp"
+                        android:layout_marginTop="@dimen/margin_value_5dp"
+                        android:isIndicator="true"
+                        android:maxHeight="20dp"
+                        android:minHeight="20dp"
+                        android:numStars="5"
+                        android:stepSize="0.25"
+                        app:mrb_progressBackgroundTint="@color/colorPrimary"
+                        app:mrb_progressTint="@color/colorPrimary"
+                        app:mrb_secondaryProgressTint="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/tv_total_pemberi_bintang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="-5dp"
+                        android:drawableLeft="@drawable/ic_person_primary_dark"
+                        android:gravity="center|left"
+                        tools:text="80 total" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/margin_value_5dp"
+                    android:layout_marginBottom="@dimen/margin_value_5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_star_primary_dark"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center|left"
+                                    android:gravity="center"
+                                    android:textSize="13sp"
+                                    android:text="5" />
+                            </LinearLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constrain_layout_5"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp">
+
+                                <LinearLayout
+                                    android:id="@+id/ll_percentage_5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center|left"-->
+                            <!--android:drawableLeft="@drawable/ic_star_primary_dark"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="5" />-->
+
+                            <!--<android.support.constraint.ConstraintLayout-->
+                            <!--android:id="@+id/constrain_layout_5"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_marginLeft="8dp"-->
+                            <!--android:layout_marginRight="8dp">-->
+
+                            <!--<LinearLayout-->
+                            <!--android:id="@+id/ll_percentage_5"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="40dp"-->
+                            <!--/>-->
+                            <!--</android.support.constraint.ConstraintLayout>-->
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_star_primary_dark"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center|left"
+                                    android:gravity="center"
+                                    android:textSize="13sp"
+                                    android:text="4" />
+                            </LinearLayout>
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center|left"-->
+                            <!--android:drawableLeft="@drawable/ic_star_primary_dark"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="4" />-->
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constrain_layout_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                app:layout_constraintWidth_percent="100">
+
+                                <LinearLayout
+                                    android:id="@+id/ll_percentage_4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintWidth_percent="0.65"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center|left"-->
+                            <!--android:drawableLeft="@drawable/ic_star_primary_dark"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="3" />-->
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_star_primary_dark"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center|left"
+                                    android:gravity="center"
+                                    android:textSize="13sp"
+                                    android:text="3" />
+                            </LinearLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constrain_layout_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                app:layout_constraintWidth_percent="100">
+
+                                <LinearLayout
+                                    android:id="@+id/ll_percentage_3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    app:layout_constraintWidth_percent="0.65"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center|left"-->
+                            <!--android:drawableLeft="@drawable/ic_star_primary_dark"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="2" />-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_star_primary_dark"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center|left"
+                                    android:gravity="center"
+                                    android:textSize="13sp"
+                                    android:text="2" />
+                            </LinearLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constrain_layout_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                app:layout_constraintWidth_percent="100">
+
+                                <LinearLayout
+                                    android:id="@+id/ll_percentage_2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintWidth_percent="0.65"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center|left"-->
+                            <!--android:drawableLeft="@drawable/ic_star_primary_dark"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="1" />-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_star_primary_dark"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center|left"
+                                    android:gravity="center"
+                                    android:textSize="13sp"
+                                    android:text="1" />
+                            </LinearLayout>
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constrain_layout_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp">
+
+                                <LinearLayout
+                                    android:id="@+id/ll_percentage_1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintWidth_percent="0.65"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_review"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

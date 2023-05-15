@@ -12,17 +12,23 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.movieticketsonlinebooking.databinding.ActivityMapCinemaBinding
+import com.example.movieticketsonlinebooking.viewmodels.Cinema
 
 class MapCinemaActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapCinemaBinding
 
+    var cinema: Cinema? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapCinemaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        intent = intent
+        cinema = intent.getSerializableExtra("cinema") as Cinema
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -43,7 +49,7 @@ class MapCinemaActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         var sydney = LatLng(-34.0, 151.0)
         val geocoder = Geocoder(applicationContext)
-        val results = geocoder.getFromLocationName("Galaxy Nguyễn Du", 1)
+        val results = geocoder.getFromLocationName(cinema!!.address, 1)
         if (results != null) {
             if (results.isNotEmpty()) {
                 val latitude = results[0].latitude
@@ -55,7 +61,7 @@ class MapCinemaActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
 
-        mMap.addMarker(MarkerOptions().position(sydney).title("Galaxy Nguyễn Du"))
+        mMap.addMarker(MarkerOptions().position(sydney).title(cinema!!.name))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,20f))
     }
 }

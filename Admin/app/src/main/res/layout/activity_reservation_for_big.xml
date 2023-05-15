@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".reservations.ReservationForBig">
+
+    <TextView
+        android:id="@+id/reservationBigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/seatSV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/seatIndicatorCL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reservationBigTitle">
+
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <dev.jahidhasanco.seatbookview.SeatBookView
+                    android:id="@+id/layoutSeat"
+                    app:available_seat_background="@drawable/ic_seat_available"
+                    app:booked_seat_background="@drawable/ic_seat_sold"
+                    app:selected_seats_background="@drawable/ic_seat_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:available_seats_text_color="#59575C"
+                    app:seat_gaping="10dp"
+                    app:seat_text_size="15sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/seatIndicatorCL"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/emptySeatColor"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_seat_available"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/emptySeatTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Trống"
+            app:layout_constraintBottom_toBottomOf="@+id/emptySeatColor"
+            app:layout_constraintStart_toEndOf="@+id/emptySeatColor"
+            app:layout_constraintTop_toTopOf="@+id/emptySeatColor" />
+
+        <ImageView
+            android:id="@+id/bookedSeatColor"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_seat_sold"
+            app:layout_constraintStart_toEndOf="@+id/emptySeatTV"
+            app:layout_constraintTop_toTopOf="@+id/emptySeatColor" />
+
+        <TextView
+            android:id="@+id/bookedSeatTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Đã đặt"
+            app:layout_constraintBottom_toBottomOf="@+id/bookedSeatColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bookedSeatColor"
+            app:layout_constraintTop_toTopOf="@+id/bookedSeatColor" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

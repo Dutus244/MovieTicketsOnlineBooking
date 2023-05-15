@@ -1,10 +1,16 @@
 package com.example.movieticketsonlinebooking.activities
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +18,24 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieticketsonlinebooking.R
+import com.example.movieticketsonlinebooking.viewmodels.Cinema
+import com.example.movieticketsonlinebooking.viewmodels.Movie
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.maps.GeoApiContext
+import com.google.maps.DirectionsApi
+import com.google.maps.model.TravelMode
+import com.squareup.picasso.Picasso
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CinemaFragment : Fragment(), TextWatcher {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +46,8 @@ class CinemaFragment : Fragment(), TextWatcher {
     var tempList: ArrayList<Cinema> = ArrayList()
     var adapter: MyAdapter? = null
 
-    class Cinema(var id: String, var name: String, var address: String, var phone: String, var avatar: Int )
+    var cinemas: MutableList<Cinema> = listOf<Cinema>().toMutableList()
+
 
     class MyAdapter(private val context: Context, private val arrayList: java.util.ArrayList<Cinema>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
@@ -34,6 +56,7 @@ class CinemaFragment : Fragment(), TextWatcher {
             val imageView: ImageView = itemView.findViewById(R.id.imageView)
             val textViewAddress: TextView = itemView.findViewById(R.id.textViewAddress)
             val textViewPhone: TextView = itemView.findViewById(R.id.textViewPhone)
+            val textViewDistance: TextView = itemView.findViewById(R.id.textViewDistance)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,11 +67,26 @@ class CinemaFragment : Fragment(), TextWatcher {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val data = arrayList[position]
             holder.textViewName.text = data.name
-            holder.imageView.setImageResource(data.avatar)
+
+            if (!data.img_url.isEmpty()) {
+                Picasso.get().load(data.img_url)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(holder.imageView)
+            }
             holder.textViewAddress.text = data.address
-            holder.textViewPhone.text = data.phone
+            holder.textViewPhone.text = "0903552552"
+            if (data.type == "Big") {
+                holder.textViewDistance.text = "Rạp lớn"
+            }
+            else if (data.type == "Small") {
+                holder.textViewDistance.text = "Rạp nhỏ"
+            }
+
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, CinemaFilmDetailActivity::class.java)
+                intent.putExtra("cinema", data)
+                intent.putExtra("cinema_id", data!!.id)
                 context.startActivity(intent)
             }
         }
@@ -65,21 +103,32 @@ class CinemaFragment : Fragment(), TextWatcher {
     }
 
     fun readData() {
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Trãi","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Cinestar Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Tân Bình","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Cienstar Hai Bà Trưng","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","BHD Tân Bình","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","BHD Quang Trung","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
-        arrayList.add(Cinema("1","Galaxy Nguyễn Du","123","456",com.example.movieticketsonlinebooking.R.drawable.foreplay_background))
+        val db = Firebase.firestore
+        db.collection("cinema")
+            .whereEqualTo("status", "Open")
+            .whereEqualTo("is_deleted", false)
+            .get()
+            .addOnSuccessListener { documents ->
+                activity?.runOnUiThread {
+                    cinemas.addAll(documents.toObjects(Cinema::class.java))
+                    adapter?.updateData(cinemas)
+                    tempList.addAll(cinemas)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w("DB", "Error getting document", e)
+            }
+    }
 
-        tempList.addAll(arrayList)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 404) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+
+            }
+        }
     }
 
     override fun onCreateView(
@@ -99,6 +148,9 @@ class CinemaFragment : Fragment(), TextWatcher {
         recyclerView.layoutManager = linearLayoutManager
         adapter = MyAdapter(requireActivity(), arrayList)
         recyclerView.adapter = adapter
+
+        // nếu dùng chức năng này sẽ bị delay vài s
+//        updateDistance()
 
         var searchEditText: EditText = view.findViewById(R.id.activity_cinema_search_search)
         searchEditText.addTextChangedListener(this);
@@ -125,29 +177,13 @@ class CinemaFragment : Fragment(), TextWatcher {
             for (i in 0 until tempList.size) {
                 val name: String = tempList.get(i).name
                 if (name.uppercase().contains(query)) {
-                    filters.add(
-                        Cinema(
-                            tempList.get(i).id,
-                            tempList.get(i).name,
-                            tempList.get(i).address,
-                            tempList.get(i).phone,
-                            tempList.get(i).avatar
-                        )
-                    )
+                    filters.add(tempList.get(i))
                 }
             }
             resultList.addAll(filters)
         } else {
             for (i in 0 until tempList.size) {
-                resultList.add(
-                    Cinema(
-                        tempList.get(i).id,
-                        tempList.get(i).name,
-                        tempList.get(i).address,
-                        tempList.get(i).phone,
-                        tempList.get(i).avatar
-                    )
-                )
+                resultList.add(tempList.get(i))
             }
         }
         for (i in resultList) {

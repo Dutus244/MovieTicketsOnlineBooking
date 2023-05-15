@@ -9,11 +9,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.movieticketsonlinebooking.R
-
-class Item(var name: String, var avatar: Int )
+import com.example.movieticketsonlinebooking.viewmodels.Movie
+import com.squareup.picasso.Picasso
 
 class MyGridAdapter (private var context: Context, private var items:
-ArrayList<Item>) : BaseAdapter() {
+List<Movie>) : BaseAdapter() {
     private class ViewHolder(row: View?) {
         var logoImgV: ImageView? = null
         var textView: TextView? = null
@@ -35,12 +35,17 @@ ArrayList<Item>) : BaseAdapter() {
             view = convertView
             viewHolder = view.tag as ViewHolder
         }
-        viewHolder.logoImgV?.setImageResource(items[position].avatar)
-        viewHolder.textView?.text = items[position].name
+        if (!items[position].poster_url.isEmpty()) {
+            Picasso.get().load(items[position].poster_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(viewHolder.logoImgV)
+        }
+        viewHolder.textView?.text = items[position].title
         return view
     }
 
-    override fun getItem(i: Int): Item {
+    override fun getItem(i: Int): Movie {
         return items[i]
     }
     override fun getItemId(p0: Int): Long {
@@ -48,5 +53,9 @@ ArrayList<Item>) : BaseAdapter() {
     }
     override fun getCount(): Int {
         return items.size
+    }
+    fun updateData(newMoviesList: List<Movie>) {
+        items = newMoviesList
+        notifyDataSetChanged()
     }
 }

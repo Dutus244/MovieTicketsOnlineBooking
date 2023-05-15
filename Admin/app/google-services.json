@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "231951623894",
+    "project_id": "tumlum-278d2",
+    "storage_bucket": "tumlum-278d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231951623894:android:78dc2f0dcb549810c54b77",
+        "android_client_info": {
+          "package_name": "com.example.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231951623894-sl4psbrdml7kis6dpm87uc68hld93j3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrBiLFsXmnQVcQgaMZhI3Jx3cWOOvRC44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231951623894-sl4psbrdml7kis6dpm87uc68hld93j3c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

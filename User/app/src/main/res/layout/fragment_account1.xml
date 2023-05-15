@@ -7,194 +7,218 @@
     tools:context=".activities.AccountFragment1"
     android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/activity_cinema_search_layout"
-            android:layout_width="match_parent"
-            android:layout_height="60sp"
-            android:background="@color/red"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tài Khoản"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/white"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:id="@+id/layout_hello"
-            android:layout_height="900px"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_cinema_search_layout">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/account_icon_1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="20dp"/>
-
-            <TextView
-                android:id="@+id/text1"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/activity_cinema_search_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đăng ký thành viên TumLum"
-                android:textStyle="bold"
-                android:textSize="15dp"
+                android:background="@color/red"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image" />
+                app:layout_constraintTop_toTopOf="parent" >
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingVertical="10dp"
+                    android:text="Tài Khoản"
+                    android:textColor="@color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/layout_hello"
                 android:layout_height="wrap_content"
-                android:text="Nhận ngay ưu đãi"
-                android:textSize="15dp"
-                android:textStyle="bold"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text1" />
+                app:layout_constraintTop_toBottomOf="@+id/activity_cinema_search_layout">
 
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="300dp"
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/account_icon_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng ký thành viên TumLum"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhận ngay ưu đãi"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/account_icon_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    android:layout_marginTop="0dp"/>
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image2" />
+
+                <Button
+                    android:id="@+id/activity_account_button_signup"
+                    android:layout_width="250px"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng ký"
+                    android:textSize="10dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toStartOf="@+id/text2"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/account_btn1"
+                    app:layout_constraintTop_toBottomOf="@+id/image2"
+                    android:layout_marginTop="10dp"/>
+
+                <Button
+                    android:id="@+id/activity_account_button_login"
+                    android:layout_width="250px"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng nhập"
+                    android:textSize="10dp"
+                    android:textColor="@color/red"
+                    android:background="@drawable/account_btn2"
+                    app:layout_constraintTop_toBottomOf="@+id/image2"
+                    app:layout_constraintStart_toEndOf="@+id/text2"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_account_button_login" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F0F0F0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_hello"
+                android:orientation="horizontal" />
+
+            <Button
+                android:backgroundTint="@color/white"
+                android:id="@+id/activity_account_button_info_of_product"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/account_icon_2"
+                android:text="Thông tin sản phẩm"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                android:layout_marginTop="0dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/activity_account_button_signup"
-                android:layout_width="250px"
-                android:layout_height="wrap_content"
-                android:text="Đăng ký"
-                android:textSize="10dp"
-                android:textColor="@color/white"
-                android:background="@drawable/account_btn1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image2"
-                android:layout_marginLeft="100dp"
-                android:layout_marginTop="10dp"/>
-
-            <Button
-                android:id="@+id/activity_account_button_login"
-                android:layout_width="250px"
-                android:layout_height="wrap_content"
-                android:text="Đăng nhập"
-                android:textSize="10dp"
-                android:textColor="@color/red"
-                android:background="@drawable/account_btn2"
+                android:backgroundTint="@color/white"
+                android:id="@+id/activity_account_button_term_of_use"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Điều khoản sử dụng"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image2"
-                android:layout_marginRight="100dp"
-                android:layout_marginTop="10dp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_account_button_info_of_product"
+                android:textAllCaps="false" />
+
+            <Button
+                android:backgroundTint="@color/white"
+                android:id="@+id/activity_account_button_payment_policy"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Chính sách thanh toán"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_account_button_term_of_use"
+                android:textAllCaps="false" />
+
+            <Button
+                android:backgroundTint="@color/white"
+                android:id="@+id/activity_account_button_privacy_policy"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Chính sách bảo mật"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_account_button_payment_policy"
+                android:textAllCaps="false" />
+
+            <Button
+                android:backgroundTint="@color/white"
+                android:id="@+id/activity_account_button_frequently_asked_questions"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Các câu hỏi thường gặp"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_account_button_privacy_policy"
+                android:textAllCaps="false" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="#F0F0F0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_hello"
-            android:orientation="horizontal" />
-
-        <Button
-            android:backgroundTint="@color/white"
-            android:id="@+id/activity_account_button_info_of_product"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Thông tin sản phẩm"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            android:textAllCaps="false" />
-
-        <Button
-            android:backgroundTint="@color/white"
-            android:id="@+id/activity_account_button_term_of_use"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Điều khoản sử dụng"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_account_button_info_of_product"
-            android:textAllCaps="false" />
-
-        <Button
-            android:backgroundTint="@color/white"
-            android:id="@+id/activity_account_button_payment_policy"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Chính sách thanh toán"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_account_button_term_of_use"
-            android:textAllCaps="false" />
-
-        <Button
-            android:backgroundTint="@color/white"
-            android:id="@+id/activity_account_button_privacy_policy"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Chính sách bảo mật"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_account_button_payment_policy"
-            android:textAllCaps="false" />
-
-        <Button
-            android:backgroundTint="@color/white"
-            android:id="@+id/activity_account_button_frequently_asked_questions"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Các câu hỏi thường gặp"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_account_button_privacy_policy"
-            android:textAllCaps="false" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </FrameLayout>

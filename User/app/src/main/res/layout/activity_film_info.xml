@@ -33,99 +33,99 @@
                 android:id="@+id/activity_film_info_imageview_avatar"
                 android:layout_width="100dp"
                 android:layout_height="120dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="170dp"
                 android:src="@drawable/foreplay_background"
+                app:layout_constraintBottom_toTopOf="@+id/activity_film_info_info"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />
 
             <TextView
                 android:id="@+id/activity_film_info_textview_name"
-                android:layout_width="250dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="BIỆT ĐỘI CÁNH CỤT VÙNG MADAGASCAR"
+                android:layout_marginEnd="10dp"
+                android:text="Movie's name"
                 android:textColor="@color/black"
                 android:textSize="15dp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/activity_film_info_imageview_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />
 
             <TextView
-                android:layout_marginTop="5dp"
                 android:id="@+id/activity_film_info_textview_rating"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:drawableLeft="@drawable/ic_baseline_star_24"
                 android:text="7.5"
                 android:textColor="#646464"
-                android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@+id/activity_film_info_imageview_avatar"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/activity_book_seat_classification"
                 app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_name" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/activity_film_info_textview_age"
+                android:id="@+id/activity_book_seat_classification"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:text="C13"
                 android:gravity="center"
-                android:background="@drawable/account_btn1"
                 android:textColor="@color/white"
-                android:textSize="20dp"
-                android:layout_marginLeft="30dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_rating" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/activity_film_info_imageview_avatar"
+                app:layout_constraintTop_toTopOf="@+id/activity_film_info_textview_rating" />
 
             <TextView
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
                 android:id="@+id/activity_film_info_textview_time"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="95 phút"
+                android:layout_marginTop="10dp"
                 android:drawableLeft="@drawable/ic_baseline_access_time_24"
-                android:gravity="center"
+
+                android:text="95 phút"
                 android:textColor="#646464"
-                android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@+id/activity_film_info_textview_age"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/activity_book_seat_classification"
                 app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_rating" />
 
             <TextView
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
                 android:id="@+id/activity_film_info_textview_date"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="31/03/2023"
                 android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                android:gravity="center"
+
+                android:text="31/03/2023"
                 android:textColor="#646464"
-                android:textSize="20dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/activity_film_info_textview_time"
-                app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_rating" />
+                app:layout_constraintTop_toTopOf="@+id/activity_film_info_textview_time" />
 
             <Button
                 android:id="@+id/activity_film_info_info"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/transparent_black_ten_percent"
                 android:text="Thông tin"
                 android:textAllCaps="false"
                 android:textColor="@color/red"
+                app:layout_constraintEnd_toStartOf="@+id/activity_film_info_showtimes"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_age" />
+                app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_time" />
 
             <Button
                 android:id="@+id/activity_film_info_showtimes"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/transparent_black_ten_percent"
                 android:text="Lịch chiếu"
                 android:textAllCaps="false"
                 android:textColor="#646464"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_film_info_textview_age" />
+                app:layout_constraintStart_toEndOf="@+id/activity_film_info_info"
+                app:layout_constraintTop_toTopOf="@+id/activity_film_info_info" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -233,6 +233,11 @@
                     android:id="@+id/customRecyclerView1"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView8" />
@@ -274,11 +279,48 @@
                     android:id="@+id/customRecyclerView2"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F0F0F0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_3"
+                android:orientation="horizontal" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <Button
+                android:id="@+id/see_review_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_black_ten_percent"
+                android:text="Xem bình luận"
+                android:textColor="@color/red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

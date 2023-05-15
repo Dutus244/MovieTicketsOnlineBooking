@@ -18,7 +18,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:id="@+id/layout_1"
-                android:layout_height="150px"
+                android:layout_height="wrap_content"
                 android:background="@color/red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +28,8 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:paddingVertical="10dp"
                     android:text="Tài Khoản"
                     android:textColor="@color/white"
                     android:textSize="25dp"
@@ -211,6 +211,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ProgressBar
+                    android:id="@+id/progressbar"
                     android:layout_marginTop="20dp"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"

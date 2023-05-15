@@ -40,30 +40,50 @@
                 app:tabIndicatorHeight="0dp">
             </com.google.android.material.tabs.TabLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đang chiếu"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:textColor="@color/red"
-                android:layout_marginLeft="15dp"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/activity_home_page_button_current_film"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/transparent_black_ten_percent"
+                    android:text="Đang chiếu"
+                    android:textAllCaps="false"
+                    android:textColor="@color/red"
+                    android:textSize="17dp"
+                    app:layout_constraintEnd_toStartOf="@+id/activity_home_page_button_comming_film"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/activity_home_page_button_comming_film"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/transparent_black_ten_percent"
+                    android:text="Sắp chiếu"
+                    android:textAllCaps="false"
+                    android:textColor="#C8C8C8"
+                    android:textSize="17dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/activity_home_page_button_current_film"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <GridView
                 android:layout_marginTop="5dp"
                 android:id="@+id/activity_home_page_gridview_list_film"
                 android:layout_width="match_parent"
-                android:layout_height="880dp"
-                android:horizontalSpacing="6dp"
-                android:numColumns="2"
-                android:verticalSpacing="6dp" />
+                android:layout_height="900dp"
+                android:numColumns="2"/>
 
             <Button
                 android:id="@+id/activity_home_page_list_fim_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:background="@drawable/home_list_film_more_btn"
                 android:text="Xem Tiếp >"
                 android:textAllCaps="false"

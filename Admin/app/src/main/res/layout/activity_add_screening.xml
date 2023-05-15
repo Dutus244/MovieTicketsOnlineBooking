@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".screenings.AddScreening"
+android:focusable="true"
+android:focusableInTouchMode="true">
+
+    <Button
+        android:id="@+id/addScreeningSaveBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#4CAF50"
+        android:text="Lưu"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/addScreeningStartET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/addCinemaAddrTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Chọn phim"
+        app:layout_constraintStart_toStartOf="@+id/addScreeningAuditoriumSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/addScreeningAuditoriumSpinner" />
+
+    <TextView
+        android:id="@+id/addCinemaImgTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Chọn phòng chiếu"
+        app:layout_constraintStart_toStartOf="@+id/addScreeningCinemaNameET"
+        app:layout_constraintTop_toBottomOf="@+id/addScreeningCinemaNameET" />
+
+    <TextView
+        android:id="@+id/addScreeningTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Thông tin suất chiếu"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/addCinemaNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Tên rạp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addScreeningTitle" />
+
+    <EditText
+        android:id="@+id/addScreeningCinemaNameET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:maxLines="1"
+        android:lines="1"
+        android:singleLine="true"
+        android:enabled="false"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/addCinemaNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/addCinemaNameTV" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Chọn giờ bắt đầu"
+        app:layout_constraintStart_toStartOf="@+id/addScreeningMovieSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/addScreeningMovieSpinner" />
+
+    <Spinner
+        android:id="@+id/addScreeningAuditoriumSpinner"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/addCinemaImgTV"
+        app:layout_constraintTop_toBottomOf="@+id/addCinemaImgTV" />
+
+    <Spinner
+        android:id="@+id/addScreeningMovieSpinner"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/addCinemaAddrTV"
+        app:layout_constraintTop_toBottomOf="@+id/addCinemaAddrTV" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/addScreeningAuditoriumSpinner"
+        app:layout_constraintStart_toStartOf="@+id/addScreeningAuditoriumSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/addScreeningAuditoriumSpinner" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/addScreeningMovieSpinner"
+        app:layout_constraintStart_toStartOf="@+id/addScreeningMovieSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/addScreeningMovieSpinner" />
+
+    <ImageView
+        android:id="@+id/calendar_icon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/baseline_calendar_today_24"
+        app:layout_constraintBottom_toBottomOf="@+id/addScreeningStartET"
+        app:layout_constraintEnd_toEndOf="@+id/addScreeningStartET"
+        app:layout_constraintTop_toTopOf="@+id/addScreeningStartET" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
