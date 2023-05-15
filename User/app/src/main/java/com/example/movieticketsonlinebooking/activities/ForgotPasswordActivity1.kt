@@ -56,8 +56,7 @@ class ForgotPasswordActivity1 : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Password reset email sent successfully
                         Toast.makeText(applicationContext, "Đã gửi email đổi mật khẩu", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(applicationContext, LoginActivity::class.java)
-                        startActivity(intent)
+                        finish()
                     } else {
                         // Handle error
                     }
