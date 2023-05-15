@@ -19,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -84,7 +85,13 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
             }
 
             holder.filmName.text = film.title
-            holder.filmRating.text = film.rating.toString()
+
+
+            val decimalFormat = DecimalFormat("#.#")
+            decimalFormat.maximumFractionDigits = 1
+            val formattedRating = decimalFormat.format(film.rating)
+            holder.filmRating.text = formattedRating
+            
             holder.filmAge.text = film.classification
             when (film.classification) {
                 "P" -> {
