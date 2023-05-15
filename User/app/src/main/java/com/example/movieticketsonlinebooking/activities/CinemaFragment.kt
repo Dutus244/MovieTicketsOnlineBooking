@@ -68,7 +68,12 @@ class CinemaFragment : Fragment(), TextWatcher {
             val data = arrayList[position]
             holder.textViewName.text = data.name
 
-            Picasso.get().load(data.img_url).into(holder.imageView)
+            if (!data.img_url.isEmpty()) {
+                Picasso.get().load(data.img_url)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(holder.imageView)
+            }
             holder.textViewAddress.text = data.address
             holder.textViewPhone.text = "0903552552"
 //            if (data.distance != "") {

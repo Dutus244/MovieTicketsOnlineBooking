@@ -38,7 +38,12 @@ class ScreeningListAdapter(private val activity: Activity, private var list: Lis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val picasso = Picasso.get()
         holder.position = position
-        picasso.load(list[position].poster_url).into(holder.imageView)
+        if (!list[position].poster_url.isEmpty()) {
+            picasso.load(list[position].poster_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imageView)
+        }
         holder.nameText.text = list[position].title
         holder.ratingText.text = list[position].rating.toString()
         holder.classText.text = list[position].classification

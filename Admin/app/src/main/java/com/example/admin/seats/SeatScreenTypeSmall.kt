@@ -45,7 +45,12 @@ class SeatScreenTypeSmall : AppCompatActivity() {
         deleteBtn = findViewById(R.id.editAudiDeleteBtn)
         saveBtn = findViewById(R.id.editAudiSaveBtn)
 
-        Picasso.get().load(auditorium.img_url).into(img);
+        if (!auditorium.img_url.isEmpty()) {
+            Picasso.get().load(auditorium.img_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(img);
+        }
         priceET!!.setText(auditorium.price.toString())
         imgURL!!.setText(auditorium.img_url)
         description!!.setText(auditorium.description)

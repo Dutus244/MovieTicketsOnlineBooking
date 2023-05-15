@@ -127,7 +127,12 @@ class CinemaFilmDetailActivity : AppCompatActivity() {
             val releaseDate = dateFormat.format(film.release_date)
             holder.filmDate.text = releaseDate
 
-            Picasso.get().load(film.poster_url).into(holder.filmAvatar)
+            if (!film.poster_url.isEmpty()) {
+                Picasso.get().load(film.poster_url)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(holder.filmAvatar)
+            }
 
             holder.showtimesButton.setOnClickListener {
                 if (holder.showtimesGridView.visibility == View.VISIBLE) {

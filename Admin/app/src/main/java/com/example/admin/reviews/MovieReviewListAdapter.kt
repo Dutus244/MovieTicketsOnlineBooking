@@ -39,7 +39,12 @@ class MovieReviewListAdapter(private val activity: Activity, private val list: L
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val picasso = Picasso.get()
         holder.position = position
-        picasso.load(list[position].poster_url).into(holder.imageView)
+        if (!list[position].poster_url.isEmpty()) {
+            picasso.load(list[position].poster_url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imageView)
+        }
         holder.nameText.text = list[position].title
         holder.dateText.text = "Ngày phát hành: ${
             SimpleDateFormat("dd/MM/yyyy",
