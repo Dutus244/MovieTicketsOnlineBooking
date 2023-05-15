@@ -76,9 +76,6 @@ class CinemaFragment : Fragment(), TextWatcher {
             }
             holder.textViewAddress.text = data.address
             holder.textViewPhone.text = "0903552552"
-//            if (data.distance != "") {
-//                holder.textViewDistance.text = data.distance + " km"
-//            }
             if (data.type == "Big") {
                 holder.textViewDistance.text = "Phòng phim lớn"
             }
@@ -104,55 +101,6 @@ class CinemaFragment : Fragment(), TextWatcher {
             notifyDataSetChanged()
         }
     }
-
-//    fun sortCinemasByDistanceAsc(cinemas: ArrayList<Cinema>) {
-//        cinemas.sortBy { it.distance }
-//    }
-
-//    fun updateDistance() {
-//        var tempDisList: ArrayList<Cinema> = ArrayList()
-//        val locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
-//                val location =
-//                    locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER) // or LocationManager.NETWORK_PROVIDER
-//                if (location != null) {
-//                    val userLatitude = location.latitude
-//                    val userLongitude = location.longitude
-//                    val geocoder = Geocoder(requireContext())
-//                    for (i in 0 until arrayList.size) {
-//                        val results = geocoder.getFromLocationName(arrayList[i].name, 1)
-//                        if (results != null && results.isNotEmpty()) {
-//                            val placeLatitude = results[0].latitude
-//                            val placeLongitude = results[0].longitude
-//
-//                            val origin = "$userLatitude,$userLongitude"
-//                            val destination = "$placeLatitude,$placeLongitude"
-//
-//                            // Calculate distance
-//                            val resultsArray = FloatArray(1)
-//                            Location.distanceBetween(userLatitude, userLongitude, placeLatitude, placeLongitude, resultsArray)
-//                            val distance = resultsArray[0] / 1000// Distance in meters
-//                            val roundedDistance = String.format("%.1f", distance)
-//                            tempDisList.add(
-//                                Cinema(
-//                                    arrayList.get(i).id,
-//                                    arrayList.get(i).name,
-//                                    arrayList.get(i).address,
-//                                    arrayList.get(i).phone,
-//                                    arrayList.get(i).avatar,
-//                                    roundedDistance
-//                                )
-//                            )
-//                        }
-//                    }
-//                    sortCinemasByDistanceAsc(tempDisList)
-//                    tempList.clear()
-//                    tempList.addAll(tempDisList)
-//                    adapter!!.updateData(tempDisList)
-//                }
-//            }
-//    }
-
 
     fun readData() {
         val db = Firebase.firestore
@@ -192,16 +140,6 @@ class CinemaFragment : Fragment(), TextWatcher {
             R.layout.fragment_cinema,
             container, false
         )
-
-        // Check if location permission is granted
-        if (activity?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // Location permission is already granted, you can proceed with getting the user's location
-            // and calculating distance as shown in the previous example
-        } else {
-            // Location permission is not granted, request permission from the user
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 404)
-        }
 
         readData()
 
