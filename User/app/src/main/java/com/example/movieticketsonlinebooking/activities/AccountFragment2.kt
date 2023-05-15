@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.movieticketsonlinebooking.R
 import com.example.movieticketsonlinebooking.viewmodels.User
@@ -17,6 +18,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class AccountFragment2 : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +35,8 @@ class AccountFragment2 : Fragment() {
     var signoutButton: Button? = null
     var gso: GoogleSignInOptions? = null
     var gsc: GoogleSignInClient? = null
+    var priceTextView: TextView? = null
+    var progressBar: ProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +52,41 @@ class AccountFragment2 : Fragment() {
         emailTextView = view.findViewById(R.id.activity_account_textview_email)
         editProfileButton = view.findViewById(R.id.activity_account_button_change_info)
         historyButton = view.findViewById(R.id.activity_account_button_history)
+        priceTextView = view.findViewById(R.id.textView3)
+        progressBar = view.findViewById(R.id.progressbar)
+
+
+        val userId = UserManager.getCurrentUser().userID
+        var totalSum = 0.0
+        val db = Firebase.firestore
+        val reservations = db.collection("reservation")
+            .whereEqualTo("user_id", userId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (reservation in querySnapshot) {
+                    // Process each reservation here
+                    // You can access reservation data using reservation.data
+
+                    // For example, if the reservation has a "sum" field, you can accumulate the total sum
+                    val sum = reservation.getDouble("total_price")
+                    if (sum != null) {
+                        totalSum += sum
+                    }
+                }
+
+                // After processing all reservations, you can perform any necessary actions with the total sum
+                // For example, you could display it or use it in further calculations
+                priceTextView!!.text = toVND(totalSum.toInt())
+                val progress = totalSum / 2000000 * 100
+
+                progressBar!!.progress = progress.toInt()
+            }
+            .addOnFailureListener { exception ->
+                // Handle any errors that occur during the query
+
+            }
+
+
 
         editProfileButton!!.setOnClickListener {
             val intent = Intent(activity, AccountEditProfileActivity::class.java)
@@ -84,6 +126,11 @@ class AccountFragment2 : Fragment() {
             signOut()
         }
         return view
+    }
+
+    private fun toVND(num: Int): String {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        return formatter.format(num) + "đ"
     }
 
     fun signOut() {

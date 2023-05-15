@@ -27,6 +27,7 @@ class AccountEditProfileActivity : AppCompatActivity() {
     var dobTV: TextView? = null
     var sexRG: RadioGroup? = null
     var saveBtn: Button? = null
+    var changePassBtn: Button? = null
 
     val userManager: CurrentUser = UserManager.getCurrentUser()
     var user: User? = null
@@ -45,6 +46,7 @@ class AccountEditProfileActivity : AppCompatActivity() {
         dobTV = findViewById(R.id.dobET)
         sexRG = findViewById(R.id.sexRG)
         saveBtn = findViewById(R.id.saveBtn)
+        changePassBtn = findViewById(R.id.changePassBtn)
 
         val dateTextView = findViewById<ImageView>(R.id.calendar_icon)
         var cal = Calendar.getInstance()
@@ -84,6 +86,11 @@ class AccountEditProfileActivity : AppCompatActivity() {
 
         saveBtn!!.setOnClickListener {
             editUser()
+        }
+
+        changePassBtn!!.setOnClickListener {
+            val intent = Intent(applicationContext, ForgotPasswordActivity1::class.java)
+            startActivity(intent)
         }
     }
 

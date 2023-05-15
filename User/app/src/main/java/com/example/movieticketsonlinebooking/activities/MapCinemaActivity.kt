@@ -49,7 +49,7 @@ class MapCinemaActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         var sydney = LatLng(-34.0, 151.0)
         val geocoder = Geocoder(applicationContext)
-        val results = geocoder.getFromLocationName(cinema!!.name, 1)
+        val results = geocoder.getFromLocationName(cinema!!.address, 1)
         if (results != null) {
             if (results.isNotEmpty()) {
                 val latitude = results[0].latitude

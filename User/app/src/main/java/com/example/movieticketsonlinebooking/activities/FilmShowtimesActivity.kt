@@ -97,7 +97,12 @@ class FilmShowtimesActivity : AppCompatActivity(), TextWatcher {
 
             val cinema = cinemaList[position]
 
-            holder.cinemaName.text = cinema.name
+            if (cinemaList[position].type == "Big") {
+                holder.cinemaName.text = cinema.name + " - Rạp lớn"
+            }
+            else {
+                holder.cinemaName.text = cinema.name + " - Rạp nhỏ"
+            }
 
             holder.showtimesButton.setOnClickListener {
                 if (holder.showtimesGridView.visibility == View.VISIBLE) {

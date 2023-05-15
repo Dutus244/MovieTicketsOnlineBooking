@@ -211,6 +211,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ProgressBar
+                    android:id="@+id/progressbar"
                     android:layout_marginTop="20dp"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"

@@ -77,10 +77,10 @@ class CinemaFragment : Fragment(), TextWatcher {
             holder.textViewAddress.text = data.address
             holder.textViewPhone.text = "0903552552"
             if (data.type == "Big") {
-                holder.textViewDistance.text = "Phòng phim lớn"
+                holder.textViewDistance.text = "Rạp lớn"
             }
             else if (data.type == "Small") {
-                holder.textViewDistance.text = "Phòng phim nhỏ"
+                holder.textViewDistance.text = "Rạp nhỏ"
             }
 
             holder.itemView.setOnClickListener {
