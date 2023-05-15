@@ -65,6 +65,10 @@ class SignupActivity1 : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Bạn phải nhập password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if (password.length < 6) {
+                Toast.makeText(applicationContext, "Password của bạn không được ít hơn 6 ký tự", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
                 .addOnCompleteListener { task ->
