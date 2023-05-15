@@ -12,6 +12,7 @@ import com.example.admin.R
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -97,7 +98,10 @@ class EditMovie : AppCompatActivity() {
             else -> -1
         }
         if (radioButtonId2 != -1) movieActiveRG!!.check(radioButtonId2)
-        movieRatingET!!.setText(movie?.rating.toString())
+        val decimalFormat = DecimalFormat("#.#")
+        decimalFormat.maximumFractionDigits = 1
+        val formattedRating = decimalFormat.format(movie?.rating)
+        movieRatingET!!.text = formattedRating
         movieDurationET!!.setText(movie?.duration.toString())
 
         delBtn!!.setOnClickListener {
