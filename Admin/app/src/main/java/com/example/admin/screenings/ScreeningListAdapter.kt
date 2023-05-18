@@ -11,6 +11,7 @@ import com.example.admin.R
 import com.example.admin.RequestCode
 import com.squareup.picasso.Picasso
 import java.lang.Math.ceil
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +46,10 @@ class ScreeningListAdapter(private val activity: Activity, private var list: Lis
                 .into(holder.imageView)
         }
         holder.nameText.text = list[position].title
-        holder.ratingText.text = list[position].rating.toString()
+        val decimalFormat = DecimalFormat("#.#")
+        decimalFormat.maximumFractionDigits = 1
+        val formattedRating = decimalFormat.format(list[position].rating)
+        holder.ratingText.text = formattedRating
         holder.classText.text = list[position].classification
         holder.durationText.text = list[position].duration.toString()
 

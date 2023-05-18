@@ -20,6 +20,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -101,7 +102,11 @@ class FilmInfoActivity : AppCompatActivity() {
                 .into(moviePoster)
         }
         movieTitle!!.text = movie!!.title
-        movieRating!!.text = movie!!.rating.toString()
+
+        val decimalFormat = DecimalFormat("#.#")
+        decimalFormat.maximumFractionDigits = 1
+        val formattedRating = decimalFormat.format(movie!!.rating)
+        movieRating!!.text = formattedRating
         movieClassification!!.text = movie!!.classification
         when (movie!!.classification) {
             "P" -> {
