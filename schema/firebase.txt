@@ -1,0 +1,87 @@
+{
+  "user": {
+    "id": {
+      "username": "string",
+      "hashpassword": "string",
+      "name": "string",
+      "email": "string",
+      "dob": "timestamp",
+      "sex": "string", // "Male" "Female" "Other"
+      "tel": "string",
+      "is_deleted": "boolean", // default false
+      "is_banned": "boolean" // default false
+    }
+  },
+    
+  "cinema": {
+	  "id": {
+      "img_url": "string",
+      "name": "string",
+      "address": "string",
+      "auditoriums_no": "number",
+      "status": "string", // "Open" or "Closed"
+      "is_deleted": "boolean",
+      "type": "string", // "Big" or "Small",
+      "price": "number", // 0 if type = "Small"
+    }
+  },
+  "auditorium": {
+    "id": {
+      "cinema_id": "string",
+      "name": "string",
+      "seats_no": "number",
+      "map": []String,
+      "is_deleted": "boolean",
+      "type": "string", // "Big" or "Small" Big là có ghế ngồi, Small thì ko
+      "description": "string", // "" if type = "Big"
+      "img_url": "string", // "" if type = "Big"
+      "price": "number", // 0 if type = "Big"
+    }
+  },
+  "screening": {
+    "id": {
+      "movie_id": "string",
+      "cinema_id": "string",
+      "auditorium_id": "string",
+      "screening_start": "timestamp",
+      "screening_end": "timestamp",
+      "is_deleted": "boolean"
+    }
+  },
+  "reservation": {
+    "id": {
+      "user_id": "string",
+      "auditorium_id": "string",
+      "screening_id": "string",
+      "total_price": "number",
+      "date": "timestamp",
+      "seats": "Int Array" // vị trí ứng với seat map nhưng theo 1d array, mảng rỗng nếu là Small
+	  "seats_name": "String Array"
+    }
+  },
+  "movie": {
+    "id": {
+      "title": "string",
+      "poster_url": "string",
+      "vid_url": "string",
+      "director": "string",
+      "cast": "string",
+      "description": "string",
+      "release_date": "timestamp",
+      "classification": "string", // "P", "C13", "C16", "C18"
+      "rating": "number",
+      "duration": "number" // minutes
+      "is_active": "boolean",
+      "is_deleted": "boolean"
+    }
+  },
+  "review": {
+	  "id": {
+      "movie_id": "string",
+      "user_id": "string",
+      "detail": "string",
+      "date": "date",
+      "rating": "number",
+	}
+  },
+}
